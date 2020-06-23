@@ -1,0 +1,22 @@
+runtime: nodejs10
+
+# Leejjon: I first wanted to call this service "frontend", but having a default service seems to be required.
+# Source: https://stackoverflow.com/questions/42360790/why-do-i-need-to-deploy-a-default-app-before-i-can-deploy-multiple-services-in/42361987#42361987
+service: default
+env: standard
+instance_class: F1
+# First handler is for Google Site verification. Second is for
+# redirecting everything else to the node.js app.
+handlers:
+  - url: /googleb39dfeb792153037\.html
+    static_files: build/googleb39dfeb792153037.html
+    upload: build/googleb39dfeb792153037\.html
+    secure: always
+  - url: '.*'
+    script: auto
+    secure: always
+automatic_scaling:
+  min_idle_instances: automatic
+  max_idle_instances: automatic
+  min_pending_latency: automatic
+  max_pending_latency: automatic
