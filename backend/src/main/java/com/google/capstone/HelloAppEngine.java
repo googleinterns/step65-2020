@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "HelloAppEngine", value = "/hello")
+@WebServlet(name = "HelloAppEngine", value = "/api/v1/hello")
 public class HelloAppEngine extends HttpServlet {
 
   @Override
