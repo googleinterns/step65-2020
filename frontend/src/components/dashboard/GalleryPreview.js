@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import ImgMediaCard from "./ImgMediaCard";
+import ImgMediaCard from './ImgMediaCard';
 
 const useStyles = makeStyles((theme) => ({
   galleryTitle: {
@@ -32,7 +32,7 @@ export default function GalleryPreview(props) {
   return (
     <>
       <Container className={classes.galleryTitle}>
-        <Typography variant="h4">{props.name}</Typography>
+        <Typography variant="h4" component="h2">{props.name}</Typography>
       </Container>
       <Grid
         container
