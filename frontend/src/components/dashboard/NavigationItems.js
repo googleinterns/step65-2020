@@ -9,7 +9,9 @@ import {
 } from "@material-ui/core";
 
 import HomeIcon from "@material-ui/icons/Home";
-import InfoIcon from '@material-ui/icons/Info';
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
+import UserUploadsIcon from '@material-ui/icons/SupervisedUserCircle';
+import UploadPhotoIcon from '@material-ui/icons/AddPhotoAlternate';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -30,12 +32,28 @@ function NavigationItems() {
           <ListItemText primary={"Home"} />
         </ListItem>
       </Link>
-      <Link to="/about" className={classes.link}>
+      <Link to="/museum-gallery" className={classes.link}>
         <ListItem button>
           <ListItemIcon>
-            <InfoIcon />
+            <PhotoLibraryIcon />
           </ListItemIcon>
-          <ListItemText primary={"About"} />
+          <ListItemText primary={"Museum Gallery"} />
+        </ListItem>
+      </Link>
+      <Link to="/user-uploads-gallery" className={classes.link}>
+        <ListItem button>
+          <ListItemIcon>
+            <UserUploadsIcon />
+          </ListItemIcon>
+          <ListItemText primary={"User Uploads Gallery"} />
+        </ListItem>
+      </Link>
+      <Link to="/upload-artwork" className={classes.link}>
+        <ListItem button>
+          <ListItemIcon>
+            <UploadPhotoIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Upload Artwork"} />
         </ListItem>
       </Link>
     </List>

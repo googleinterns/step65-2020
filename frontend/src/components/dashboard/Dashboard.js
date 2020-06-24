@@ -10,7 +10,6 @@ import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Container from '@material-ui/core/Container';
@@ -18,12 +17,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import AvatarHeader from './AvatarHeader';
+// import AvatarHeader from './AvatarHeader';
 import NavigationItems from './NavigationItems';
 import GalleryPreview from './GalleryPreview';
 
@@ -139,17 +133,8 @@ export default function Dashboard() {
             </IconButton>
           </div>
           <Divider />
-          <AvatarHeader />
           <NavigationItems />
           <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
         </Drawer>
         <main
           className={clsx(classes.content, {
@@ -160,14 +145,34 @@ export default function Dashboard() {
           <Switch>
             <Route exact path="/">
               <Container>
-                <GalleryPreview name="Museum Gallery"/>
-                <GalleryPreview name="User Uploads Gallery"/>
+                <GalleryPreview name="Museum Gallery" link="/museum-gallery"/>
+                <GalleryPreview name="User Uploads Gallery" link="/user-uploads-gallery"/>
               </Container>
             </Route>
-            <Route exact path="/about">
+            <Route exact path="/museum-gallery">
               <Container>
                 <Typography variant="h3" gutterBottom>
-                  About
+                  Museum Gallery
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                </Typography>
+              </Container>
+            </Route>
+            <Route exact path="/user-uploads-gallery">
+              <Container>
+                <Typography variant="h3" gutterBottom>
+                  User Uploads Gallery
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                </Typography>
+              </Container>
+            </Route>
+            <Route exact path="/upload-artwork">
+              <Container>
+                <Typography variant="h3" gutterBottom>
+                  Upload Artwork
                 </Typography>
                 <Typography variant="body1" gutterBottom>
                   Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.

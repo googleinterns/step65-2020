@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -18,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'flex-end',
     padding: theme.spacing(4)
+  },
+  link: {
+    textDecoration: 'none',
+    color: theme.palette.text.primary
   }
 }));
 
@@ -43,7 +48,9 @@ export default function GalleryPreview(props) {
         ))}
       </Grid>
       <Container className={classes.viewMoreButton}>
-        <Button variant="contained">View More</Button>
+        <Link to={props.link} className={classes.link}>
+          <Button variant="contained">View More</Button>
+        </Link>
       </Container>
     </>
   );
