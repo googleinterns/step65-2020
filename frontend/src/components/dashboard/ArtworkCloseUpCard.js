@@ -1,5 +1,6 @@
+/* eslint-disable require-jsdoc */
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -7,30 +8,30 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import AudioPlayer from 'react-audio-player';
-import PlaceholderImage from './images/paint.jpg'
+import PlaceholderImage from './images/paint.jpg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    flexDirection: "row"
+    flexDirection: 'row',
   },
   header: {
     background: theme.palette.secondary.light,
-    color: theme.palette.secondary.contrastText
+    color: theme.palette.secondary.contrastText,
   },
   content: {
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3)
+    marginBottom: theme.spacing(3),
   },
   media: {
     height: 0,
     paddingTop: '56.25%', // 16:9
-    margin: theme.spacing(3)
+    margin: theme.spacing(3),
   },
   audioPlayer: {
-    margin: theme.spacing(1)
-  }
+    margin: theme.spacing(1),
+  },
 }));
 
 export default function ArtworkCloseUpCard() {
@@ -43,7 +44,7 @@ export default function ArtworkCloseUpCard() {
         subheader="Artist Name"
         className={classes.header}
       />
-      <Grid         
+      <Grid
         container
         direction="column"
         justify="center"
@@ -58,17 +59,38 @@ export default function ArtworkCloseUpCard() {
             title="Artwork"
           />
           <CardContent className={classes.content}>
-            <Typography variant="body2" color="textSecondary" align="center" component="p">
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              align="center"
+              component="p"
+            >
               This a is short physical description of the artwork.
             </Typography>
             <AudioPlayer controls className={classes.audioPlayer}/>
           </CardContent>
-        </Grid>   
+        </Grid>
         <Grid item xs={12} md={4}>
           <CardContent className={classes.content}>
-            <Typography variant="h4" color="primary" component="h2" align="center" gutterBottom>Description</Typography>
+            <Typography
+              variant="h4"
+              color="primary"
+              component="h2"
+              align="center"
+              gutterBottom
+            >
+              Description</Typography>
             <Typography paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Consectetur lorem donec massa sapien. Purus faucibus ornare suspendisse sed. Id neque aliquam vestibulum morbi blandit cursus risus. Amet dictum sit amet justo donec enim diam vulputate. Velit dignissim sodales ut eu sem integer vitae. Quisque egestas diam in arcu cursus. Non diam phasellus vestibulum lorem. Proin fermentum leo vel orci. Purus semper eget duis at tellus at. Id aliquet risus feugiat in.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+              sed do eiusmod tempor incididunt ut labore et dolore
+              magna aliqua. Consectetur lorem donec massa sapien.
+              Purus faucibus ornare suspendisse sed. Id neque aliquam
+              vestibulum morbi blandit cursus risus. Amet dictum sit amet
+              justo donec enim diam vulputate. Velit dignissim sodales ut
+              eu sem integer vitae. Quisque egestas diam in arcu cursus.
+              Non diam phasellus vestibulum lorem. Proin fermentum leo vel
+              orci. Purus semper eget duis at tellus at. Id aliquet risus
+              feugiat in.
             </Typography>
           </CardContent>
         </Grid>
