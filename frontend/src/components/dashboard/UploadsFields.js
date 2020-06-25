@@ -8,10 +8,10 @@ import PhotoUploadIcon from '@material-ui/icons/AddPhotoAlternate';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    '& > *': {
-      margin: theme.spacing(2),
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
       marginLeft: 0,
-      width: '25ch',
+      width: '150ch',
     },
   },
   input: {
@@ -19,53 +19,69 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BasicTextFields() {
+export default function UploadsFields() {
   const classes = useStyles();
 
   return (
     <>
-      <form className={classes.root} noValidate autoComplete="off">
-        <div>
-          <TextField required id="first-name" label="First Name" variant="outlined" />
-        </div>
-        <div>
-          <TextField id="last-name" label="Last Name" variant="outlined" />
-        </div>
-        <div>
-          <TextField
-            required
-            id="image-info"
-            label="Image Description"
-            placeholder="In this image..."
-            multiline
-            variant="outlined"
-          />
-        </div>
-      </form>
-      <div className={classes.root} >
-        <input
-          accept="image/*"
-          className={classes.input}
-          id="contained-button-file"
-          multiple
-          type="file"
-        />
-        <label htmlFor="contained-button-file">
-          <Button 
-            variant="contained" 
-            color="primary" 
-            component="span"
-            startIcon={<PhotoUploadIcon />}
-            >
-            Select File
-          </Button>
-        </label>
-      </div>
-      <Box m={16} />
       <Grid
         container
         direction="row"
-        justify="flex-end"
+        justify="flex-start"
+        alignItems="center"
+      >
+        <form className={classes.root} noValidate autoComplete="off">
+            <div>
+            <TextField required id="first-name" label="First Name" variant="outlined" />
+            </div>
+            <div>
+            <TextField id="last-name" label="Last Name" variant="outlined" />
+            </div>
+            <div>
+            <TextField
+                required
+                id="image-info"
+                label="Image Description"
+                multiline
+                placeholder="In this image..."
+                rows = {4}
+                variant="outlined"
+            />
+            </div>
+        </form>
+      </Grid>
+      <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="center"
+      >
+        <div className={classes.root} >
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="select-file"
+              multiple
+              type="file"
+            />
+            <label htmlFor="select-file">
+            <Button 
+                variant="contained" 
+                color="primary" 
+                component="span"
+                startIcon={<PhotoUploadIcon />}
+                >
+                Select File
+            </Button>
+            </label>
+            <div id="fileNameCont" />
+        </div>
+      </Grid>
+      <Box m={4} />
+      <Grid
+        container
+        direction="row"
+        justify="flex-start"
         alignItems="center"
       >
         <Button variant="contained" color="secondary">
