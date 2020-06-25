@@ -31,7 +31,7 @@ export default function UploadsFields() {
         alignItems="center"
       >
         <form className={classes.root} noValidate autoComplete="off">
-            <div>
+          <div>
             <TextField required id="first-name" label="First Name" variant="outlined" />
             </div>
             <div>
@@ -39,15 +39,15 @@ export default function UploadsFields() {
             </div>
             <div>
             <TextField
-                required
-                id="image-info"
-                label="Image Description"
-                multiline
-                placeholder="In this image..."
-                rows = {4}
-                variant="outlined"
+              required
+              id="image-info"
+              label="Image Description"
+              multiline
+              placeholder="In this image..."
+              rows = {4}
+              variant="outlined"
             />
-            </div>
+          </div>
         </form>
       </Grid>
       <Grid
@@ -66,12 +66,12 @@ export default function UploadsFields() {
             />
             <label htmlFor="select-file">
             <Button 
-                variant="contained" 
-                color="primary" 
-                component="span"
-                startIcon={<PhotoUploadIcon />}
-                >
-                Select File
+              variant="contained" 
+              color="primary" 
+              component="span"
+              startIcon={<PhotoUploadIcon />}
+            >
+              Select File
             </Button>
             </label>
             <div id="fileNameCont" />
