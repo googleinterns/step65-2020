@@ -175,7 +175,7 @@ export default function Dashboard() {
                   Upload Artwork
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                  Here you can upload artwork of your own! Please be sure to include you name and a very detailed description of your artwork. If you are unsure of what qualifies as a good description, we've provided some links below to some resources that can help guide you!
+                  Here you can upload artwork of your own! Please be sure to include your name and a very detailed description of your artwork. If you are unsure of what qualifies as a good description, we've provided some links below to some resources that can help guide you!
                 </Typography>
                 <UploadsFields name="User Information"/>
               </Container>
