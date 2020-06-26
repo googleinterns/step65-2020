@@ -3,9 +3,9 @@ import React from 'react';
 import clsx from 'clsx';
 import {
   BrowserRouter as Router,
-  Switch, Route
-} from "react-router-dom";
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+  Switch, Route,
+} from 'react-router-dom';
+import {makeStyles, useTheme} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0,
-  }
+  },
 }));
 
 export default function Dashboard() {
@@ -132,8 +132,9 @@ export default function Dashboard() {
           }}
         >
           <div className={classes.drawerHeader}>
-            <IconButton  onClick={handleDrawerClose}>
-              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'ltr' ?
+              <ChevronLeftIcon /> : <ChevronRightIcon />}
             </IconButton>
           </div>
           <Divider />
@@ -150,7 +151,10 @@ export default function Dashboard() {
             <Route exact path="/">
               <Container>
                 <GalleryPreview name="Museum Gallery" link="/museum-gallery"/>
-                <GalleryPreview name="User Uploads Gallery" link="/user-uploads-gallery"/>
+                <GalleryPreview
+                  name="User Uploads Gallery"
+                  link="/user-uploads-gallery"
+                />
               </Container>
             </Route>
             <Route exact path="/museum-gallery">
@@ -169,7 +173,19 @@ export default function Dashboard() {
                   User Uploads Gallery
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                  Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                  Contrary to popular belief, Lorem Ipsum is not simply random
+                  text. It has roots in a piece of classical Latin literature
+                  from 45 BC, making it over 2000 years old. Richard McClintock,
+                  a Latin professor at Hampden-Sydney College in Virginia,
+                  looked up one of the more obscure Latin words, consectetur,
+                  from a Lorem Ipsum passage, and going through the cites of
+                  the word in classical literature, discovered the undoubtable
+                  source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33
+                  of de Finibus Bonorum et Malorum (The Extremes of Good and
+                  Evil) by Cicero, written in 45 BC. This book is a treatise
+                  on the theory of ethics, very popular during the Renaissance.
+                  The first line of Lorem Ipsum, Lorem ipsum dolor sit amet..,
+                  comes from a line in section 1.10.32.
                 </Typography>
               </Container>
             </Route>
@@ -179,7 +195,11 @@ export default function Dashboard() {
                   Upload Artwork
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                  Here you can upload artwork of your own! Please be sure to include your name and a very detailed description of your artwork. If you are unsure of what qualifies as a good description, we've provided some links below to some resources that can help guide you!
+                  Here you can upload artwork of your own! Please be sure to
+                  include your name and a very detailed description of your
+                  artwork. If you are unsure of what qualifies as a good
+                  description, we've provided some links below to some
+                  resources that can help guide you!
                 </Typography>
                 <UploadsFields name="User Information"/>
               </Container>

@@ -43,5 +43,11 @@
   },
   "engines": {
     "node": "10.x.x"
+  },
+  "devDependencies": {
+    "eslint": "^7.3.1",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.0"
   }
 }
