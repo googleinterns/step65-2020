@@ -1,5 +1,5 @@
 import React from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import SearchIcon from '@material-ui/icons/Search';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -10,7 +10,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
-
 import ImgMediaCard from './ImgMediaCard';
 
 const useStyles = makeStyles((theme) => ({
