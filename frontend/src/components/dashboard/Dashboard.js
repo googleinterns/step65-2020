@@ -19,6 +19,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import NavigationItems from './NavigationItems';
 import GalleryPreview from './GalleryPreview';
+import ArtworkCloseUpCard from './ArtworkCloseUpCard';
 import UploadsFields from './UploadsFields';
 import Gallery from './Gallery';
 import Banner from './Banner';
@@ -181,6 +182,11 @@ export default function Dashboard() {
                   Here you can upload artwork of your own! Please be sure to include your name and a very detailed description of your artwork. If you are unsure of what qualifies as a good description, we've provided some links below to some resources that can help guide you!
                 </Typography>
                 <UploadsFields name="User Information"/>
+              </Container>
+            </Route>
+            <Route exact path="/picture-id">
+              <Container>
+                <ArtworkCloseUpCard/>
               </Container>
             </Route>
           </Switch>
