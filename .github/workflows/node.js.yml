@@ -29,6 +29,6 @@ jobs:
       working-directory: ./frontend
       run: npm run build --if-present
     
-    - name: npm test
+    - name: ESLint
       working-directory: ./frontend
-      run: npm test --passWithNoTests
+      run: npx eslint src/
