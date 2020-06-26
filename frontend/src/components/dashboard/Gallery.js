@@ -8,9 +8,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Container from '@material-ui/core/Container';
+import Pagination from '@material-ui/lab/Pagination';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import ImgMediaCard from './ImgMediaCard';
+
 
 const useStyles = makeStyles((theme) => ({
   searchAndFilterBar: {
@@ -37,6 +39,11 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     minWidth: 200,
+  },
+  pagination: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -100,6 +107,9 @@ export default function Gallery(props) {
             </Grid>
           ))}
         </Grid>
+        <Container className={classes.pagination}>
+          <Pagination count={10} />
+        </Container>
     </>
   );
 }
