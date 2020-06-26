@@ -31,4 +31,4 @@ jobs:
     
     - name: npm test
       working-directory: ./frontend
-      run: npm test
+      run: npm test --passWithNoTests
