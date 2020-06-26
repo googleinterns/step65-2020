@@ -155,7 +155,7 @@ export default function Dashboard() {
             <Route exact path="/museum-gallery">
               <Container>
                 <Banner
-                    title="Art Institute of Chicago Gallery"
+                    title="Museum Gallery"
                     description="Explore the Art Institute of Chicago!"
                     imgURL={AICimg}
                 />
