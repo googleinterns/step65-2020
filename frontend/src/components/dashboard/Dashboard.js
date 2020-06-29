@@ -68,7 +68,8 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    // padding: theme.spacing(1),
+    // NOTE: If this messes with another page's paddings we can uncomment it
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -81,6 +82,11 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0,
+  },
+  galleryPageWrapper: {
+    padding: '0',
+    minWidth: '100%',
+    minHeight: '100%',
   },
 }));
 
@@ -158,13 +164,15 @@ export default function Dashboard() {
               </Container>
             </Route>
             <Route exact path="/museum-gallery">
-              <Container>
+              <Container className={classes.galleryPageWrapper}>
                 <Banner
                   title="Museum Gallery"
                   description="Explore the Art Institute of Chicago!"
                   imgURL={AICimg}
                 />
-                <Gallery />
+                <Container>
+                  <Gallery />
+                </Container>
               </Container>
             </Route>
             <Route exact path="/user-uploads-gallery">

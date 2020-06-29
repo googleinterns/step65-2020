@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
+    marginBottom: theme.spacing(2),
   },
   searchTextField: {
     margin: theme.spacing(2),
