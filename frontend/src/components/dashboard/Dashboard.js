@@ -160,9 +160,9 @@ export default function Dashboard() {
             <Route exact path="/museum-gallery">
               <Container>
                 <Banner
-                    title="Museum Gallery"
-                    description="Explore the Art Institute of Chicago!"
-                    imgURL={AICimg}
+                  title="Museum Gallery"
+                  description="Explore the Art Institute of Chicago!"
+                  imgURL={AICimg}
                 />
                 <Gallery />
               </Container>
