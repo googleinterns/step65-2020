@@ -28,12 +28,13 @@ export default function Banner({title, description, imgURL}) {
 
   return (
      //<div className={classes.banner} style={{ backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${imgURL})'}}>
-     <div className={classes.banner}>
+      <div className={classes.banner}>
        <div className={classes.bannerText}>
          <Typography variant="h2" component="h1" gutterBottom>{title}</Typography>
          <Typography variant="subtitle1">{description}</Typography>
        </div>
       <img src={imgURL} alt={title} className={classes.bannerImg}/>
     </div>
+
   );
 }
