@@ -33,7 +33,7 @@ export default function ImgMediaCard({name, link}) {
             image={PlaceholderImage}
             title="Artwork"
           />
-          <CardContent className ={classes.name}>
+          <CardContent className={classes.name}>
             <Typography gutterBottom variant="h5" component="h2">
               {name}
             </Typography>
