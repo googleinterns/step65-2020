@@ -44,7 +44,7 @@ export default function GalleryPreview({name, link}) {
       >
         {[0, 1, 2].map((value) => (
           <Grid key={value} item>
-            <ImgMediaCard/>
+            <ImgMediaCard name="Artwork" link="/picture-id"/>
           </Grid>
         ))}
       </Grid>

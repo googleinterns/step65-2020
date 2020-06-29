@@ -103,7 +103,7 @@ export default function Gallery(props) {
          >
           {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((value) => (
             <Grid key={value} item>
-              <ImgMediaCard/>
+              <ImgMediaCard name="Artwork" link="/picture-id"/>
             </Grid>
           ))}
         </Grid>

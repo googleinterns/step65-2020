@@ -10,38 +10,37 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import PlaceholderImage from './images/paint.jpg';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) =>({
   root: {
     maxWidth: 345,
   },
-});
+  link: {
+    textDecoration: 'none',
+    color: theme.palette.text.primary,
+  },
+}));
 
 export default function ImgMediaCard({name, link}) {
   const classes = useStyles();
 
   return (
     <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          alt="artwork"
-          height="140"
-          image={PlaceholderImage}
-          title="Artwork"
-        />
-        <Link to={link}>
-          <CardContent>
+      <Link to={link} className={classes.link}>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            alt="artwork"
+            height="200"
+            image={PlaceholderImage}
+            title="Artwork"
+          />
+          <CardContent className ={classes.name}>
             <Typography gutterBottom variant="h5" component="h2">
               {name}
             </Typography>
           </CardContent>
-        </Link>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
-      </CardActions>
+        </CardActionArea>
+      </Link>
     </Card>
   );
 }
