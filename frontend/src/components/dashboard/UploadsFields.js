@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -26,7 +26,12 @@ export default function BasicTextFields() {
     <>
       <form className={classes.root} noValidate autoComplete="off">
         <div>
-          <TextField required id="first-name" label="First Name" variant="outlined" />
+          <TextField
+            required
+            id="first-name"
+            label="First Name"
+            variant="outlined"
+          />
         </div>
         <div>
           <TextField id="last-name" label="Last Name" variant="outlined" />
@@ -51,12 +56,12 @@ export default function BasicTextFields() {
           type="file"
         />
         <label htmlFor="contained-button-file">
-          <Button 
-            variant="contained" 
-            color="primary" 
+          <Button
+            variant="contained"
+            color="primary"
             component="span"
             startIcon={<PhotoUploadIcon />}
-            >
+          >
             Select File
           </Button>
         </label>
