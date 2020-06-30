@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     textAlign: 'center',
     top: '50%',
-    transform: 'translate(-50%,50%)',
+    transform: 'translate(-50%,-50%)',
     width: '100%',
   },
 }));
@@ -40,7 +40,7 @@ export default function Banner({title, description, imgURL}) {
         <Typography variant="h2" component="h1" gutterBottom>
           {title}
         </Typography>
-        <Typography variant="subtitle1">{description}</Typography>
+        <Typography variant="h5" component="h2">{description}</Typography>
       </div>
     </div>
 
