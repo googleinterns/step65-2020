@@ -23,6 +23,8 @@ import ArtworkCloseUpCard from './ArtworkCloseUpCard';
 import UploadsFields from './UploadsFields';
 import DescLinks from './DescLinks';
 import Gallery from './Gallery';
+import Banner from './Banner';
+import AICimg from './images/aic-inside.jpg';
 
 const drawerWidth = 240;
 
@@ -158,12 +160,11 @@ export default function Dashboard() {
             </Route>
             <Route exact path="/museum-gallery">
               <Container>
-                <Typography variant="h3" gutterBottom>
-                  Museum Gallery
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Explore the Art Institute of Chicago!
-                </Typography>
+                <Banner
+                  title="Museum Gallery"
+                  description="Explore the Art Institute of Chicago!"
+                  imgURL={AICimg}
+                />
                 <Gallery />
               </Container>
             </Route>
