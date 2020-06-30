@@ -21,6 +21,7 @@ import NavigationItems from './NavigationItems';
 import GalleryPreview from './GalleryPreview';
 import ArtworkCloseUpCard from './ArtworkCloseUpCard';
 import UploadsFields from './UploadsFields';
+import DescLinks from './DescLinks';
 import Gallery from './Gallery';
 
 const drawerWidth = 240;
@@ -201,6 +202,7 @@ export default function Dashboard() {
                   resources that can help guide you!
                 </Typography>
                 <UploadsFields name="User Information"/>
+                <DescLinks name="Description Links"/>
               </Container>
             </Route>
             <Route exact path="/picture-id">
