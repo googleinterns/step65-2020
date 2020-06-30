@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Banner({title, description, imgURL}) {
   const classes = useStyles();
 
-  return (
+  return(
     <div
       className={classes.banner}
       style={{
