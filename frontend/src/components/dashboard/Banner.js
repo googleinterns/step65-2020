@@ -6,16 +6,16 @@ import PropTypes from 'prop-types';
 const useStyles = makeStyles((theme) => ({
   banner: {
     height: '40vh',
-    width: '100%',
-    position: 'relative',
     marginBottom: theme.spacing(2),
+    position: 'relative',
+    width: '100%',
   },
   bannerText: {
     color: 'white',
-    position: 'absolute',
-    top: '50%',
     left: '50%',
+    position: 'absolute',
     textAlign: 'center',
+    top: '50%',
     transform: 'translate(-50%,50%)',
     width: '100%',
   },

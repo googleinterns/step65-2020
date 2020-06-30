@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
     width: 'auto',
   },
   searchButton: {
-    display: 'flex',
     alignItems: 'center',
+    display: 'flex',
   },
   filterForm: {
     alignItems: 'center',
