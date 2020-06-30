@@ -199,7 +199,7 @@ export default function Dashboard() {
                   Here you can upload artwork of your own! Please be sure to
                   include your name and a very detailed description of your
                   artwork. If you are unsure of what qualifies as a good
-                  description, we've provided some links below to some
+                  description, we&apos;ve provided some links below to some
                   resources that can help guide you!
                 </Typography>
                 <UploadsFields name="User Information"/>
