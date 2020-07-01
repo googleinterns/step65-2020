@@ -181,7 +181,7 @@ export default function Dashboard() {
               <Container className={classes.galleryPageWrapper}>
                 <Banner
                   title="User Uploads Gallery"
-                  description="Explore the Art Institute of Chicago!"
+                  description="Explore artwork from other users!"
                   imgURL={ColorImg}
                 />
                 <Container>
