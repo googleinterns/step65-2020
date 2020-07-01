@@ -24,6 +24,7 @@ import UploadsFields from './UploadsFields';
 import DescLinks from './DescLinks';
 import Gallery from './Gallery';
 import Banner from './Banner';
+import LandingPage from './LandingPage';
 import AICimg from './images/aic-inside.jpg';
 
 const drawerWidth = 240;
@@ -156,7 +157,8 @@ export default function Dashboard() {
           <div className={classes.drawerHeader} />
           <Switch>
             <Route exact path="/">
-              <Container>
+              <Container className={classes.galleryPageWrapper}>
+                <LandingPage/>
                 <GalleryPreview name="Museum Gallery" link="/museum-gallery"/>
                 <GalleryPreview
                   name="User Uploads Gallery"
