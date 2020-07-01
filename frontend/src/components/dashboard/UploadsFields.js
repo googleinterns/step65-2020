@@ -32,12 +32,17 @@ export default function UploadsFields() {
       >
         <form className={classes.root} noValidate autoComplete="off">
           <div>
-            <TextField required id="first-name" label="First Name" variant="outlined" />
-            </div>
-            <div>
+            <TextField
+              required
+              id="first-name"
+              label="First Name"
+              variant="outlined"
+            />
+          </div>
+          <div>
             <TextField id="last-name" label="Last Name" variant="outlined" />
-            </div>
-            <div>
+          </div>
+          <div>
             <TextField
               required
               id="image-info"
@@ -57,24 +62,24 @@ export default function UploadsFields() {
         alignItems="center"
       >
         <div className={classes.root} >
-            <input
-              accept="image/*"
-              className={classes.input}
-              id="select-file"
-              multiple
-              type="file"
-            />
-            <label htmlFor="select-file">
-            <Button 
-              variant="contained" 
-              color="primary" 
+          <input
+            accept="image/*"
+            className={classes.input}
+            id="select-file"
+            multiple
+            type="file"
+          />
+          <label htmlFor="select-file">
+            <Button
+              variant="contained"
+              color="primary"
               component="span"
               startIcon={<PhotoUploadIcon />}
             >
               Select File
             </Button>
-            </label>
-            <div id="fileNameCont" />
+          </label>
+          <div id="fileNameCont" />
         </div>
       </Grid>
       <Box m={4} />
