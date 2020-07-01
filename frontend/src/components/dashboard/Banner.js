@@ -24,16 +24,13 @@ const useStyles = makeStyles((theme) => ({
 export default function Banner({title, description, imgURL}) {
   const classes = useStyles();
 
-  return(
+  return (
     <div
       className={classes.banner}
       style={{
         background:
           'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), ' +
-          'url('+imgURL+')',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
+          'url('+imgURL+') center/cover no-repeat',
       }}
     >
       <div className={classes.bannerText}>
