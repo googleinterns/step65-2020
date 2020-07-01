@@ -128,7 +128,6 @@ const useStyles = makeStyles(() => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  // const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
