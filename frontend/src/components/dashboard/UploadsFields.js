@@ -33,8 +33,12 @@ export default function UploadsFields() {
         <form className={classes.root} noValidate autoComplete="off">
           <div>
             <TextField
+<<<<<<< HEAD
               required
               id="first-name"
+=======
+              required id="first-name"
+>>>>>>> master
               label="First Name"
               variant="outlined"
             />
