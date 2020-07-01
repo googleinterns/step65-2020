@@ -5,15 +5,16 @@ import {Typography} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import ArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import {Link as ScrollLink} from 'react-scroll';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   banner: {
     background: 'url('+BackgroundImage+')',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     height: '100vh',
-    marginBottom: theme.spacing(2),
+    margin: '0',
     position: 'relative',
     width: '100%',
   },
@@ -32,27 +33,42 @@ export default function Banner() {
 
   return (
     <Grid
+      container
       direction="column"
       justify="flex-start"
       alignItems="center"
-      spacing={4}
+      spacing={3}
       className={classes.banner}
     >
-      <Grid item xs={3} className={classes.bannerText}>
+      <Grid item xs={10} md={6} lg={4} className={classes.bannerText}>
         <Typography
           variant="h1"
           color="primary"
         >
           Luminart
         </Typography>
-        <Typography variant="h4" color="textPrimary" gutterBottom>
+        <Typography
+          variant="h4"
+          component="h2"
+          color="textPrimary"
+          gutterBottom
+        >
           Shining a light on a new way to experience art for everyone.
         </Typography>
         <br/>
-        <Button variant="contained" color="secondary">
-          Learn More
-          <ArrowDownIcon/>
-        </Button>
+        <ScrollLink
+          activeClass="active"
+          to="OurMission"
+          spy={true}
+          smooth={true}
+          offset={-70}
+          duration={500}
+        >
+          <Button variant="contained" color="secondary">
+            Learn More
+            <ArrowDownIcon/>
+          </Button>
+        </ScrollLink>
       </Grid>
     </Grid>
   );

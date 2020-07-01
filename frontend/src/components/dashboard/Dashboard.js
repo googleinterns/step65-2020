@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Switch, Route,
 } from 'react-router-dom';
-import {makeStyles, useTheme} from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,8 +17,9 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import {createMuiTheme} from '@material-ui/core/styles';
+import {createMuiTheme, responsiveFontSizes} from '@material-ui/core/styles';
 import {ThemeProvider} from '@material-ui/styles';
+import {Element as ScrollElement} from 'react-scroll';
 import NavigationItems from './NavigationItems';
 import GalleryPreview from './GalleryPreview';
 import ArtworkCloseUpCard from './ArtworkCloseUpCard';
@@ -28,10 +29,11 @@ import Gallery from './Gallery';
 import Banner from './Banner';
 import LandingPage from './LandingPage';
 import AICimg from './images/aic-inside.jpg';
+import OurMission from './OurMission';
 
 const drawerWidth = 240;
 
-const theme = createMuiTheme({
+let theme = createMuiTheme({
   palette: {
     primary: {
       main: '#087ca7',
@@ -39,6 +41,7 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: '#a07178',
+      light: '#ebe0de',
     },
 
     contrastThreshold: 3,
@@ -51,7 +54,9 @@ const theme = createMuiTheme({
   },
 });
 
-const useStyles = makeStyles((theme) => ({
+theme = responsiveFontSizes(theme);
+
+const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
   },
@@ -100,6 +105,9 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: -drawerWidth,
   },
+  withPadding: {
+    padding: theme.spacing(3),
+  },
   contentShift: {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
@@ -109,8 +117,12 @@ const useStyles = makeStyles((theme) => ({
   },
   galleryPageWrapper: {
     padding: '0',
+    margin: '0',
     minWidth: '100%',
     minHeight: '100%',
+  },
+  mission: {
+    background: theme.palette.secondary.light,
   },
 }));
 
@@ -182,6 +194,9 @@ export default function Dashboard() {
               <Route exact path="/">
                 <Container className={classes.galleryPageWrapper}>
                   <LandingPage/>
+                  <ScrollElement id="OurMission" className={classes.mission}>
+                    <OurMission/>
+                  </ScrollElement>
                   <GalleryPreview name="Museum Gallery" link="/museum-gallery"/>
                   <GalleryPreview
                     name="User Uploads Gallery"
@@ -202,7 +217,7 @@ export default function Dashboard() {
                 </Container>
               </Route>
               <Route exact path="/user-uploads-gallery">
-                <Container>
+                <Container className={classes.withPadding}>
                   <Typography variant="h3" gutterBottom>
                     User Uploads Gallery
                   </Typography>
@@ -212,7 +227,7 @@ export default function Dashboard() {
                 </Container>
               </Route>
               <Route exact path="/upload-artwork">
-                <Container>
+                <Container className={classes.withPadding}>
                   <Typography variant="h3" gutterBottom>
                         Upload Artwork
                   </Typography>
@@ -228,7 +243,7 @@ export default function Dashboard() {
                 </Container>
               </Route>
               <Route exact path="/picture-id">
-                <Container>
+                <Container className={classes.withPadding}>
                   <ArtworkCloseUpCard/>
                 </Container>
               </Route>
