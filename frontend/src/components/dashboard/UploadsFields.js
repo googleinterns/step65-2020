@@ -74,7 +74,7 @@ export default function UploadsFields() {
       <Grid
         container
         direction="row"
-        justify="flex-start"
+        justify="flex-end"
         alignItems="center"
         className={classes.root}
       >
