@@ -21,14 +21,14 @@ const useStyles = makeStyles(() => ({
   bannerText: {
     left: '30%',
     position: 'absolute',
+    textAlign: 'center',
     top: '40%',
     transform: 'translate(-50%,-50%)',
     width: '100%',
-    textAlign: 'center',
   },
 }));
 
-export default function Banner() {
+export default function LandingPage() {
   const classes = useStyles();
 
   return (

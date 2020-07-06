@@ -97,8 +97,6 @@ const useStyles = makeStyles(() => ({
   },
   content: {
     flexGrow: 1,
-    // padding: theme.spacing(1),
-    // NOTE: If this messes with another page's paddings we can uncomment it
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -160,7 +158,7 @@ export default function Dashboard() {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" noWrap>
-                    Header
+                    Luminart
               </Typography>
             </Toolbar>
           </AppBar>
