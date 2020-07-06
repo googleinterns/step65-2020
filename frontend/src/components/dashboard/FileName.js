@@ -4,7 +4,6 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import PhotoUploadIcon from '@material-ui/icons/AddPhotoAlternate';
-import Typography from '@material-ui/core/Typography';
 
 const useStyles = theme => ({
   root: {

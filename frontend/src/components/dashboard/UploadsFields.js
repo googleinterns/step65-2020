@@ -4,7 +4,6 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import PhotoUploadIcon from '@material-ui/icons/AddPhotoAlternate';
 import FileName from './FileName';
 
 const useStyles = makeStyles((theme) => ({
