@@ -5,7 +5,7 @@ import Divider from '@material-ui/core/Divider';
 
 const AvatarHeader = () => (
   <>
-    <div style={{ padding: 16, transition: '0.3s' }}>
+    <div style={{padding: 16, transition: '0.3s'}}>
       <Avatar
         style={{
           width: 60,
@@ -13,7 +13,7 @@ const AvatarHeader = () => (
           transition: '0.3s',
         }}
       />
-      <div style={{ paddingBottom: 16 }} />
+      <div style={{paddingBottom: 16}} />
       <Typography variant={'h6'} noWrap>
         Jane Doe
       </Typography>

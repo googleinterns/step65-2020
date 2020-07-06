@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -33,6 +33,7 @@ export default function UploadsFields() {
       >
         <form className={classes.root} noValidate autoComplete="off">
           <div>
+
             <TextField 
               required id="first-name" 
               label="First Name" 
@@ -73,7 +74,7 @@ export default function UploadsFields() {
       <Grid
         container
         direction="row"
-        justify="flex-end"
+        justify="flex-start"
         alignItems="center"
         className={classes.root}
       >

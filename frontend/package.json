@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/styles": "^4.10.0",
     "@mui-treasury/layout": "^4.4.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -12,6 +13,7 @@
     "@testing-library/user-event": "^7.1.2",
     "express": "^4.17.1",
     "react": "^16.13.1",
+    "react-audio-player": "^0.13.0",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
@@ -42,5 +44,10 @@
   },
   "engines": {
     "node": "10.x.x"
+  },
+  "devDependencies": {
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.0"
   }
 }
