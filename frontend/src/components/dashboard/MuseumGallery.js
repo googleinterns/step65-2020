@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Gallery from './Gallery';
 import Banner from './Banner';
 import AICimg from './images/aic-inside.jpg';
@@ -19,7 +19,7 @@ export default function MuseumGallery(props) {
     };
   };
 
-  const simpleFetch = () => {
+  useEffect(() => {
     fetch(API, {
       headers: {
         'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export default function MuseumGallery(props) {
           const linkToImage = getIIIFLevel(result.data, 500);
           document.getElementById('photo').setAttribute('src', linkToImage.url);
         });
-  };
+  });
 
   return (
     <>
@@ -42,9 +42,6 @@ export default function MuseumGallery(props) {
         description="Explore the Art Institute of Chicago!"
         imgURL={AICimg}
       />
-      <IconButton aria-label="search">
-        <SearchIcon fontSize="large" onClick={simpleFetch}/>
-      </IconButton>
       <img id="photo" alt=""/>
       <Container>
         <Gallery />
