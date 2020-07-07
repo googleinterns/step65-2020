@@ -50,7 +50,7 @@ export default function GalleryPreview({name, link}) {
       </Grid>
       <Container className={classes.viewMoreButton}>
         <Link to={link} className={classes.link}>
-          <Button variant="contained">View More</Button>
+          <Button variant="contained" color="primary">View More</Button>
         </Link>
       </Container>
     </>
