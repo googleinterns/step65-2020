@@ -78,6 +78,9 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: -drawerWidth,
   },
+  withPadding: {
+    padding: theme.spacing(3),
+  },
   contentShift: {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
@@ -157,7 +160,7 @@ export default function Dashboard() {
           <div className={classes.drawerHeader} />
           <Switch>
             <Route exact path="/">
-              <Container>
+              <Container className={classes.withPadding}>
                 <GalleryPreview name="Museum Gallery" link="/museum-gallery"/>
                 <GalleryPreview
                   name="User Uploads Gallery"
@@ -190,7 +193,7 @@ export default function Dashboard() {
               </Container>
             </Route>
             <Route exact path="/upload-artwork">
-              <Container>
+              <Container className={classes.withPadding}>
                 <Typography variant="h3" gutterBottom>
                   Upload Artwork
                 </Typography>
@@ -207,7 +210,7 @@ export default function Dashboard() {
               </Container>
             </Route>
             <Route exact path="/picture-id">
-              <Container>
+              <Container className={classes.withPadding}>
                 <ArtworkCloseUpCard/>
               </Container>
             </Route>
