@@ -71,6 +71,7 @@ class FileName extends React.Component {
             <Grid item>
               <input
                 accept="image/*"
+                aria-label="select file"
                 className={classes.input}
                 id="select-file"
                 type="file"

@@ -32,8 +32,8 @@ export default function UploadsFields() {
       >
         <form className={classes.root} noValidate autoComplete="off">
           <div>
-
             <TextField 
+              aria-label="First Name Field"
               required id="first-name" 
               label="First Name" 
               variant="outlined" 
@@ -41,6 +41,7 @@ export default function UploadsFields() {
           </div>
           <div>
             <TextField 
+              aria-label="last name field"
               id="last-name" 
               label="Last Name" 
               variant="outlined" 
@@ -48,8 +49,8 @@ export default function UploadsFields() {
           </div>
           <div>
             <TextField
-              required
-              id="image-info"
+              aria-label="Image Description Field"
+              required id="image-info"
               label="Image Description"
               multiline
               placeholder="In this image..."
@@ -79,6 +80,7 @@ export default function UploadsFields() {
       >
         <div>
         <Button 
+          aria-label="Submit Artwork"
           variant="contained" 
           color="secondary"
         >

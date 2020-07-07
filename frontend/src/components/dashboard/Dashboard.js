@@ -191,7 +191,7 @@ export default function Dashboard() {
             </Route>
             <Route exact path="/upload-artwork">
               <Container>
-                <Typography variant="h3" gutterBottom>
+                <Typography variant="h3" component="h1" gutterBottom>
                   Upload Artwork
                 </Typography>
                 <Typography variant="body1" gutterBottom>
