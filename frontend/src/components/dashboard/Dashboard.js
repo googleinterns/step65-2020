@@ -21,6 +21,7 @@ import {createMuiTheme, responsiveFontSizes} from '@material-ui/core/styles';
 import {ThemeProvider} from '@material-ui/styles';
 import {Element as ScrollElement} from 'react-scroll';
 import NavigationItems from './NavigationItems';
+import MuseumGallery from './MuseumGallery';
 import GalleryPreview from './GalleryPreview';
 import ArtworkCloseUpCard from './ArtworkCloseUpCard';
 import UploadsFields from './UploadsFields';
