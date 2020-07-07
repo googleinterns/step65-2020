@@ -18,13 +18,13 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import NavigationItems from './NavigationItems';
+import MuseumGallery from './MuseumGallery';
 import GalleryPreview from './GalleryPreview';
 import ArtworkCloseUpCard from './ArtworkCloseUpCard';
 import UploadsFields from './UploadsFields';
 import DescLinks from './DescLinks';
 import Gallery from './Gallery';
 import Banner from './Banner';
-import AICimg from './images/aic-inside.jpg';
 import ColorImg from './images/colorful.jpeg';
 
 const drawerWidth = 240;
@@ -170,14 +170,7 @@ export default function Dashboard() {
             </Route>
             <Route exact path="/museum-gallery">
               <Container className={classes.galleryPageWrapper}>
-                <Banner
-                  title="Museum Gallery"
-                  description="Explore the Art Institute of Chicago!"
-                  imgURL={AICimg}
-                />
-                <Container>
-                  <Gallery />
-                </Container>
+                <MuseumGallery />
               </Container>
             </Route>
             <Route exact path="/user-uploads-gallery">
