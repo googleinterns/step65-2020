@@ -2,6 +2,12 @@ import React, {useEffect} from 'react';
 import Gallery from './Gallery';
 import Banner from './Banner';
 import AICimg from './images/aic-inside.jpg';
+import React from 'react';
+import Gallery from './Gallery';
+import Banner from './Banner';
+import AICimg from './images/aic-inside.jpg';
+import SearchIcon from '@material-ui/icons/Search';
+import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 
 export default function MuseumGallery(props) {
