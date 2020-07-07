@@ -20,8 +20,8 @@ export default function MuseumGallery(props) {
   useEffect(() => {
     fetch(API, {
       headers: {
-        'Content-Type': 'text/html',
-        'Accept': 'text/html',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
     })
         .then((response) => response.json())
