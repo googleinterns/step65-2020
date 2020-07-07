@@ -30,10 +30,7 @@ export default function Banner({title, description, imgURL}) {
       style={{
         background:
           'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), ' +
-          'url('+imgURL+')',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
+          'url('+imgURL+') center/cover no-repeat',
       }}
     >
       <div className={classes.bannerText}>
