@@ -25,6 +25,7 @@ import DescLinks from './DescLinks';
 import Gallery from './Gallery';
 import Banner from './Banner';
 import AICimg from './images/aic-inside.jpg';
+import ColorImg from './images/colorful.jpeg';
 
 const drawerWidth = 240;
 
@@ -180,25 +181,15 @@ export default function Dashboard() {
               </Container>
             </Route>
             <Route exact path="/user-uploads-gallery">
-              <Container >
-                <Typography variant="h3" gutterBottom>
-                  User Uploads Gallery
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Contrary to popular belief, Lorem Ipsum is not simply random
-                  text. It has roots in a piece of classical Latin literature
-                  from 45 BC, making it over 2000 years old. Richard McClintock,
-                  a Latin professor at Hampden-Sydney College in Virginia,
-                  looked up one of the more obscure Latin words, consectetur,
-                  from a Lorem Ipsum passage, and going through the cites of
-                  the word in classical literature, discovered the undoubtable
-                  source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33
-                  of de Finibus Bonorum et Malorum (The Extremes of Good and
-                  Evil) by Cicero, written in 45 BC. This book is a treatise
-                  on the theory of ethics, very popular during the Renaissance.
-                  The first line of Lorem Ipsum, Lorem ipsum dolor sit amet..,
-                  comes from a line in section 1.10.32.
-                </Typography>
+              <Container className={classes.galleryPageWrapper}>
+                <Banner
+                  title="User Uploads Gallery"
+                  description="Explore artwork from other users!"
+                  imgURL={ColorImg}
+                />
+                <Container>
+                  <Gallery />
+                </Container>
               </Container>
             </Route>
             <Route exact path="/upload-artwork">
