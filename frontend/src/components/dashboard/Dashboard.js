@@ -29,7 +29,6 @@ import DescLinks from './DescLinks';
 import Gallery from './Gallery';
 import Banner from './Banner';
 import LandingPage from './LandingPage';
-import AICimg from './images/aic-inside.jpg';
 import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
 
@@ -205,14 +204,7 @@ export default function Dashboard() {
               </Route>
               <Route exact path="/museum-gallery">
                 <Container className={classes.galleryPageWrapper}>
-                  <Banner
-                    title="Museum Gallery"
-                    description="Explore the Art Institute of Chicago!"
-                    imgURL={AICimg}
-                  />
-                  <Container>
-                    <Gallery />
-                  </Container>
+                  <MuseumGallery />
                 </Container>
               </Route>
               <Route exact path="/upload-artwork">
