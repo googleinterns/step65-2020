@@ -1,9 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Gallery from './Gallery';
 import Banner from './Banner';
 import AICimg from './images/aic-inside.jpg';
-import SearchIcon from '@material-ui/icons/Search';
-import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 
 export default function MuseumGallery(props) {
@@ -19,7 +17,7 @@ export default function MuseumGallery(props) {
     };
   };
 
-  const simpleFetch = () => {
+  useEffect(() => {
     fetch(API, {
       headers: {
         'Content-Type': 'application/json',
@@ -33,7 +31,7 @@ export default function MuseumGallery(props) {
           const linkToImage = getIIIFLevel(result.data, 500);
           document.getElementById('photo').setAttribute('src', linkToImage.url);
         });
-  };
+  });
 
   return (
     <>
@@ -42,9 +40,6 @@ export default function MuseumGallery(props) {
         description="Explore the Art Institute of Chicago!"
         imgURL={AICimg}
       />
-      <IconButton aria-label="search">
-        <SearchIcon fontSize="large" onClick={simpleFetch}/>
-      </IconButton>
       <img id="photo" alt=""/>
       <Container>
         <Gallery />
