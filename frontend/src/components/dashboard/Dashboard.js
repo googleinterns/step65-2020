@@ -214,16 +214,6 @@ export default function Dashboard() {
                   </Container>
                 </Container>
               </Route>
-              <Route exact path="/user-uploads-gallery">
-                <Container className={classes.withPadding}>
-                  <Typography variant="h3" gutterBottom>
-                    User Uploads Gallery
-                  </Typography>
-                  <Typography variant="body1" gutterBottom>
-                    description
-                  </Typography>
-                </Container>
-              </Route>
               <Route exact path="/upload-artwork">
                 <Container className={classes.withPadding}>
                   <Typography variant="h3" gutterBottom>
