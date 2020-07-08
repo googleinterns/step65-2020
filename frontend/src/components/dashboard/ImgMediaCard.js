@@ -30,7 +30,7 @@ export default function ImgMediaCard({name, link, alt, url}) {
             alt={alt}
             height="300"
             image={url}
-            title="Artwork"
+            title={name}
           />
           <CardContent className={classes.name}>
             <Typography gutterBottom variant="h5" component="h2">
