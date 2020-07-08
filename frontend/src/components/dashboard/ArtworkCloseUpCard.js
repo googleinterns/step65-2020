@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
   },
   header: {
-    background: theme.palette.secondary.light,
+    background: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText,
   },
   content: {
