@@ -72,7 +72,7 @@ export default function OurMission() {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary="Make art universally accessible."
+                primary="Create an art experience for everyone."
                 primaryTypographyProps={primaryTypographyProps}
               />
             </ListItem>
@@ -83,7 +83,7 @@ export default function OurMission() {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary="Made with accessibility in mind first."
+                primary="Build with accessibility as the primary focus."
                 primaryTypographyProps={primaryTypographyProps}
               />
             </ListItem>
@@ -94,7 +94,7 @@ export default function OurMission() {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary="Showcase art from lesser known artists."
+                primary="Showcase the artwork of our users."
                 primaryTypographyProps={primaryTypographyProps}
               />
             </ListItem>
