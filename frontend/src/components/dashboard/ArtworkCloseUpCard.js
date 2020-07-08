@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -35,16 +35,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ArtworkCloseUpCard() {
   const classes = useStyles();
-  const description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,\n' +
-      '              sed do eiusmod tempor incididunt ut labore et dolore\n' +
-      '              magna aliqua. Consectetur lorem donec massa sapien.\n' +
-      '              Purus faucibus ornare suspendisse sed. Id neque aliquam\n' +
-      '              vestibulum morbi blandit cursus risus. Amet dictum sit amet\n' +
-      '              justo donec enim diam vulputate. Velit dignissim sodales ut\n' +
-      '              eu sem integer vitae. Quisque egestas diam in arcu cursus.\n' +
-      '              Non diam phasellus vestibulum lorem. Proin fermentum leo vel\n' +
-      '              orci. Purus semper eget duis at tellus at. Id aliquet risus\n' +
-      '              feugiat in.';
+  const description = 'Lorem ipsum dolor sit amet, consectetur ' +
+      'adipiscing elit. Praesent ultrices, lectus ut pharetra ' +
+      'interdum, nibh purus venenatis lectus, id lobortis ' +
+      'libero mauris id diam. Donec consequat rutrum felis, ' +
+      'vestibulum luctus tortor vulputate vel. Etiam eleifend ' +
+      'vulputate neque cursus laoreet. Suspendisse lacus ' +
+      'enim, vehicula quis ullamcorper vitae, egestas ' +
+      'molestie nulla. Suspendisse egestas arcu sed ' +
+      'efficitur rhoncus. Suspendisse elementum risus ' +
+      'dolor, sit amet pellentesque magna ornare quis. ' +
+      'Phasellus non libero augue. Ut rhoncus, felis ' +
+      'laoreet tincidunt ultrices, ipsum dui ' +
+      'consequat tellus, et venenatis risus quam ' +
+      'nec massa.';
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.append('text', description);
+    fetch('/api/v1/tts', {method: 'POST', body: params});
+  });
 
   return (
     <Card className={classes.root}>
