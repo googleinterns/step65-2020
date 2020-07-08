@@ -16,49 +16,45 @@ import LogoImg from './images/logo.JPG';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    padding: theme.spacing(10),
     color: theme.palette.secondary.contrastText,
-  },
-  title: {
-    // background: theme.palette.secondary.light,
-    margin: '0',
+    padding: theme.spacing(10),
   },
   avatar: {
-    width: theme.spacing(7),
-    height: theme.spacing(7),
     background: theme.palette.secondary.light,
+    height: theme.spacing(7),
     margin: theme.spacing(2),
+    width: theme.spacing(7),
   },
   image: {
     maxWidth: '13rem',
-  }
+  },
 }));
 
 export default function OurMission() {
   const classes = useStyles();
-  const primaryTypographyProps = {variant:"h6", component:"h3"};
+  const primaryTypographyProps = {variant: 'h6', component: 'h3'};
 
   return (
     <Container className={classes.container}>
-      <Grid 
-        container 
-        direction="row" 
-        alignItems="center" 
-        justify="center" 
+      <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justify="center"
         spacing={4}
       >
-        <Grid 
-          container 
-          item 
-          xs={12} 
-          md={5} 
+        <Grid
+          container
+          item
+          xs={12}
+          md={5}
           className={classes.title}
           alignItems="center"
           justify="center"
           direction="column"
           spacing={1}
         >
-        <Grid item>
+          <Grid item>
             <Typography variant="h2" align="center">
               Our Mission
             </Typography>
@@ -75,7 +71,10 @@ export default function OurMission() {
                   <UniversalIcon fontSize="large"/>
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Make art universally accessible." primaryTypographyProps={primaryTypographyProps}/>
+              <ListItemText
+                primary="Make art universally accessible."
+                primaryTypographyProps={primaryTypographyProps}
+              />
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -83,7 +82,10 @@ export default function OurMission() {
                   <AccessibilityIcon fontSize="large"/>
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Made with accessibility in mind first." primaryTypographyProps={primaryTypographyProps}/>
+              <ListItemText
+                primary="Made with accessibility in mind first."
+                primaryTypographyProps={primaryTypographyProps}
+              />
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -91,7 +93,10 @@ export default function OurMission() {
                   <ArtIcon fontSize="large"/>
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Showcase art from lesser known artists." primaryTypographyProps={primaryTypographyProps}/>
+              <ListItemText
+                primary="Showcase art from lesser known artists."
+                primaryTypographyProps={primaryTypographyProps}
+              />
             </ListItem>
           </List>
         </Grid>
