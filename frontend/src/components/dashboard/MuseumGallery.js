@@ -3,8 +3,6 @@ import Gallery from './Gallery';
 import Banner from './Banner';
 import AICimg from './images/aic-inside.jpg';
 import Container from '@material-ui/core/Container';
-import SearchIcon from "@material-ui/icons/Search";
-import IconButton from "@material-ui/core/IconButton";
 
 export default function MuseumGallery(props) {
   const API = 'https://aggregator-data.artic.edu/api/v1/artworks?limit=9';
@@ -40,7 +38,7 @@ export default function MuseumGallery(props) {
     })
         .then((response) => response.json())
         .then((artworks) => {
-          for (let i = 0; i < artworks.data.length; i++){
+          for (let i = 0; i < artworks.data.length; i++) {
             const artwork = artworks.data[i];
             if (artwork.thumbnail != null) {
               artworksArr.push(getArtworkInfo(artwork));
