@@ -57,7 +57,6 @@ public class UploadInformation extends HttpServlet {
   
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
     String artistName = getParameter(request, "artistName", "");
     String artTitle = getParameter(request, "artTitle", "");
     String description = getParameter(request, "description", "");
