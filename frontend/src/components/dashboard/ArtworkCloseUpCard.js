@@ -35,6 +35,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ArtworkCloseUpCard() {
   const classes = useStyles();
+  const description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,\n' +
+      '              sed do eiusmod tempor incididunt ut labore et dolore\n' +
+      '              magna aliqua. Consectetur lorem donec massa sapien.\n' +
+      '              Purus faucibus ornare suspendisse sed. Id neque aliquam\n' +
+      '              vestibulum morbi blandit cursus risus. Amet dictum sit amet\n' +
+      '              justo donec enim diam vulputate. Velit dignissim sodales ut\n' +
+      '              eu sem integer vitae. Quisque egestas diam in arcu cursus.\n' +
+      '              Non diam phasellus vestibulum lorem. Proin fermentum leo vel\n' +
+      '              orci. Purus semper eget duis at tellus at. Id aliquet risus\n' +
+      '              feugiat in.';
 
   return (
     <Card className={classes.root}>
@@ -80,16 +90,7 @@ export default function ArtworkCloseUpCard() {
             >
               Description</Typography>
             <Typography paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua. Consectetur lorem donec massa sapien.
-              Purus faucibus ornare suspendisse sed. Id neque aliquam
-              vestibulum morbi blandit cursus risus. Amet dictum sit amet
-              justo donec enim diam vulputate. Velit dignissim sodales ut
-              eu sem integer vitae. Quisque egestas diam in arcu cursus.
-              Non diam phasellus vestibulum lorem. Proin fermentum leo vel
-              orci. Purus semper eget duis at tellus at. Id aliquet risus
-              feugiat in.
+              {description}
             </Typography>
           </CardContent>
         </Grid>

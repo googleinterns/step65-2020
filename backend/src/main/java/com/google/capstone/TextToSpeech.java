@@ -25,7 +25,7 @@ import java.io.OutputStream;
 public class TextToSpeech extends HttpServlet {
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String textString = request.getParameter("text");
     if (!textString.isEmpty()) {
       try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
