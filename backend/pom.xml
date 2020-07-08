@@ -58,11 +58,6 @@
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-texttospeech</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.google.auth</groupId>
-      <artifactId>google-auth-library-appengine</artifactId>
-      <version>0.21.0</version>
-    </dependency>
 
 
 
