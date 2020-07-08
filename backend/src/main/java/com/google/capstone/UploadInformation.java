@@ -20,9 +20,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+// Servlet that stores art information in a datastore and retrieves that data to conver to json
 @WebServlet("/api/v1/uploadInfo")
 public class UploadInformation extends HttpServlet {
   
+  /** 
+   * doGet funtion that gets the information from the data store and 
+   * then converts the data to json format. Currently there is no fetch function that uses this.
+   */
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("ImageInformation").addSort("timestamp", SortDirection.DESCENDING);
@@ -55,6 +61,7 @@ public class UploadInformation extends HttpServlet {
     return json;
   }
   
+  // doPost gets the data from the text fields and then puts them into the datastore 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String artistName = getParameter(request, "artistName", "");

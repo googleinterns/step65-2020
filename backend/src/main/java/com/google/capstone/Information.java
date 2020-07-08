@@ -1,6 +1,11 @@
 package com.google.capstone;
 
-public final class Information  {
+/**
+ * Information object used to store the information, id, and time
+ * that will be used to be converted to json format
+ */
+
+public final class Information {
   private final long id;
   private final String description;
   private final long timestamp;
