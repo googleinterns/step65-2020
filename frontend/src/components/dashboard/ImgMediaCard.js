@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) =>({
   },
 }));
 
-export default function ImgMediaCard({name, link}) {
+export default function ImgMediaCard({name, link, alt, url}) {
   const classes = useStyles();
 
   return (
@@ -28,9 +28,9 @@ export default function ImgMediaCard({name, link}) {
         <CardActionArea>
           <CardMedia
             component="img"
-            alt="artwork"
-            height="200"
-            image={PlaceholderImage}
+            alt={alt}
+            height="300"
+            image={url}
             title="Artwork"
           />
           <CardContent className={classes.name}>
@@ -47,4 +47,6 @@ export default function ImgMediaCard({name, link}) {
 ImgMediaCard.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
 };
