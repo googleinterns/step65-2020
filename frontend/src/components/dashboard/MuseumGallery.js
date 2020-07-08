@@ -38,8 +38,7 @@ export default function MuseumGallery(props) {
     })
         .then((response) => response.json())
         .then((artworks) => {
-          for (let i = 0; i < artworks.data.length; i++) {
-            const artwork = artworks.data[i];
+          for (const artwork of artworks.data) {
             if (artwork.thumbnail != null) {
               artworksArr.push(getArtworkInfo(artwork));
             }
