@@ -117,7 +117,7 @@ export default function Gallery({artworks}) {
         alignItems="center"
         spacing={4}
       >
-        {cards}
+        {artworks ? cards : <p>Loading...</p>}
       </Grid>
       <Container className={classes.pagination}>
         <Pagination count={10} />
