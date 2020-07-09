@@ -1,11 +1,13 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import Gallery from './Gallery';
 import Banner from './Banner';
 import AICimg from './images/aic-inside.jpg';
 import Container from '@material-ui/core/Container';
 
 export default function MuseumGallery(props) {
-  const API = 'https://aggregator-data.artic.edu/api/v1/artworks/249689?limit=2';
+  const API = 'https://aggregator-data.artic.edu/api/v1/artworks?limit=9';
+
+  const [artworksInfo, setArtworksInfo] = useState();
 
   // from https://github.com/art-institute-of-chicago/browser-extension/blob/master/script.js
   const getIIIFLevel = (artwork, displayWidth) => {
@@ -16,8 +18,18 @@ export default function MuseumGallery(props) {
         displayWidth / artwork.thumbnail.width),
     };
   };
-
+  const getArtworkInfo = (artwork) => {
+    const alt = artwork.thumbnail.alt_text;
+    const linkToImage = getIIIFLevel(artwork, 500);
+    const title = artwork.title;
+    const artworkInfo = new Map();
+    artworkInfo.set('alt', alt);
+    artworkInfo.set('url', linkToImage.url);
+    artworkInfo.set('title', title);
+    return artworkInfo;
+  };
   useEffect(() => {
+    const artworksArr = [];
     fetch(API, {
       headers: {
         'Content-Type': 'application/json',
@@ -25,11 +37,14 @@ export default function MuseumGallery(props) {
       },
     })
         .then((response) => response.json())
-        .then((result) => {
-          document.getElementById('photo')
-              .setAttribute('alt', result.data.thumbnail.alt_text);
-          const linkToImage = getIIIFLevel(result.data, 500);
-          document.getElementById('photo').setAttribute('src', linkToImage.url);
+        .then((artworks) => {
+          for (let i = 0; i < artworks.data.length; i++) {
+            const artwork = artworks.data[i];
+            if (artwork.thumbnail != null) {
+              artworksArr.push(getArtworkInfo(artwork));
+            }
+          }
+          setArtworksInfo(artworksArr);
         });
   });
 
@@ -42,7 +57,7 @@ export default function MuseumGallery(props) {
       />
       <img id="photo" alt=""/>
       <Container>
-        <Gallery />
+        <Gallery artworks={artworksInfo}/>
       </Container>
     </>
   );
