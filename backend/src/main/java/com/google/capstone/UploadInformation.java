@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UploadInformation extends HttpServlet {
   
   /** 
-   * doGet funtion that gets the information from the data store and 
+   * doGet function that gets the information from the data store and 
    * then converts the data to json format. Currently there is no fetch function that uses this.
    */
 

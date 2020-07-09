@@ -30,9 +30,9 @@ export default function UploadsFields() {
         justify="flex-start"
         alignItems="center"
       >
-        <form 
-          className={classes.root} 
-          noValidate 
+        <form
+          className={classes.root}
+          noValidate
           autoComplete="off"
           action="/api/v1/uploadInfo"
           method="POST"
@@ -47,13 +47,13 @@ export default function UploadsFields() {
             />
           </div>
           <div>
-            <TextField 
+            <TextField
               required
-              id="art-title" 
-              label="Art Title" 
+              id="art-title"
+              label="Art Title"
               name="artTitle"
-              variant="outlined" 
-              />
+              variant="outlined"
+            />
           </div>
           <div>
             <TextField
