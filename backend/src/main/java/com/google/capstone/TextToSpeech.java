@@ -20,11 +20,12 @@ import com.google.cloud.texttospeech.v1.SynthesizeSpeechResponse;
 import com.google.cloud.texttospeech.v1.TextToSpeechClient;
 import com.google.cloud.texttospeech.v1.VoiceSelectionParams;
 import com.google.protobuf.ByteString;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 
 
-
+/*
+ * Servlet takes input of object id & text and generates an audio file from the text.
+ * Audio file can be found at 'https://storage.cloud.google.com/tts-audio/object-id'
+ */
 @WebServlet(name = "TextToSpeech", value = "/api/v1/tts")
 public class TextToSpeech extends HttpServlet {
 
