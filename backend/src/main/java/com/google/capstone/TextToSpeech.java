@@ -65,7 +65,7 @@ public class TextToSpeech extends HttpServlet {
   private void uploadAudio(ByteString audioContents, HttpServletResponse response, String objectIdString) throws IOException {
     Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_ID).build().getService();
     BlobId blobId = BlobId.of(BUCKET_NAME, objectIdString);
-    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("audio/mpeg").build();
     storage.create(blobInfo, audioContents.toByteArray());
   }
 
