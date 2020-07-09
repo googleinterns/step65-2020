@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.texttospeech.v1.AudioConfig;
 import com.google.cloud.texttospeech.v1.AudioEncoding;
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
@@ -24,18 +28,23 @@ import java.io.OutputStream;
 @WebServlet(name = "TextToSpeech", value = "/api/v1/tts")
 public class TextToSpeech extends HttpServlet {
 
+  private static final String PROJECT_ID = "igunda-isangimino-nstroupe";
+  private static final String BUCKET_NAME = "tts-audio";
+
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String textString = request.getParameter("text");
-    if (!textString.isEmpty()) {
+    String objectIdString = request.getParameter("id");
+    if (!textString.isEmpty() && !objectIdString.isEmpty()) {
       try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
         ByteString audioContents = generateAudio(textToSpeechClient, textString);
-        createFile(audioContents, response);
+        uploadAudio(audioContents, response, objectIdString);
       } catch (IOException e) {
         response.sendError(500, "Unable to generate audio file.");
       }
     } else {
-      response.sendError(400, "Invalid text.");
+      response.sendError(400, "Invalid text or object id.");
     }
   }
 
@@ -53,12 +62,11 @@ public class TextToSpeech extends HttpServlet {
     return ttsResponse.getAudioContent();
   }
 
-  private void createFile(ByteString audioContents, HttpServletResponse response) throws IOException {
-    try (OutputStream out = new FileOutputStream("output.mp3")) {
-      out.write(audioContents.toByteArray());
-    } catch (IOException e) {
-      response.sendError(500, "Unable to create audio file.");
-    }
+  private void uploadAudio(ByteString audioContents, HttpServletResponse response, String objectIdString) throws IOException {
+    Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_ID).build().getService();
+    BlobId blobId = BlobId.of(BUCKET_NAME, objectIdString);
+    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+    storage.create(blobInfo, audioContents.toByteArray());
   }
 
 }

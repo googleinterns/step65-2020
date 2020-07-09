@@ -53,6 +53,7 @@ export default function ArtworkCloseUpCard() {
   useEffect(() => {
     const params = new URLSearchParams();
     params.append('text', description);
+    params.append('id', 'picture-id');
     fetch('/api/v1/tts', {method: 'POST', body: params});
   });
 
