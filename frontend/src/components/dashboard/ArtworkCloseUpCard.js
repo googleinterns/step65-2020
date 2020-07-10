@@ -35,12 +35,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ArtworkCloseUpCard() {
   const classes = useStyles();
+  const subheaderTypographyProps = {color: "textSecondary"};
 
   return (
     <Card className={classes.root}>
       <CardHeader
         title="Artwork Name"
         subheader="Artist Name"
+        subheaderTypographyProps={subheaderTypographyProps}
         className={classes.header}
       />
       <Grid
