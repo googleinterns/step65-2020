@@ -3,10 +3,11 @@ import Gallery from './Gallery';
 import Banner from './Banner';
 import AICimg from './images/aic-inside.jpg';
 import Container from '@material-ui/core/Container';
+import {connect} from 'react-redux';
+import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 
-export default function MuseumGallery(props) {
-  const API = 'https://aggregator-data.artic.edu/api/v1/artworks?limit=9';
-
+function MuseumGallery({artworks, loading, error}) {
+  // const {artworks, loading, error} = this.props;
   const [artworksInfo, setArtworksInfo] = useState();
 
   // from https://github.com/art-institute-of-chicago/browser-extension/blob/master/script.js
@@ -29,16 +30,10 @@ export default function MuseumGallery(props) {
     return artworkInfo;
   };
   useEffect(() => {
-    const artworksArr = [];
-    fetch(API, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    })
-        .then((response) => response.json())
-        .then((artworks) => {
-          for (const artwork of artworks.data) {
+    this.props.dispatch(fetchMuseumArtworks())
+        .then(() => {
+          const artworksArr = [];
+          for (const artwork of artworks) {
             if (artwork.thumbnail != null) {
               artworksArr.push(getArtworkInfo(artwork));
             }
@@ -46,7 +41,6 @@ export default function MuseumGallery(props) {
           setArtworksInfo(artworksArr);
         });
   });
-
   return (
     <>
       <Banner
@@ -61,3 +55,11 @@ export default function MuseumGallery(props) {
     </>
   );
 }
+
+const mapStateToProps = (state) => ({
+  artworks: state.museumArtworks.artworks,
+  loading: state.museumArtworks.loading,
+  error: state.museumArtworks.error,
+});
+
+export default connect(mapStateToProps)(MuseumGallery);
