@@ -5,8 +5,8 @@ import AICimg from './images/aic-inside.jpg';
 import Container from '@material-ui/core/Container';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import {useDispatch, useSelector} from 'react-redux';
-import Pagination from "@material-ui/lab/Pagination";
-import {makeStyles} from "@material-ui/core/styles";
+import Pagination from '@material-ui/lab/Pagination';
+import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   pagination: {
@@ -41,7 +41,12 @@ export default function MuseumGallery(props) {
         <Gallery artworks={artworks}/>
       </Container>
       <Container className={classes.pagination}>
-        <Pagination count={10} size="large" page={page} onChange={handleChange}/>
+        <Pagination
+          count={10}
+          size="large"
+          page={page}
+          onChange={handleChange}
+        />
       </Container>
     </>
   );

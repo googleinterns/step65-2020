@@ -30,7 +30,7 @@ function getMuseumArtworks(param) {
       .then((res) => res.json());
 }
 
-function filterArtworks(artworks){
+function filterArtworks(artworks) {
   const artworksArr = [];
   for (const artwork of artworks) {
     if (artwork.thumbnail != null) {
