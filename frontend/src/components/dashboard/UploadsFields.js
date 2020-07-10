@@ -91,12 +91,12 @@ export default function UploadsFields() {
         className={classes.root}
       >
         <div>
-        <Button 
-          variant="contained" 
-          color="secondary"
-        >
+          <Button
+            variant="contained"
+            color="secondary"
+          >
           Submit Artwork
-        </Button>
+          </Button>
         </div>
       </Grid>
     </>
