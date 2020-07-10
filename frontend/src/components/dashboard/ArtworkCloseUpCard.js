@@ -7,6 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import AudioPlayer from 'react-audio-player';
+import Container from '@material-ui/core/Container';
+import PropTypes from 'prop-types';
 import PlaceholderImage from './images/paint.jpg';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,9 +33,12 @@ const useStyles = makeStyles((theme) => ({
   audioPlayer: {
     margin: theme.spacing(1),
   },
+  withPadding: {
+    padding: theme.spacing(3),
+  },
 }));
 
-export default function ArtworkCloseUpCard() {
+export default function ArtworkCloseUpCard(props) {
   const classes = useStyles();
   const description = 'Lorem ipsum dolor sit amet, consectetur ' +
       'adipiscing elit. Praesent ultrices, lectus ut pharetra ' +
@@ -50,66 +55,76 @@ export default function ArtworkCloseUpCard() {
       'consequat tellus, et venenatis risus quam ' +
       'nec massa.';
 
-  const ttsLink = 'https://storage.cloud.google.com/tts-audio/picture-id';
+  const ttsLink = `https://storage.cloud.google.com/tts-audio/${props.match.params.id}`;
 
   useEffect(() => {
     const params = new URLSearchParams();
     params.append('text', description);
-    params.append('id', 'picture-id');
+    params.append('id', props.match.params.id);
     fetch('/api/v1/tts', {method: 'POST', body: params})
         .then(() => document.getElementById('audio')
             .setAttribute('src', ttsLink));
   });
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        title="Artwork Name"
-        subheader="Artist Name"
-        className={classes.header}
-      />
-      <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="flex-start"
-        spacing={4}
-        className={classes.root}
-      >
-        <Grid item xs={12} md={8}>
-          <CardMedia
-            className={classes.media}
-            image={PlaceholderImage}
-            title="Artwork"
-          />
-          <CardContent className={classes.content}>
-            <Typography
-              variant="body2"
-              color="textSecondary"
-              align="center"
-              component="p"
-            >
-              This a is short physical description of the artwork.
-            </Typography>
-            <AudioPlayer controls id='audio' className={classes.audioPlayer}/>
-          </CardContent>
+    <Container className={classes.withPadding}>
+      <Card className={classes.root}>
+        <CardHeader
+          title="Artwork Name"
+          subheader="Artist Name"
+          className={classes.header}
+        />
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="flex-start"
+          spacing={4}
+          className={classes.root}
+        >
+          <Grid item xs={12} md={8}>
+            <CardMedia
+              className={classes.media}
+              image={PlaceholderImage}
+              title="Artwork"
+            />
+            <CardContent className={classes.content}>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                align="center"
+                component="p"
+              >
+                  This a is short physical description of the artwork.
+              </Typography>
+              <AudioPlayer controls id='audio' className={classes.audioPlayer}/>
+            </CardContent>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <CardContent className={classes.content}>
+              <Typography
+                variant="h4"
+                color="primary"
+                component="h2"
+                align="center"
+                gutterBottom
+              >
+                  Description</Typography>
+              <Typography paragraph>
+                {description}
+              </Typography>
+            </CardContent>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={4}>
-          <CardContent className={classes.content}>
-            <Typography
-              variant="h4"
-              color="primary"
-              component="h2"
-              align="center"
-              gutterBottom
-            >
-              Description</Typography>
-            <Typography paragraph>
-              {description}
-            </Typography>
-          </CardContent>
-        </Grid>
-      </Grid>
-    </Card>
+      </Card>
+    </Container>
   );
 }
+
+ArtworkCloseUpCard.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+};
