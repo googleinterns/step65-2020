@@ -22,10 +22,12 @@ export default function MuseumGallery(props) {
     const alt = artwork.thumbnail.alt_text;
     const linkToImage = getIIIFLevel(artwork, 500);
     const title = artwork.title;
+    const id = artwork.id;
     const artworkInfo = new Map();
     artworkInfo.set('alt', alt);
     artworkInfo.set('url', linkToImage.url);
     artworkInfo.set('title', title);
+    artworkInfo.set('id', id);
     return artworkInfo;
   };
   useEffect(() => {
