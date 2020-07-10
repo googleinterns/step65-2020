@@ -18,8 +18,8 @@ const getArtworkInfo = (artwork) => {
   return artworkInfo;
 };
 
-function getMuseumArworks() {
-  const API = 'https://aggregator-data.artic.edu/api/v1/artworks?limit=9';
+function getMuseumArtworks(param) {
+  const API = 'https://aggregator-data.artic.edu/api/v1/'+param;
   return fetch(API, {
     headers: {
       'Content-Type': 'application/json',
@@ -27,23 +27,27 @@ function getMuseumArworks() {
     },
   })
       .then(handleErrors)
-      .then((res) => res.json())
-      .then((artworks) => artworks.data)
-      .then((artworks) => {
-        const artworksArr = [];
-        for (const artwork of artworks) {
-          if (artwork.thumbnail != null) {
-            artworksArr.push(getArtworkInfo(artwork));
-          }
-        }
-        return artworksArr;
-      });
+      .then((res) => res.json());
+}
+
+function filterArtworks(artworks){
+  const artworksArr = [];
+  for (const artwork of artworks) {
+    if (artwork.thumbnail != null) {
+      artworksArr.push(getArtworkInfo(artwork));
+    }
+  }
+  return artworksArr;
 }
 
 export function fetchMuseumArtworks() {
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
-    return getMuseumArworks()
+    return getMuseumArtworks('artworks?limit=9')
+        .then((artworks) => artworks.data)
+        .then((artworks) => {
+          return filterArtworks(artworks);
+        })
         .then((artworks) => {
           dispatch(fetchMuseumArtworksSuccess(artworks));
           return artworks;
