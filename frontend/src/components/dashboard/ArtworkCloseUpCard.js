@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ArtworkCloseUpCard() {
   const classes = useStyles();
-  const subheaderTypographyProps = {color: "textSecondary"};
+  const subheaderTypographyProps = {color: 'textSecondary'};
 
   return (
     <Card className={classes.root}>
