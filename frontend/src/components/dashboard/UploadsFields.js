@@ -32,17 +32,17 @@ export default function UploadsFields() {
       >
         <form className={classes.root} noValidate autoComplete="off">
           <div>
-            <TextField 
-              required id="first-name" 
-              label="First Name" 
-              variant="outlined" 
+            <TextField
+              required id="first-name"
+              label="First Name"
+              variant="outlined"
             />
           </div>
           <div>
-            <TextField 
-              id="last-name" 
-              label="Last Name" 
-              variant="outlined" 
+            <TextField
+              id="last-name"
+              label="Last Name"
+              variant="outlined"
             />
           </div>
           <div>
@@ -77,12 +77,12 @@ export default function UploadsFields() {
         className={classes.root}
       >
         <div>
-        <Button 
-          variant="contained" 
-          color="secondary"
-        >
+          <Button
+            variant="contained"
+            color="secondary"
+          >
           Submit Artwork
-        </Button>
+          </Button>
         </div>
       </Grid>
     </>
