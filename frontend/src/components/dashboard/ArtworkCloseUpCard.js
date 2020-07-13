@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -35,6 +35,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ArtworkCloseUpCard() {
   const classes = useStyles();
+  const description = 'Lorem ipsum dolor sit amet, consectetur ' +
+      'adipiscing elit. Praesent ultrices, lectus ut pharetra ' +
+      'interdum, nibh purus venenatis lectus, id lobortis ' +
+      'libero mauris id diam. Donec consequat rutrum felis, ' +
+      'vestibulum luctus tortor vulputate vel. Etiam eleifend ' +
+      'vulputate neque cursus laoreet. Suspendisse lacus ' +
+      'enim, vehicula quis ullamcorper vitae, egestas ' +
+      'molestie nulla. Suspendisse egestas arcu sed ' +
+      'efficitur rhoncus. Suspendisse elementum risus ' +
+      'dolor, sit amet pellentesque magna ornare quis. ' +
+      'Phasellus non libero augue. Ut rhoncus, felis ' +
+      'laoreet tincidunt ultrices, ipsum dui ' +
+      'consequat tellus, et venenatis risus quam ' +
+      'nec massa.';
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.append('text', description);
+    fetch('/api/v1/tts', {method: 'POST', body: params});
+  });
 
   return (
     <Card className={classes.root}>
@@ -80,16 +100,7 @@ export default function ArtworkCloseUpCard() {
             >
               Description</Typography>
             <Typography paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua. Consectetur lorem donec massa sapien.
-              Purus faucibus ornare suspendisse sed. Id neque aliquam
-              vestibulum morbi blandit cursus risus. Amet dictum sit amet
-              justo donec enim diam vulputate. Velit dignissim sodales ut
-              eu sem integer vitae. Quisque egestas diam in arcu cursus.
-              Non diam phasellus vestibulum lorem. Proin fermentum leo vel
-              orci. Purus semper eget duis at tellus at. Id aliquet risus
-              feugiat in.
+              {description}
             </Typography>
           </CardContent>
         </Grid>
