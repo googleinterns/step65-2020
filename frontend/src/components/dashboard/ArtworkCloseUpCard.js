@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ArtworkCloseUpCard() {
   const classes = useStyles();
+  const subheaderTypographyProps = {color: 'textSecondary'};
   const description = 'Lorem ipsum dolor sit amet, consectetur ' +
       'adipiscing elit. Praesent ultrices, lectus ut pharetra ' +
       'interdum, nibh purus venenatis lectus, id lobortis ' +
@@ -65,6 +66,7 @@ export default function ArtworkCloseUpCard() {
       <CardHeader
         title="Artwork Name"
         subheader="Artist Name"
+        subheaderTypographyProps={subheaderTypographyProps}
         className={classes.header}
       />
       <Grid
