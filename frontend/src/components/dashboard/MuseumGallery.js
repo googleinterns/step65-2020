@@ -17,7 +17,6 @@ export default function MuseumGallery(props) {
         description="Explore the Art Institute of Chicago!"
         imgURL={AICimg}
       />
-      <img id="photo" alt=""/>
       <Container>
         <SearchAndFilterBar/>
         <Gallery artworks={artworks}/>
