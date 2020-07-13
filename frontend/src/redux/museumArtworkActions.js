@@ -42,10 +42,10 @@ function filterArtworks(artworks) {
   return artworksMap;
 }
 
-export function fetchMuseumArtworks() {
+export function fetchMuseumArtworks(page, limit) {
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
-    return getMuseumArtworks('artworks?limit=9')
+    return getMuseumArtworks('artworks?page='+ page +'&limit=' + limit)
         .then((artworks) => artworks.data)
         .then((artworks) => {
           return filterArtworks(artworks);
