@@ -8,13 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-<<<<<<< HEAD
-=======
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
->>>>>>> master
 import com.google.cloud.texttospeech.v1.AudioConfig;
 import com.google.cloud.texttospeech.v1.AudioEncoding;
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
@@ -23,24 +20,6 @@ import com.google.cloud.texttospeech.v1.SynthesizeSpeechResponse;
 import com.google.cloud.texttospeech.v1.TextToSpeechClient;
 import com.google.cloud.texttospeech.v1.VoiceSelectionParams;
 import com.google.protobuf.ByteString;
-<<<<<<< HEAD
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
-
-
-@WebServlet(name = "TextToSpeech", value = "/api/v1/tts")
-public class TextToSpeech extends HttpServlet {
-
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String textString = request.getParameter("text");
-    if (!textString.isEmpty()) {
-      try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
-        ByteString audioContents = generateAudio(textToSpeechClient, textString);
-        createFile(audioContents, response);
-=======
-
 
 /*
  * Servlet takes input of object id & text and generates an audio file from the text.
@@ -61,16 +40,11 @@ public class TextToSpeech extends HttpServlet {
       try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
         ByteString audioContents = generateAudio(textToSpeechClient, textString);
         uploadAudio(audioContents, response, objectIdString);
->>>>>>> master
       } catch (IOException e) {
         response.sendError(500, "Unable to generate audio file.");
       }
     } else {
-<<<<<<< HEAD
-      response.sendError(400, "Invalid text.");
-=======
       response.sendError(400, "Invalid text or object id.");
->>>>>>> master
     }
   }
 
