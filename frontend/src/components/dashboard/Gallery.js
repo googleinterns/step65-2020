@@ -60,11 +60,11 @@ export default function Gallery({artworks}) {
 
   let cards;
   if (artworks) {
-    cards = artworks.map((artwork, value) => (
-      <Grid key={value} item>
+    cards = Array.from(artworks).map(([key, artwork]) => (
+      <Grid key={key} item>
         <ImgMediaCard
           name={artwork.get('title')}
-          link={`/gallery/${artwork.get('id')}`}
+          link={`/gallery/${key}`}
           alt={artwork.get('alt')}
           url={artwork.get('url')}
         />
@@ -127,5 +127,5 @@ export default function Gallery({artworks}) {
 }
 
 Gallery.propTypes = {
-  artworks: PropTypes.array.isRequired,
+  artworks: PropTypes.isPrototypeOf(Map).isRequired,
 };

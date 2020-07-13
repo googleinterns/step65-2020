@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import {useDispatch, useSelector} from 'react-redux';
 
-export default function MuseumGallery(props) {
+export default function MuseumGallery() {
   const artworks = useSelector((state) => (state.museumArtworks.artworks));
   const dispatch = useDispatch();
 

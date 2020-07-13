@@ -8,15 +8,15 @@ const getIIIFLevel = (artwork, displayWidth) => {
 };
 
 const getArtworkInfo = (artwork) => {
-  const id = artwork.id;
   const alt = artwork.thumbnail.alt_text;
   const linkToImage = getIIIFLevel(artwork, 500);
   const title = artwork.title;
+  const description = artwork.description;
   const artworkInfo = new Map();
-  artworkInfo.set('id', id);
   artworkInfo.set('alt', alt);
   artworkInfo.set('url', linkToImage.url);
   artworkInfo.set('title', title);
+  artworkInfo.set('description', description);
   return artworkInfo;
 };
 
@@ -32,14 +32,14 @@ function getMuseumArtworks(param) {
       .then((res) => res.json());
 }
 
-function filterArtworks(artworks){
-  const artworksArr = [];
+function filterArtworks(artworks) {
+  const artworksMap = new Map();
   for (const artwork of artworks) {
     if (artwork.thumbnail != null) {
-      artworksArr.push(getArtworkInfo(artwork));
+      artworksMap.set(artwork.id.toString(), getArtworkInfo(artwork));
     }
   }
-  return artworksArr;
+  return artworksMap;
 }
 
 export function fetchMuseumArtworks() {
