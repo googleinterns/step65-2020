@@ -31,7 +31,7 @@ public class TextToSpeech extends HttpServlet {
 
   private static final String PROJECT_ID = "igunda-isangimino-nstroupe";
   private static final String BUCKET_NAME = "tts-audio";
-
+  private static final String TTS_LINK = "https://storage.cloud.google.com/tts-audio/";
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -68,6 +68,8 @@ public class TextToSpeech extends HttpServlet {
     BlobId blobId = BlobId.of(BUCKET_NAME, objectIdString);
     BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("audio/mpeg").build();
     storage.create(blobInfo, audioContents.toByteArray());
+    response.setContentType("text/plain");
+    response.getWriter().println(TTS_LINK + objectIdString);
   }
 
 }

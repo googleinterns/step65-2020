@@ -50,14 +50,13 @@ export default function ArtworkCloseUpCard() {
       'consequat tellus, et venenatis risus quam ' +
       'nec massa.';
 
-  const ttsLink = 'https://storage.cloud.google.com/tts-audio/picture-id';
-
   useEffect(() => {
     const params = new URLSearchParams();
     params.append('text', description);
     params.append('id', 'picture-id');
     fetch('/api/v1/tts', {method: 'POST', body: params})
-        .then(() => document.getElementById('audio')
+        .then((response) => response.text())
+        .then((ttsLink) => document.getElementById('audio')
             .setAttribute('src', ttsLink));
   });
 
