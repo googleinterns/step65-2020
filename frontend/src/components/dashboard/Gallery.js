@@ -12,6 +12,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import ImgMediaCard from './ImgMediaCard';
+import PropTypes from 'prop-types';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Gallery(props) {
+export default function Gallery({artworks}) {
   const classes = useStyles();
 
   const [filter, setFilter] = React.useState('');
@@ -56,6 +57,20 @@ export default function Gallery(props) {
   const handleChange = (event) => {
     setFilter(event.target.value);
   };
+
+  let cards;
+  if (artworks) {
+    cards = artworks.map((artwork, value) => (
+      <Grid key={value} item>
+        <ImgMediaCard
+          name={artwork.get('title')}
+          link="/picture-id"
+          alt={artwork.get('alt')}
+          url={artwork.get('url')}
+        />
+      </Grid>
+    ));
+  }
 
   return (
     <>
@@ -102,11 +117,7 @@ export default function Gallery(props) {
         alignItems="center"
         spacing={4}
       >
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((value) => (
-          <Grid key={value} item>
-            <ImgMediaCard name="Artwork" link="/picture-id"/>
-          </Grid>
-        ))}
+        {artworks ? cards : <p>Loading...</p>}
       </Grid>
       <Container className={classes.pagination}>
         <Pagination count={10} />
@@ -114,3 +125,7 @@ export default function Gallery(props) {
     </>
   );
 }
+
+Gallery.propTypes = {
+  artworks: PropTypes.array.isRequired,
+};

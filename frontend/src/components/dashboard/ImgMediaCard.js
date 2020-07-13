@@ -6,7 +6,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import PlaceholderImage from './images/paint.jpg';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) =>({
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme) =>({
   },
 }));
 
-export default function ImgMediaCard({name, link}) {
+export default function ImgMediaCard({name, link, alt, url}) {
   const classes = useStyles();
 
   return (
@@ -28,10 +27,10 @@ export default function ImgMediaCard({name, link}) {
         <CardActionArea>
           <CardMedia
             component="img"
-            alt="artwork"
-            height="200"
-            image={PlaceholderImage}
-            title="Artwork"
+            alt={alt}
+            height="300"
+            image={url}
+            title={name}
           />
           <CardContent className={classes.name}>
             <Typography gutterBottom variant="h5" component="h2">
@@ -47,4 +46,6 @@ export default function ImgMediaCard({name, link}) {
 ImgMediaCard.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
 };

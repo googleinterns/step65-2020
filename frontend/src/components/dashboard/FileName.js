@@ -68,7 +68,8 @@ class FileName extends React.Component {
                 flexDirection="row"
                 p={1}
                 m={1}
-                bgcolor="grey.300">
+                bgcolor="grey.300"
+              >
                 {file}
               </Box>
             </Grid>
