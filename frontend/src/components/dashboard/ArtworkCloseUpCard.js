@@ -53,7 +53,11 @@ export default function ArtworkCloseUpCard() {
   useEffect(() => {
     const params = new URLSearchParams();
     params.append('text', description);
-    fetch('/api/v1/tts', {method: 'POST', body: params});
+    params.append('id', 'picture-id');
+    fetch('/api/v1/tts', {method: 'POST', body: params})
+        .then((response) => response.text())
+        .then((ttsLink) => document.getElementById('audio')
+            .setAttribute('src', ttsLink));
   });
 
   return (
@@ -86,7 +90,7 @@ export default function ArtworkCloseUpCard() {
             >
               This a is short physical description of the artwork.
             </Typography>
-            <AudioPlayer controls className={classes.audioPlayer}/>
+            <AudioPlayer controls id='audio' className={classes.audioPlayer}/>
           </CardContent>
         </Grid>
         <Grid item xs={12} md={4}>
