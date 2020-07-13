@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GalleryPreview({name, link, artworks}) {
   const classes = useStyles();
+  console.log(artworks);
 
   return (
     <>

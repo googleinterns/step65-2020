@@ -18,6 +18,7 @@ export default function Gallery({artworks}) {
       </Grid>
     ));
   }
+  console.log(artworks);
 
   return (
     <>
