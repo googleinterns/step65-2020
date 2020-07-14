@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 
 export default function Gallery({artworks}) {
   let cards;
-  console.log(artworks);
   if (artworks) {
     cards = artworks.map(([key, artwork]) => (
       <Grid key={key} item>
