@@ -41,8 +41,11 @@ let theme = createMuiTheme({
       light: '#05b2dc',
     },
     secondary: {
-      main: '#a07178',
-      light: '#ebe0de',
+      main: '#99666F',
+      light: '#c2a3a8',
+    },
+    text: {
+      secondary: '#ffffff',
     },
 
     contrastThreshold: 3,
@@ -121,7 +124,7 @@ const useStyles = makeStyles(() => ({
     minHeight: '100%',
   },
   mission: {
-    background: theme.palette.secondary.light,
+    background: theme.palette.secondary.main,
   },
 }));
 
@@ -159,7 +162,7 @@ export default function Dashboard() {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" noWrap>
-                    Luminart
+                Luminart
               </Typography>
             </Toolbar>
           </AppBar>

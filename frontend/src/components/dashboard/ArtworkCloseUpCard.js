@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ArtworkCloseUpCard(props) {
   const classes = useStyles();
+
+  const subheaderTypographyProps = {color: 'textSecondary'};
+  
   const description = 'Lorem ipsum dolor sit amet, consectetur ' +
       'adipiscing elit. Praesent ultrices, lectus ut pharetra ' +
       'interdum, nibh purus venenatis lectus, id lobortis ' +
@@ -55,14 +58,13 @@ export default function ArtworkCloseUpCard(props) {
       'consequat tellus, et venenatis risus quam ' +
       'nec massa.';
 
-  const ttsLink = `https://storage.cloud.google.com/tts-audio/${props.match.params.id}`;
-
   useEffect(() => {
     const params = new URLSearchParams();
     params.append('text', description);
     params.append('id', props.match.params.id);
     fetch('/api/v1/tts', {method: 'POST', body: params})
-        .then(() => document.getElementById('audio')
+        .then((response) => response.text())
+        .then((ttsLink) => document.getElementById('audio')
             .setAttribute('src', ttsLink));
   });
 
@@ -72,6 +74,7 @@ export default function ArtworkCloseUpCard(props) {
         <CardHeader
           title="Artwork Name"
           subheader="Artist Name"
+          subheaderTypographyProps={subheaderTypographyProps}
           className={classes.header}
         />
         <Grid
