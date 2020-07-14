@@ -11,11 +11,13 @@ const getArtworkInfo = (artwork) => {
   const alt = artwork.thumbnail.alt_text;
   const linkToImage = getIIIFLevel(artwork, 500);
   const title = artwork.title;
+  const artist = artwork.artist_title;
   const description = artwork.description;
   const artworkInfo = new Map();
   artworkInfo.set('alt', alt);
   artworkInfo.set('url', linkToImage.url);
   artworkInfo.set('title', title);
+  artworkInfo.set('artist', artist);
   artworkInfo.set('description', description);
   return artworkInfo;
 };

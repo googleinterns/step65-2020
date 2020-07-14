@@ -43,14 +43,16 @@ export default function ArtworkCloseUpCard(props) {
   const id = props.match.params.id;
   const artworks = useSelector((state) => (state.museumArtworks.artworks));
   const artwork = artworks.get(id);
-  const altText = artwork.get('alt');
-  const title = artwork.get('title');
-  const description = artwork.get('description');
-  const url = artwork.get('url');
+  // const altText = artwork.get('alt');
+  // const title = artwork.get('title');
+  // const artist = artwork.get('artist');
+  // const description = artwork.get('description');
+  // const url = artwork.get('url');
 
   const ttsLink = `https://storage.cloud.google.com/tts-audio/${id}`;
 
   useEffect(() => {
+    const description = artwork.get('description');
     document.getElementById('description').innerHTML = description;
 
     const params = new URLSearchParams();
@@ -59,14 +61,14 @@ export default function ArtworkCloseUpCard(props) {
     fetch('/api/v1/tts', {method: 'POST', body: params})
         .then(() => document.getElementById('audio')
             .setAttribute('src', ttsLink));
-  }, [description, id, ttsLink]);
+  }, [artwork, id, ttsLink]);
 
   return (
     <Container className={classes.withPadding}>
       <Card className={classes.root}>
         <CardHeader
-          title={title}
-          subheader="Artist Name"
+          title={artwork.get('title')}
+          subheader={artwork.get('artist')}
           className={classes.header}
         />
         <Grid
@@ -80,8 +82,8 @@ export default function ArtworkCloseUpCard(props) {
           <Grid item xs={12} md={8}>
             <CardMedia
               className={classes.media}
-              image={url}
-              title={title}
+              image={artwork.get('url')}
+              title={artwork.get('title')}
             />
             <CardContent className={classes.content}>
               <Typography
@@ -90,7 +92,7 @@ export default function ArtworkCloseUpCard(props) {
                 align="center"
                 component="p"
               >
-                {altText}
+                {artwork.get('alt')}
               </Typography>
               <AudioPlayer controls id="audio" className={classes.audioPlayer}/>
             </CardContent>
