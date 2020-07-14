@@ -45,10 +45,13 @@ function filterArtworks(artworks) {
   return artworksArr;
 }
 
-export function fetchMuseumArtworks() {
+export function fetchMuseumArtworks(page, limit) {
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
-    return getMuseumArtworks('artworks', new Map([['limit', 9]]))
+    return getMuseumArtworks('artworks', new Map([
+      ['page', page],
+      ['limit', limit],
+    ]))
         .then((artworks) => artworks.data)
         .then((artworks) => {
           return filterArtworks(artworks);

@@ -1,18 +1,14 @@
-import React, {useEffect} from 'react';
-import Gallery from './Gallery';
-import Banner from './Banner';
+import React from 'react';
+import Gallery from './gallery-components/Gallery';
+import Banner from './gallery-components/Banner';
 import AICimg from './images/aic-inside.jpg';
 import Container from '@material-ui/core/Container';
-import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
+import SearchAndFilterBar from './gallery-components/SearchAndFilterBar';
+
 
 export default function MuseumGallery(props) {
   const artworks = useSelector((state) => (state.museumArtworks.artworks));
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchMuseumArtworks());
-  }, [dispatch]);
 
   return (
     <>
@@ -21,8 +17,8 @@ export default function MuseumGallery(props) {
         description="Explore the Art Institute of Chicago!"
         imgURL={AICimg}
       />
-      <img id="photo" alt=""/>
       <Container>
+        <SearchAndFilterBar/>
         <Gallery artworks={artworks}/>
       </Container>
     </>
