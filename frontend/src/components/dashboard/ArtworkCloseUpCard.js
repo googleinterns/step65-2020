@@ -40,16 +40,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ArtworkCloseUpCard(props) {
   const classes = useStyles();
+
+  const subheaderTypographyProps = {color: 'textSecondary'};
+
   const id = props.match.params.id;
   const artworks = useSelector((state) => (state.museumArtworks.artworks));
   const artwork = artworks.get(id);
-  // const altText = artwork.get('alt');
-  // const title = artwork.get('title');
-  // const artist = artwork.get('artist');
-  // const description = artwork.get('description');
-  // const url = artwork.get('url');
-
-  const ttsLink = `https://storage.cloud.google.com/tts-audio/${id}`;
 
   useEffect(() => {
     const description = artwork.get('description');
@@ -59,9 +55,10 @@ export default function ArtworkCloseUpCard(props) {
     params.append('text', description);
     params.append('id', id);
     fetch('/api/v1/tts', {method: 'POST', body: params})
-        .then(() => document.getElementById('audio')
+        .then((response) => response.text())
+        .then((ttsLink) => document.getElementById('audio')
             .setAttribute('src', ttsLink));
-  }, [artwork, id, ttsLink]);
+  }, [artwork, id]);
 
   return (
     <Container className={classes.withPadding}>
@@ -69,6 +66,7 @@ export default function ArtworkCloseUpCard(props) {
         <CardHeader
           title={artwork.get('title')}
           subheader={artwork.get('artist')}
+          subheaderTypographyProps={subheaderTypographyProps}
           className={classes.header}
         />
         <Grid
