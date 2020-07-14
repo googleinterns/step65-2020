@@ -156,7 +156,6 @@ export default function Dashboard() {
   const [museumPage, setMuseumPage] = useState(1);
   const handleChange = (event, value) => {
     setMuseumPage(value);
-    console.log(value);
   };
   useEffect(() => {
     dispatch(fetchMuseumArtworks(museumPage, limit));

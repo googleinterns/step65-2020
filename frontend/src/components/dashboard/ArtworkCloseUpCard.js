@@ -86,7 +86,7 @@ export default function ArtworkCloseUpCard(props) {
             <CardContent className={classes.content}>
               <Typography
                 variant="body2"
-                color="textSecondary"
+                color="primary"
                 align="center"
                 component="p"
               >

@@ -40,7 +40,7 @@ function filterArtworks(artworks) {
   const artworksMap = new Map();
   for (const artwork of artworks) {
     if (artwork.thumbnail != null) {
-      artworksMap.set(artwork.id.toString(), getArtworkInfo(artwork));
+      artworksMap.set(artwork.id.toString(), convertToArtworkInfo(artwork));
     }
   }
   return artworksMap;
