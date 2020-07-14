@@ -8,7 +8,8 @@ import SearchAndFilterBar from './gallery-components/SearchAndFilterBar';
 
 
 export default function MuseumGallery() {
-  const artworks = useSelector((state) => (state.museumArtworks.artworks));
+  const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
+  const artworks = Array.from(artworksMap);
 
   return (
     <>

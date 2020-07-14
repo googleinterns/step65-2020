@@ -6,8 +6,9 @@ import PropTypes from 'prop-types';
 
 export default function Gallery({artworks}) {
   let cards;
+  console.log(artworks);
   if (artworks) {
-    cards = Array.from(artworks).map(([key, artwork]) => (
+    cards = artworks.map(([key, artwork]) => (
       <Grid key={key} item>
         <ImgMediaCard
           name={artwork.get('title')}
@@ -35,5 +36,5 @@ export default function Gallery({artworks}) {
 }
 
 Gallery.propTypes = {
-  artworks: PropTypes.isPrototypeOf(Map).isRequired,
+  artworks: PropTypes.array.isRequired,
 };
