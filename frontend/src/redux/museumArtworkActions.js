@@ -7,19 +7,23 @@ const getIIIFLevel = (artwork, displayWidth) => {
   };
 };
 
-const getArtworkInfo = (artwork) => {
-  const alt = artwork.thumbnail.alt_text;
-  const linkToImage = getIIIFLevel(artwork, 500);
-  const title = artwork.title;
+const convertToArtworkInfo = (artwork) => {
   const artworkInfo = new Map();
-  artworkInfo.set('alt', alt);
-  artworkInfo.set('url', linkToImage.url);
-  artworkInfo.set('title', title);
+  artworkInfo.set('alt', artwork.thumbnail.alt_text);
+  artworkInfo.set('url', getIIIFLevel(artwork, 500).url);
+  artworkInfo.set('title', artwork.title);
   return artworkInfo;
 };
 
-function getMuseumArtworks(param) {
-  const API = 'https://aggregator-data.artic.edu/api/v1/'+param;
+function getMuseumArtworks(path, params) {
+  const apiUrl = new URL('https://aggregator-data.artic.edu/api/v1/');
+  apiUrl.pathname += path;
+  if (params) {
+    for (const [key, value] of params) {
+      apiUrl.searchParams.append(key, value);
+    }
+  }
+  const API = apiUrl.toString();
   return fetch(API, {
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +38,7 @@ function filterArtworks(artworks) {
   const artworksArr = [];
   for (const artwork of artworks) {
     if (artwork.thumbnail != null) {
-      artworksArr.push(getArtworkInfo(artwork));
+      artworksArr.push(convertToArtworkInfo(artwork));
     }
   }
   return artworksArr;
@@ -43,7 +47,7 @@ function filterArtworks(artworks) {
 export function fetchMuseumArtworks(page, limit) {
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
-    return getMuseumArtworks('artworks?page='+ page +'&limit=' + limit)
+    return getMuseumArtworks('artworks', new Map([['page', page],['limit', limit]]))
         .then((artworks) => artworks.data)
         .then((artworks) => {
           return filterArtworks(artworks);
