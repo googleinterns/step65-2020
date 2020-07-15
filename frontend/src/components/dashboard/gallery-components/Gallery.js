@@ -11,7 +11,7 @@ export default function Gallery({artworks}) {
       <Grid key={value} item>
         <ImgMediaCard
           name={artwork.get('title')}
-          link="/picture-id"
+          link={`/gallery/${artwork.get('id')}`}
           alt={artwork.get('alt')}
           url={artwork.get('url')}
         />

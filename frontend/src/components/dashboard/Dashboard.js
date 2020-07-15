@@ -288,11 +288,10 @@ export default function Dashboard() {
                   <DescLinks name="Description Links"/>
                 </Container>
               </Route>
-              <Route exact path="/picture-id">
-                <Container className={classes.withPadding}>
-                  <ArtworkCloseUpCard/>
-                </Container>
-              </Route>
+              <Route
+                exact path="/gallery/:id"
+                component={ArtworkCloseUpCard}
+              />
             </Switch>
           </main>
         </div>
