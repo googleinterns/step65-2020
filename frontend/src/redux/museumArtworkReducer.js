@@ -5,7 +5,7 @@ import {
 } from './museumArtworkActions';
 
 const initialState = {
-  artworks: [],
+  artworks: new Map(),
   loading: false,
   error: null,
 };
@@ -42,7 +42,7 @@ export default function museumArtworkReducer(
         ...state,
         loading: false,
         error: action.payload.error,
-        artworks: [],
+        artworks: new Map(),
       };
 
     default:
