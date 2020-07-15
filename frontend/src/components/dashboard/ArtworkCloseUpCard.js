@@ -42,7 +42,7 @@ export default function ArtworkCloseUpCard(props) {
   const classes = useStyles();
 
   const subheaderTypographyProps = {color: 'textSecondary'};
-  
+
   const description = 'Lorem ipsum dolor sit amet, consectetur ' +
       'adipiscing elit. Praesent ultrices, lectus ut pharetra ' +
       'interdum, nibh purus venenatis lectus, id lobortis ' +
