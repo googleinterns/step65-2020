@@ -34,12 +34,10 @@ function getMuseumArtworks(path, params) {
       .then((res) => res.json());
 }
 
-function filterArtworks(artworks) {
+function artworksJsonToArr(artworks) {
   const artworksArr = [];
   for (const artwork of artworks) {
-    if (artwork.thumbnail != null) {
-      artworksArr.push(convertToArtworkInfo(artwork));
-    }
+    artworksArr.push(convertToArtworkInfo(artwork));
   }
   return artworksArr;
 }
@@ -53,7 +51,7 @@ export function fetchMuseumArtworks(page, limit) {
     )
         .then((artworks) => artworks.data)
         .then((artworks) => {
-          return filterArtworks(artworks);
+          return artworksJsonToArr(artworks);
         })
         .then((artworks) => {
           dispatch(fetchMuseumArtworksSuccess(artworks));
