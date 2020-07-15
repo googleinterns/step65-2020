@@ -49,10 +49,12 @@ export default function ArtworkCloseUpCard(props) {
 
   useEffect(() => {
     const description = artwork.get('description');
-    document.getElementById('description').innerHTML = description;
+    const descriptionElement = document.getElementById('description');
+    descriptionElement.innerHTML = description;
+    const strippedDescription = descriptionElement.innerText;
 
     const params = new URLSearchParams();
-    params.append('text', description);
+    params.append('text', strippedDescription);
     params.append('id', id);
     fetch('/api/v1/tts', {method: 'POST', body: params})
         .then((response) => response.text())
