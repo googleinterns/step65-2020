@@ -46,28 +46,35 @@ export default function ArtworkCloseUpCard(props) {
   const id = props.match.params.id;
   const artworks = useSelector((state) => (state.museumArtworks.artworks));
   const artwork = artworks.get(id);
+  const title = artwork.get('title');
+  const artist = artwork.get('artist');
+  const alt = artwork.get('alt');
+  const description = artwork.get('description');
+  const department = artwork.get('department');
 
   useEffect(() => {
-    const description = artwork.get('description');
     const descriptionElement = document.getElementById('description');
     descriptionElement.innerHTML = description;
     const strippedDescription = descriptionElement.innerText;
+    const audioText = `This is a piece from the ${department} collection 
+        titled ${title} by ${artist}. 
+        It is ${alt}. ${strippedDescription}`;
 
     const params = new URLSearchParams();
-    params.append('text', strippedDescription);
+    params.append('text', audioText);
     params.append('id', id);
     fetch('/api/v1/tts', {method: 'POST', body: params})
         .then((response) => response.text())
         .then((blobKey) => document.getElementById('audio')
             .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`));
-  }, [artwork, id]);
+  }, [artwork, id, alt, artist, department, description, title]);
 
   return (
     <Container className={classes.withPadding}>
       <Card className={classes.root}>
         <CardHeader
-          title={artwork.get('title')}
-          subheader={artwork.get('artist')}
+          title={title}
+          subheader={artist}
           subheaderTypographyProps={subheaderTypographyProps}
           className={classes.header}
         />
@@ -83,7 +90,7 @@ export default function ArtworkCloseUpCard(props) {
             <CardMedia
               className={classes.media}
               image={artwork.get('url')}
-              title={artwork.get('title')}
+              title={artist}
             />
             <CardContent className={classes.content}>
               <Typography
@@ -92,7 +99,7 @@ export default function ArtworkCloseUpCard(props) {
                 align="center"
                 component="p"
               >
-                {artwork.get('alt')}
+                {alt}
               </Typography>
               <AudioPlayer controls id="audio" className={classes.audioPlayer}/>
             </CardContent>
