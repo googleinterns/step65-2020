@@ -16,16 +16,6 @@ const convertToArtworkInfo = (artwork) => {
   return artworkInfo;
 };
 
-function filterArtworks(artworks) {
-  const artworksArr = [];
-  for (const artwork of artworks) {
-    if (artwork.thumbnail != null) {
-      artworksArr.push(convertToArtworkInfo(artwork));
-    }
-  }
-  return artworksArr;
-}
-
 // based off of https://github.com/kjschmidt913/AIC/blob/master/script.js
 function getQuery(limit) {
   return {
