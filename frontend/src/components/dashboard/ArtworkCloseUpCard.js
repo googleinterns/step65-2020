@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import AudioPlayer from 'react-audio-player';
 import Container from '@material-ui/core/Container';
 import PropTypes from 'prop-types';
-import PlaceholderImage from './images/paint.jpg';
+import {useSelector} from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,37 +43,29 @@ export default function ArtworkCloseUpCard(props) {
 
   const subheaderTypographyProps = {color: 'textSecondary'};
 
-  const description = 'Lorem ipsum dolor sit amet, consectetur ' +
-      'adipiscing elit. Praesent ultrices, lectus ut pharetra ' +
-      'interdum, nibh purus venenatis lectus, id lobortis ' +
-      'libero mauris id diam. Donec consequat rutrum felis, ' +
-      'vestibulum luctus tortor vulputate vel. Etiam eleifend ' +
-      'vulputate neque cursus laoreet. Suspendisse lacus ' +
-      'enim, vehicula quis ullamcorper vitae, egestas ' +
-      'molestie nulla. Suspendisse egestas arcu sed ' +
-      'efficitur rhoncus. Suspendisse elementum risus ' +
-      'dolor, sit amet pellentesque magna ornare quis. ' +
-      'Phasellus non libero augue. Ut rhoncus, felis ' +
-      'laoreet tincidunt ultrices, ipsum dui ' +
-      'consequat tellus, et venenatis risus quam ' +
-      'nec massa.';
+  const id = props.match.params.id;
+  const artworks = useSelector((state) => (state.museumArtworks.artworks));
+  const artwork = artworks.get(id);
 
   useEffect(() => {
+    const description = artwork.get('description');
+    document.getElementById('description').innerHTML = description;
+
     const params = new URLSearchParams();
     params.append('text', description);
-    params.append('id', props.match.params.id);
+    params.append('id', id);
     fetch('/api/v1/tts', {method: 'POST', body: params})
         .then((response) => response.text())
-        .then((ttsLink) => document.getElementById('audio')
-            .setAttribute('src', ttsLink));
-  });
+        .then((blobKey) => document.getElementById('audio')
+            .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`));
+  }, [artwork, id]);
 
   return (
     <Container className={classes.withPadding}>
       <Card className={classes.root}>
         <CardHeader
-          title="Artwork Name"
-          subheader="Artist Name"
+          title={artwork.get('title')}
+          subheader={artwork.get('artist')}
           subheaderTypographyProps={subheaderTypographyProps}
           className={classes.header}
         />
@@ -88,19 +80,19 @@ export default function ArtworkCloseUpCard(props) {
           <Grid item xs={12} md={8}>
             <CardMedia
               className={classes.media}
-              image={PlaceholderImage}
-              title="Artwork"
+              image={artwork.get('url')}
+              title={artwork.get('title')}
             />
             <CardContent className={classes.content}>
               <Typography
                 variant="body2"
-                color="textSecondary"
+                color="primary"
                 align="center"
                 component="p"
               >
-                  This a is short physical description of the artwork.
+                {artwork.get('alt')}
               </Typography>
-              <AudioPlayer controls id='audio' className={classes.audioPlayer}/>
+              <AudioPlayer controls id="audio" className={classes.audioPlayer}/>
             </CardContent>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -113,8 +105,7 @@ export default function ArtworkCloseUpCard(props) {
                 gutterBottom
               >
                   Description</Typography>
-              <Typography paragraph>
-                {description}
+              <Typography id="description" paragraph>
               </Typography>
             </CardContent>
           </Grid>

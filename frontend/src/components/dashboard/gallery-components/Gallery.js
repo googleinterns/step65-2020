@@ -7,11 +7,11 @@ import PropTypes from 'prop-types';
 export default function Gallery({artworks}) {
   let cards;
   if (artworks) {
-    cards = artworks.map((artwork, value) => (
-      <Grid key={value} item>
+    cards = artworks.map(([key, artwork]) => (
+      <Grid key={key} item>
         <ImgMediaCard
           name={artwork.get('title')}
-          link={`/gallery/${artwork.get('id')}`}
+          link={`/gallery/${key}`}
           alt={artwork.get('alt')}
           url={artwork.get('url')}
         />

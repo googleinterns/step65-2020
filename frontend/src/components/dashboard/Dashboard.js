@@ -149,13 +149,13 @@ export default function Dashboard() {
   };
 
   // fetches artworks for GalleryPreview and MuseumGallery
-  const artworks = useSelector((state) => (state.museumArtworks.artworks));
+  const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
+  const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const limit = 9;
   const [museumPage, setMuseumPage] = useState(1);
   const handleChange = (event, value) => {
     setMuseumPage(value);
-    console.log(value);
   };
   useEffect(() => {
     dispatch(fetchMuseumArtworks(museumPage, limit));
