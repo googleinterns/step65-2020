@@ -77,12 +77,18 @@ export default function ArtworkCloseUpCard(props) {
           subheader={artist}
           subheaderTypographyProps={subheaderTypographyProps}
           className={classes.header}
+          action={
+            <>
+              <br/>
+              <AudioPlayer controls id="audio" className={classes.audioPlayer}/>
+            </>
+          }
         />
         <Grid
           container
           direction="column"
           justify="center"
-          alignItems="flex-start"
+          alignItems="center"
           spacing={4}
           className={classes.root}
         >
@@ -92,7 +98,7 @@ export default function ArtworkCloseUpCard(props) {
               image={artwork.get('url')}
               title={artist}
             />
-            <CardContent className={classes.content}>
+            <CardContent>
               <Typography
                 variant="body2"
                 color="primary"
@@ -101,7 +107,6 @@ export default function ArtworkCloseUpCard(props) {
               >
                 {alt}
               </Typography>
-              <AudioPlayer controls id="audio" className={classes.audioPlayer}/>
             </CardContent>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -114,7 +119,7 @@ export default function ArtworkCloseUpCard(props) {
                 gutterBottom
               >
                   Description</Typography>
-              <Typography id="description" paragraph>
+              <Typography id="description" align="left" paragraph>
               </Typography>
             </CardContent>
           </Grid>
