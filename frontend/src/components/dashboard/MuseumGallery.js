@@ -6,6 +6,7 @@ import Container from '@material-ui/core/Container';
 import {useSelector} from 'react-redux';
 import SearchAndFilterBar from './gallery-components/SearchAndFilterBar';
 
+
 export default function MuseumGallery(props) {
   const artworks = useSelector((state) => (state.museumArtworks.artworks));
 

@@ -9,6 +9,7 @@ const getIIIFLevel = (artwork, displayWidth) => {
 
 const convertToArtworkInfo = (artwork) => {
   const artworkInfo = new Map();
+  artworkInfo.set('id', artwork.id);
   artworkInfo.set('alt', artwork.thumbnail.alt_text);
   artworkInfo.set('url', getIIIFLevel(artwork, 500).url);
   artworkInfo.set('title', artwork.title);
