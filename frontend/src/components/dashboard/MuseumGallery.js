@@ -6,8 +6,12 @@ import Container from '@material-ui/core/Container';
 import {useSelector} from 'react-redux';
 import SearchAndFilterBar from './gallery-components/SearchAndFilterBar';
 
-
 export default function MuseumGallery(props) {
+  const classes = useStyles();
+  const [page, setPage] = useState(1);
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
   const artworks = useSelector((state) => (state.museumArtworks.artworks));
 
   return (
@@ -20,6 +24,14 @@ export default function MuseumGallery(props) {
       <Container>
         <SearchAndFilterBar/>
         <Gallery artworks={artworks}/>
+      </Container>
+      <Container className={classes.pagination}>
+        <Pagination
+          count={10}
+          size="large"
+          page={page}
+          onChange={handleChange}
+        />
       </Container>
     </>
   );
