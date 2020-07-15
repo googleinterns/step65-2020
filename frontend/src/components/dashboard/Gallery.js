@@ -8,7 +8,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Container from '@material-ui/core/Container';
-import Pagination from '@material-ui/lab/Pagination';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import ImgMediaCard from './ImgMediaCard';
@@ -119,9 +118,6 @@ export default function Gallery({artworks}) {
       >
         {artworks ? cards : <p>Loading...</p>}
       </Grid>
-      <Container className={classes.pagination}>
-        <Pagination count={10} />
-      </Container>
     </>
   );
 }
