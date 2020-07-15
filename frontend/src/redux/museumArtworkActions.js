@@ -13,6 +13,8 @@ const convertToArtworkInfo = (artwork) => {
   artworkInfo.set('alt', artwork.thumbnail.alt_text);
   artworkInfo.set('url', getIIIFLevel(artwork, 500).url);
   artworkInfo.set('title', artwork.title);
+  artworkInfo.set('artist', artwork.artist_title);
+  artworkInfo.set('description', artwork.description);
   return artworkInfo;
 };
 
@@ -35,12 +37,12 @@ function getMuseumArtworks(path, params) {
       .then((res) => res.json());
 }
 
-function artworksJsonToArr(artworks) {
-  const artworksArr = [];
+function artworksJsonToMap(artworks) {
+  const artworksMap = new Map();
   for (const artwork of artworks) {
-    artworksArr.push(convertToArtworkInfo(artwork));
+    artworksMap.set(artwork.id.toString(), convertToArtworkInfo(artwork));
   }
-  return artworksArr;
+  return artworksMap;
 }
 
 export function fetchMuseumArtworks(page, limit) {
@@ -52,7 +54,7 @@ export function fetchMuseumArtworks(page, limit) {
     )
         .then((artworks) => artworks.data)
         .then((artworks) => {
-          return artworksJsonToArr(artworks);
+          return artworksJsonToMap(artworks);
         })
         .then((artworks) => {
           dispatch(fetchMuseumArtworksSuccess(artworks));

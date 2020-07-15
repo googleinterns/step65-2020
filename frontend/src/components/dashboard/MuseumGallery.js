@@ -7,8 +7,9 @@ import {useSelector} from 'react-redux';
 import SearchAndFilterBar from './gallery-components/SearchAndFilterBar';
 
 
-export default function MuseumGallery(props) {
-  const artworks = useSelector((state) => (state.museumArtworks.artworks));
+export default function MuseumGallery() {
+  const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
+  const artworks = Array.from(artworksMap);
 
   return (
     <>
