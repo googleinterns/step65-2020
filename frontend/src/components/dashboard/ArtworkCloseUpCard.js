@@ -56,8 +56,8 @@ export default function ArtworkCloseUpCard(props) {
     params.append('id', id);
     fetch('/api/v1/tts', {method: 'POST', body: params})
         .then((response) => response.text())
-        .then((ttsLink) => document.getElementById('audio')
-            .setAttribute('src', ttsLink));
+        .then((blobKey) => document.getElementById('audio')
+            .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`));
   }, [artwork, id]);
 
   return (
