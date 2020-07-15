@@ -2,11 +2,10 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import ImgMediaCard from './ImgMediaCard';
+import Gallery from './Gallery';
 
 const useStyles = makeStyles((theme) => ({
   galleryTitle: {
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GalleryPreview({name, link}) {
+export default function GalleryPreview({name, link, artworks}) {
   const classes = useStyles();
 
   return (
@@ -35,19 +34,7 @@ export default function GalleryPreview({name, link}) {
       <Container className={classes.galleryTitle}>
         <Typography variant="h4" component="h2">{name}</Typography>
       </Container>
-      <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-        spacing={4}
-      >
-        {[0, 1, 2].map((value) => (
-          <Grid key={value} item>
-            <ImgMediaCard name="Artwork" link="/picture-id"/>
-          </Grid>
-        ))}
-      </Grid>
+      <Gallery artworks={artworks}/>
       <Container className={classes.viewMoreButton}>
         <Link to={link} className={classes.link}>
           <Button variant="contained" color="primary">View More</Button>
@@ -60,4 +47,5 @@ export default function GalleryPreview({name, link}) {
 GalleryPreview.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
+  artworks: PropTypes.array.isRequired,
 };

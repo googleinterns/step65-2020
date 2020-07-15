@@ -44,12 +44,12 @@ function filterArtworks(artworks) {
   return artworksArr;
 }
 
-export function fetchMuseumArtworks(page) {
+export function fetchMuseumArtworks(page, limit) {
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
     return getMuseumArtworks('artworks', new Map()
         .set('page', page)
-        .set('limit', 9),
+        .set('limit', limit),
     )
         .then((artworks) => artworks.data)
         .then((artworks) => {
