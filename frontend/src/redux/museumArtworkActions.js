@@ -35,6 +35,8 @@ function getQuery(limit) {
       'title',
       'image_id',
       'thumbnail',
+      'artist_title',
+      'description',
     ],
     'limit': limit,
     'query': {
