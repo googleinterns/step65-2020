@@ -55,9 +55,19 @@ export default function ArtworkCloseUpCard(props) {
     params.append('text', description);
     params.append('id', id);
     fetch('/api/v1/tts', {method: 'POST', body: params})
+        // .then((response) => response.text())
+        // .then((response) => console.log(response))
+        // .then((response) => {
+        //   const binaryData = [];
+        //   binaryData.push(response);
+        //   return binaryData;
+        // })
+        // .then((binaryData) =>
+        //   URL.createObjectURL(new Blob(binaryData, {type: "audio/mpeg"})))
+        // .then((url) => console.log(url))
         .then((response) => response.text())
-        .then((ttsLink) => document.getElementById('audio')
-            .setAttribute('src', ttsLink));
+        .then((blobKey) => document.getElementById('audio')
+            .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`));
   }, [artwork, id]);
 
   return (

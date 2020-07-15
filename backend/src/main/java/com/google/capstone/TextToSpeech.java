@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.images.ImagesService;
+import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
@@ -24,7 +30,8 @@ import com.google.protobuf.ByteString;
 
 /*
  * Servlet takes input of object id & text and generates an audio file from the text.
- * Audio file can be found at 'https://storage.cloud.google.com/tts-audio/object-id'
+ * Returns the Google Cloud Storage BlobKey that can be used get the blob:
+ * "/api/v1/get-blob?blob-key={blobKey}"
  */
 @WebServlet(name = "TextToSpeech", value = "/api/v1/tts")
 public class TextToSpeech extends HttpServlet {
@@ -42,6 +49,9 @@ public class TextToSpeech extends HttpServlet {
       try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
         ByteString audioContents = generateAudio(textToSpeechClient, textString);
         uploadAudio(audioContents, response, objectIdString);
+        String blobKey = generateBlobKey(objectIdString);
+        response.setContentType("text/plain");
+        response.getWriter().println(blobKey);
       } catch (IOException e) {
         response.sendError(500, "Unable to generate audio file.");
       }
@@ -69,8 +79,13 @@ public class TextToSpeech extends HttpServlet {
     BlobId blobId = BlobId.of(BUCKET_NAME, objectIdString);
     BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("audio/mpeg").build();
     storage.create(blobInfo, audioContents.toByteArray());
-    response.setContentType("text/plain");
-    response.getWriter().println(TTS_LINK + objectIdString);
+  }
+
+  private String generateBlobKey(String objectIdString) {
+    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+    BlobKey blobKey = blobstoreService.createGsBlobKey(
+            "/gs/" + BUCKET_NAME + "/" + objectIdString);
+    return blobKey.getKeyString();
   }
 
 }
