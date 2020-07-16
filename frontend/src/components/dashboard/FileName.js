@@ -59,7 +59,7 @@ export default function FileName(props) {
 
   return(
       <>
-      <form name="image-upload" action={actionURL} method="POST" encType="multipart/form-data">
+        <form name="image-upload" action={actionURL} method="POST" encType="multipart/form-data">
           <Grid 
           alignItems="center"
           container 
@@ -67,37 +67,35 @@ export default function FileName(props) {
           justify="flex-start" 
           spacing={2}
           >
-          <Grid item xs={8}>
+            <Grid item xs={8}>
               <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="grey.300">
-              {file}
+                {file}
               </Box>
-          </Grid>
-          <Grid item>
+            </Grid>
+            <Grid item>
               <input
-              accept="image/*"
-              className={classes.input}
-              id="select-file"
-              type="file"
-              name="selectedFile"
-              onChange={onChange}
+                accept="image/*"
+                className={classes.input}
+                id="select-file"
+                type="file"
+                name="selectedFile"
+                onChange={onChange}
               />
               <label htmlFor="select-file">
-              <Button 
+                <Button 
                   variant="contained" 
                   color="primary" 
                   component="span"
                   id="shown-button"
                   startIcon={<PhotoUploadIcon />}
-              >
+                >
                   Select File
-              </Button>
+                </Button>
               </label>
               <input type="submit" />
+            </Grid>
           </Grid>
-          </Grid>
-      </form>
+        </form>
       </>
   );
 }
-
-//export default withStyles(useStyles)(FileName);
