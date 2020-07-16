@@ -28,13 +28,10 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet used to handle image upload to Google Cloud Storage using the Blobstore API
  * Successfully uploads images, but redirects to backend server so needs fixing
  */
- 
-
 @WebServlet("/api/v1/uploadImgs")
 public class UploadImg extends HttpServlet{
 
   public static final String GCS_BUCKET_NAME = "upload-imgs";
-
 
   /**
    * creates an upload URL to send the image to in GCS.
