@@ -31,7 +31,7 @@ import Banner from './gallery-components/Banner';
 import LandingPage from './LandingPage';
 import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import Pagination from '@material-ui/lab/Pagination';
 
@@ -149,8 +149,6 @@ export default function Dashboard() {
   };
 
   // fetches artworks for GalleryPreview and MuseumGallery
-  const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
-  const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const limit = 9;
   const [museumPage, setMuseumPage] = useState(1);
@@ -223,7 +221,6 @@ export default function Dashboard() {
                   <GalleryPreview
                     name="Museum Gallery"
                     link="/museum-gallery"
-                    artworks={artworks.slice(0, 3)}
                   />
                   <GalleryPreview
                     name="User Uploads Gallery"
