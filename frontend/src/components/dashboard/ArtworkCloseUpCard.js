@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -7,7 +7,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import AudioPlayer from 'react-audio-player';
-import PlaceholderImage from './images/paint.jpg';
+import Container from '@material-ui/core/Container';
+import PropTypes from 'prop-types';
+import {useSelector} from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,69 +33,92 @@ const useStyles = makeStyles((theme) => ({
   audioPlayer: {
     margin: theme.spacing(1),
   },
+  withPadding: {
+    padding: theme.spacing(3),
+  },
 }));
 
-export default function ArtworkCloseUpCard() {
+export default function ArtworkCloseUpCard(props) {
   const classes = useStyles();
 
+  const subheaderTypographyProps = {color: 'textSecondary'};
+
+  const id = props.match.params.id;
+  const artworks = useSelector((state) => (state.museumArtworks.artworks));
+  const artwork = artworks.get(id);
+
+  useEffect(() => {
+    const description = artwork.get('description');
+    document.getElementById('description').innerHTML = description;
+
+    const params = new URLSearchParams();
+    params.append('text', description);
+    params.append('id', id);
+    fetch('/api/v1/tts', {method: 'POST', body: params})
+        .then((response) => response.text())
+        .then((blobKey) => document.getElementById('audio')
+            .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`));
+  }, [artwork, id]);
+
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        title="Artwork Name"
-        subheader="Artist Name"
-        className={classes.header}
-      />
-      <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="flex-start"
-        spacing={4}
-        className={classes.root}
-      >
-        <Grid item xs={12} md={8}>
-          <CardMedia
-            className={classes.media}
-            image={PlaceholderImage}
-            title="Artwork"
-          />
-          <CardContent className={classes.content}>
-            <Typography
-              variant="body2"
-              color="textSecondary"
-              align="center"
-              component="p"
-            >
-              This a is short physical description of the artwork.
-            </Typography>
-            <AudioPlayer controls className={classes.audioPlayer}/>
-          </CardContent>
+    <Container className={classes.withPadding}>
+      <Card className={classes.root}>
+        <CardHeader
+          title={artwork.get('title')}
+          subheader={artwork.get('artist')}
+          subheaderTypographyProps={subheaderTypographyProps}
+          className={classes.header}
+        />
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="flex-start"
+          spacing={4}
+          className={classes.root}
+        >
+          <Grid item xs={12} md={8}>
+            <CardMedia
+              className={classes.media}
+              image={artwork.get('url')}
+              title={artwork.get('title')}
+            />
+            <CardContent className={classes.content}>
+              <Typography
+                variant="body2"
+                color="primary"
+                align="center"
+                component="p"
+              >
+                {artwork.get('alt')}
+              </Typography>
+              <AudioPlayer controls id="audio" className={classes.audioPlayer}/>
+            </CardContent>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <CardContent className={classes.content}>
+              <Typography
+                variant="h4"
+                color="primary"
+                component="h2"
+                align="center"
+                gutterBottom
+              >
+                  Description</Typography>
+              <Typography id="description" paragraph>
+              </Typography>
+            </CardContent>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={4}>
-          <CardContent className={classes.content}>
-            <Typography
-              variant="h4"
-              color="primary"
-              component="h2"
-              align="center"
-              gutterBottom
-            >
-              Description</Typography>
-            <Typography paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua. Consectetur lorem donec massa sapien.
-              Purus faucibus ornare suspendisse sed. Id neque aliquam
-              vestibulum morbi blandit cursus risus. Amet dictum sit amet
-              justo donec enim diam vulputate. Velit dignissim sodales ut
-              eu sem integer vitae. Quisque egestas diam in arcu cursus.
-              Non diam phasellus vestibulum lorem. Proin fermentum leo vel
-              orci. Purus semper eget duis at tellus at. Id aliquet risus
-              feugiat in.
-            </Typography>
-          </CardContent>
-        </Grid>
-      </Grid>
-    </Card>
+      </Card>
+    </Container>
   );
 }
+
+ArtworkCloseUpCard.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+};
