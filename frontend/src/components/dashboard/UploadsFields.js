@@ -25,12 +25,12 @@ export default function UploadsFields() {
   return (
     <>
       <form
-          className={classes.root}
-          noValidate
-          autoComplete="off"
-          action="/api/v1/uploadInfo"
-          method="POST"
-        >
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+        action="/api/v1/uploadInfo"
+        method="POST"
+      >
         <Grid
           container
           direction="row"
