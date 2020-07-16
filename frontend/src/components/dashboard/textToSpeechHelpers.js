@@ -18,5 +18,5 @@ export function generateTextToSpeech(audioTranscript, id) {
   const params = new URLSearchParams();
   params.append('text', audioTranscript);
   params.append('id', id);
-  fetch('/api/v1/tts', {method: 'POST', body: params});
+  return fetch('/api/v1/tts', {method: 'POST', body: params});
 }
