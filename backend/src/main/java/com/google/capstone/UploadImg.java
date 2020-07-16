@@ -28,11 +28,13 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet used to handle image upload to Google Cloud Storage using the Blobstore API
  * Successfully uploads images, but redirects to backend server so needs fixing
  */
+ 
 
 @WebServlet("/api/v1/uploadImgs")
 public class UploadImg extends HttpServlet{
 
   public static final String GCS_BUCKET_NAME = "upload-imgs";
+
 
   /**
    * creates an upload URL to send the image to in GCS.
@@ -50,7 +52,7 @@ public class UploadImg extends HttpServlet{
   }
   
   /**
-   * Currently useless other than I need a doPost so the upload page isn't an error (not sure why yet)
+   * doesn't do anything other than handle the redirect from the backend back to the frontend (as of now)
    */
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -58,6 +60,11 @@ public class UploadImg extends HttpServlet{
 
       Map<String, List<FileInfo>> uploads = blobstore.getFileInfos(request);
       List<FileInfo> fileInfos = uploads.get("files");
+
+      //deployment link
+      //response.sendRedirect("https://igunda-isangimino-nstroupe.uc.r.appspot.com/user-uploads-gallery");
+      //development link
+      response.sendRedirect("https://3001-ba659410-163c-49e0-b45f-c22c5b2dc8b5.us-central1.cloudshell.dev/user-uploads-gallery");
   }
 
 }
