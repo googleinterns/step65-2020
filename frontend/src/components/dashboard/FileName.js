@@ -25,12 +25,13 @@ class FileName extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-       fileName: '',
+      fileName: '',
+      actionURL: '',
     };
+    this.getBlobstoreURL();
   }
 
-  onChange = e => {
-
+  onChange = (e) => {
     switch (e.target.name) {
       case 'selectedFile':
         if(e.target.files.length > 0) {
@@ -43,11 +44,24 @@ class FileName extends React.Component {
      }
   };
 
-  render(){
-    const { classes } = this.props;
+  getBlobstoreURL = () => {
+    fetch('/api/v1/uploadImgs')
+        .then((response) => {
+          return response.text();
+        })
+        .then((imageUploadUrl) => {
+          console.log(imageUploadUrl);
+          this.setState({actionURL: imageUploadUrl});
+        });
+  };
 
-    const { fileName } = this.state;
+  render(){
+    const {classes} = this.props;
+
+    const {fileName} = this.state;
     let file = null;
+
+    const {actionURL} = this.state;
 
     file = fileName 
       ? ( <span>File Selected - {fileName}</span>) 
@@ -55,7 +69,8 @@ class FileName extends React.Component {
 
     return(
       <>
-        <form onSubmit={this.onSubmit}>
+      <body>
+        <form name="image-upload" action={actionURL} method="POST" enctype="multipart/form-data">
           <Grid 
             alignItems="center"
             container 
@@ -84,14 +99,15 @@ class FileName extends React.Component {
                   component="span"
                   id="shown-button"
                   startIcon={<PhotoUploadIcon />}
-                  onClick={ (event) => this.onChange(event) }
                 >
                   Select File
                 </Button>
               </label>
+              <input type="submit" />
             </Grid>
           </Grid>
         </form>
+      </body>
       </>
     );
   }
