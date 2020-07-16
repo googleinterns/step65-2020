@@ -41,7 +41,7 @@ export default function UploadsFields() {
           </div>
           <div>
             <TextField 
-              aria-label="last name field"
+              aria-label="Last Name field"
               id="last-name" 
               label="Last Name" 
               variant="outlined" 
