@@ -1,11 +1,11 @@
-import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, {useState, useEffect} from 'react';
+import {makeStyles} from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import PhotoUploadIcon from '@material-ui/icons/AddPhotoAlternate';
 
-const useStyles = theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
       marginLeft: 0,
@@ -18,99 +18,86 @@ const useStyles = theme => ({
   input: {
     display: 'none',
   },
-});
+}));
 
-class FileName extends React.Component {
+export default function FileName(props) {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      fileName: '',
-      actionURL: '',
-    };
-    this.getBlobstoreURL();
-  }
-
-  onChange = (e) => {
+  const onChange = (e) => {
     switch (e.target.name) {
       case 'selectedFile':
         if(e.target.files.length > 0) {
             // Accessed .name from file 
-            this.setState({ fileName: e.target.files[0].name });
+            setName(e.target.files[0].name);
         }
       break;
       default:
-        this.setState({ [e.target.name]: e.target.value });
+        setName( e.target.value);
      }
   };
 
-  getBlobstoreURL = () => {
+  useEffect(() => {
     fetch('/api/v1/uploadImgs')
         .then((response) => {
           return response.text();
         })
         .then((imageUploadUrl) => {
           console.log(imageUploadUrl);
-          this.setState({actionURL: imageUploadUrl});
+          setURL(imageUploadUrl);
         });
-  };
+  },[]);
 
-  render(){
-    const {classes} = this.props;
+  const classes = useStyles();
 
-    const {fileName} = this.state;
-    let file = null;
+  const [fileName, setName] = useState('');
+  let file = null;
 
-    const {actionURL} = this.state;
+  const [actionURL, setURL] = useState('');
 
-    file = fileName 
+  file = fileName 
       ? ( <span>File Selected - {fileName}</span>) 
       : ( <span>Choose a file...</span> );
 
-    return(
+  return(
       <>
-      <body>
-        <form name="image-upload" action={actionURL} method="POST" enctype="multipart/form-data">
+      <form name="image-upload" action={actionURL} method="POST" encType="multipart/form-data">
           <Grid 
-            alignItems="center"
-            container 
-            className={classes.root}
-            justify="flex-start" 
-            spacing={2}
+          alignItems="center"
+          container 
+          className={classes.root}
+          justify="flex-start" 
+          spacing={2}
           >
-            <Grid item xs={8}>
+          <Grid item xs={8}>
               <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="grey.300">
-                {file}
+              {file}
               </Box>
-            </Grid>
-            <Grid item>
+          </Grid>
+          <Grid item>
               <input
-                accept="image/*"
-                className={classes.input}
-                id="select-file"
-                type="file"
-                name="selectedFile"
-                onChange={ (event) => this.onChange(event) }
+              accept="image/*"
+              className={classes.input}
+              id="select-file"
+              type="file"
+              name="selectedFile"
+              onChange={onChange}
               />
               <label htmlFor="select-file">
-                <Button 
+              <Button 
                   variant="contained" 
                   color="primary" 
                   component="span"
                   id="shown-button"
                   startIcon={<PhotoUploadIcon />}
-                >
+              >
                   Select File
-                </Button>
+              </Button>
               </label>
               <input type="submit" />
-            </Grid>
           </Grid>
-        </form>
-      </body>
+          </Grid>
+      </form>
       </>
-    );
-  }
+  );
 }
 
-export default withStyles(useStyles)(FileName);
+//export default withStyles(useStyles)(FileName);
