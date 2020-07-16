@@ -48,19 +48,24 @@ export default function SearchAndFilterBar() {
     setFilter(event.target.value);
   };
 
+  function searchTrigger() {
+    const query = document.getElementById('search-textfield').value;
+    console.log(query);
+  }
+
   return (
     <Container className={classes.searchAndFilterBar}>
       <Container className={classes.searchForm}>
-        <form noValidate autoComplete="off">
-          <TextField
-            className={classes.searchTextField}
-            id="search-textfield"
-            label="Search"
-            variant="outlined"
-          />
-        </form>
+        <TextField
+          className={classes.searchTextField}
+          id="search-textfield"
+          label="Search"
+          variant="outlined"
+        />
         <div className={classes.searchButton}>
-          <IconButton aria-label="search">
+          <IconButton
+            aria-label="search"
+            onClick={searchTrigger}>
             <SearchIcon fontSize="large" />
           </IconButton>
         </div>
