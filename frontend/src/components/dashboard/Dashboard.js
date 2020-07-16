@@ -206,60 +206,33 @@ export default function Dashboard() {
                 <Container className={classes.galleryPageWrapper}>
                   <MuseumGallery />
                 </Container>
-              </Route>
-              <Route exact path="/upload-artwork">
-                <Container className={classes.withPadding}>
-                  <Typography variant="h3" gutterBottom>
-                        Upload Artwork
-                  </Typography>
-                  <Typography variant="body1" gutterBottom>
-                    Here you can upload artwork of your own! Please be sure to
-                    include your name and a very detailed description of your
-                    artwork. If you are unsure of what qualifies as a good
-                    description, we&apos;ve provided some links below to some
-                    resources that can help guide you!
-                  </Typography>
-                  <UploadsFields name="User Information"/>
-                  <DescLinks name="Description Links"/>
-                </Container>
-              </Route>
-              <Route exact path="/user-uploads-gallery">
-                <Container className={classes.galleryPageWrapper}>
-                  <Banner
-                    title="User Uploads Gallery"
-                    description="Explore artwork from other users!"
-                    imgURL={ColorImg}
-                  />
-                  <Container>
-                    <Gallery />
-                  </Container>
-                </Container>
-              </Route>
-              <Route exact path="/upload-artwork">
-                <Container className={classes.withPadding}>
-                  <Typography variant="h3" gutterBottom>
-                    Upload Artwork
-                  </Typography>
-                  <Typography variant="body1" gutterBottom>
-                    Here you can upload artwork of your own! Please be sure to
-                    include your name and a very detailed description of your
-                    artwork. If you are unsure of what qualifies as a good
-                    description, we&apos;ve provided some links below to some
-                    resources that can help guide you!
-                  </Typography>
-                  <UploadsFields name="User Information"/>
-                  <DescLinks name="Description Links"/>
-                </Container>
-              </Route>
-              <Route exact path="/picture-id">
-                <Container className={classes.withPadding}>
-                  <ArtworkCloseUpCard/>
-                </Container>
-              </Route>
-            </Switch>
-          </main>
-        </div>
-      </Router>
-    </ThemeProvider>
+              </Container>
+            </Route>
+            <Route exact path="/upload-artwork">
+              <Container className={classes.withPadding}>
+                <Typography variant="h3" component="h1" gutterBottom>
+                  Upload Artwork
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  Here you can upload artwork of your own! Please be sure to
+                  include your name and a very detailed description of your
+                  artwork. If you are unsure of what qualifies as a good
+                  description, we&apos;ve provided some links below to some
+                  resources that can help guide you!
+                </Typography>
+                <UploadsFields name="User Information"/>
+                <DescLinks name="Description Links"/>
+
+              </Container>
+            </Route>
+            <Route exact path="/picture-id">
+              <Container className={classes.withPadding}>
+                <ArtworkCloseUpCard/>
+              </Container>
+            </Route>
+          </Switch>
+        </main>
+      </div>
+    </Router>
   );
 }
