@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Alert from '@material-ui/lab/Alert';
 import AudioPlayer from 'react-audio-player';
 import Container from '@material-ui/core/Container';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
 import {generateTextToSpeech} from './textToSpeechHelpers';
@@ -38,11 +39,18 @@ const useStyles = makeStyles((theme) => ({
   withPadding: {
     padding: theme.spacing(3),
   },
+  loading: {
+    'width': '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
 }));
 
 export default function ArtworkCloseUpCard(props) {
   const classes = useStyles();
   const [error, setError] = useState(false);
+  const [audioLoading, setAudioLoading] = useState(true);
 
   const subheaderTypographyProps = {color: 'textSecondary'};
 
@@ -71,6 +79,7 @@ export default function ArtworkCloseUpCard(props) {
         .then((response) => response.text())
         .then((blobKey) => document.getElementById('audio')
             .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`))
+        .then(() => setAudioLoading(false))
         .catch(() => setError(true));
   }, [artwork, id, alt, artist, department, description, title]);
 
@@ -89,6 +98,11 @@ export default function ArtworkCloseUpCard(props) {
             </>
           }
         />
+        {audioLoading && (
+          <div className={classes.root}>
+            <LinearProgress />
+          </div>
+        )}
         {error && (
           <Alert
             severity="error"
