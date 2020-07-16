@@ -11,7 +11,7 @@ import AudioPlayer from 'react-audio-player';
 import Container from '@material-ui/core/Container';
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
-import {generateTextToSpeech} from './textToSpeechHelpers';
+import {generateTextToSpeech, getAudioTranscript} from './textToSpeechHelpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,7 +66,7 @@ export default function ArtworkCloseUpCard(props) {
       return response;
     }
 
-    generateTextToSpeech()
+    generateTextToSpeech(getAudioTranscript(artwork), id)
         .then(handleErrors)
         .then((response) => response.text())
         .then((blobKey) => document.getElementById('audio')
