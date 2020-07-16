@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -6,6 +6,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Alert from '@material-ui/lab/Alert';
 import AudioPlayer from 'react-audio-player';
 import Container from '@material-ui/core/Container';
 import PropTypes from 'prop-types';
@@ -40,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ArtworkCloseUpCard(props) {
   const classes = useStyles();
+  const [error, setError] = useState(false);
 
   const subheaderTypographyProps = {color: 'textSecondary'};
 
@@ -53,6 +55,13 @@ export default function ArtworkCloseUpCard(props) {
   const department = artwork.get('department');
 
   useEffect(() => {
+    function handleErrors(response) {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response;
+    }
+
     const descriptionElement = document.getElementById('description');
     descriptionElement.innerHTML = description;
     const strippedDescription = descriptionElement.innerText;
@@ -64,9 +73,11 @@ export default function ArtworkCloseUpCard(props) {
     params.append('text', audioText);
     params.append('id', id);
     fetch('/api/v1/tts', {method: 'POST', body: params})
+        .then(handleErrors)
         .then((response) => response.text())
         .then((blobKey) => document.getElementById('audio')
-            .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`));
+            .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`))
+        .catch(() => setError(true));
   }, [artwork, id, alt, artist, department, description, title]);
 
   return (
@@ -84,6 +95,13 @@ export default function ArtworkCloseUpCard(props) {
             </>
           }
         />
+        {error && (
+          <Alert
+            severity="error"
+          >
+            The audio could not be loaded at this time.
+          </Alert>
+        )}
         <Grid
           container
           direction="column"
