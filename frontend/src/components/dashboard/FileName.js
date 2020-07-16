@@ -26,8 +26,8 @@ export default function FileName(props) {
     switch (e.target.name) {
       case 'selectedFile':
         if(e.target.files.length > 0) {
-            // Accessed .name from file 
-            setName(e.target.files[0].name);
+          // Accessed .name from file 
+          setName(e.target.files[0].name);
         }
       break;
       default:
