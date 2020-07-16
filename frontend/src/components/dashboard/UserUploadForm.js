@@ -3,9 +3,11 @@ import {makeStyles} from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import PhotoUploadIcon from '@material-ui/icons/AddPhotoAlternate';
 
-const useStyles = makeStyles((theme) => ({
+
+/*const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
       marginLeft: 0,
@@ -18,9 +20,27 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none',
   },
+})); */
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      marginLeft: 0,
+      width: '150ch',
+    },
+  },
+  input: {
+    display: 'none',
+  },
+  file: {
+    height: '40px',
+    width: '75ch',
+  }
 }));
 
-export default function FileName(props) {
+
+export default function UserUploadForm(props) {
 
   const onChange = (e) => {
     switch (e.target.name) {
@@ -60,15 +80,59 @@ export default function FileName(props) {
   return(
       <>
         <form name="image-upload" action={actionURL} method="POST" encType="multipart/form-data">
+          <Grid
+            className={classes.root}
+            container
+            direction="row"
+            justify="flex-start"
+            alignItems="center"
+          >
+            <div>
+              <TextField
+                required
+                id="artist-name"
+                label="Artist Name"
+                name="artistName"
+                variant="outlined"
+              />
+            </div>
+            <div>
+              <TextField
+                required
+                id="art-title"
+                label="Art Title"
+                name="artTitle"
+                variant="outlined"
+              />
+            </div>
+            <div>
+              <TextField
+                required
+                id="image-info"
+                label="Image Description"
+                multiline
+                name="description"
+                placeholder="In this image..."
+                rows = {4}
+                variant="outlined"
+              />
+            </div>
+          </Grid>
           <Grid 
-          alignItems="center"
-          container 
-          className={classes.root}
-          justify="flex-start" 
-          spacing={2}
+            alignItems="center"
+            container 
+            className={classes.root}
+            justify="center" 
+            spacing={2}
           >
             <Grid item xs={8}>
-              <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="grey.300">
+              <Box 
+                display="flex"
+                flexDirection="row"
+                p={1}
+                m={1}
+                bgcolor="grey.300"
+              >
                 {file}
               </Box>
             </Grid>
@@ -92,8 +156,25 @@ export default function FileName(props) {
                   Select File
                 </Button>
               </label>
-              <input type="submit" />
             </Grid>
+          </Grid>
+          <Box m={4} />
+          <Grid
+            container
+            direction="row"
+            justify="flex-end"
+            alignItems="center"
+            className={classes.root}
+          >
+            <div>
+              <Button
+                variant="contained"
+                color="secondary"
+                type="submit"
+              >
+                Submit Artwork
+              </Button>
+            </div>
           </Grid>
         </form>
       </>
