@@ -2,6 +2,7 @@ package com.google.capstone;
 
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.logging.Logger;
 
 import javax.servlet.annotation.WebServlet;
@@ -42,7 +43,7 @@ public class TextToSpeech extends HttpServlet {
     String textString = request.getParameter("text");
     String objectIdString = request.getParameter("id");
     if (!textString.isEmpty() && !objectIdString.isEmpty()) {
-      if (storage.get(BlobId.of(BUCKET_NAME, objectIdString)) == null) {
+      if (!inStorage(objectIdString, textString)) {
         generateTextToSpeech(textString, objectIdString, response);
       }
       String blobKey = generateBlobKey(objectIdString);
@@ -55,11 +56,21 @@ public class TextToSpeech extends HttpServlet {
     }
   }
 
+  private boolean inStorage(String objectIdString, String textString) {
+    Blob blob = storage.get(BlobId.of(BUCKET_NAME, objectIdString));
+    if (blob != null) {
+      String transcript = blob.getMetadata().get("audioTranscript");
+      return transcript.equals(textString);
+    } else {
+      return false;
+    }
+  }
+
   private void generateTextToSpeech(String textString, String objectIdString, HttpServletResponse response)
           throws IOException {
     try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
       ByteString audioContents = generateAudio(textToSpeechClient, textString);
-      uploadAudio(audioContents, response, objectIdString);
+      uploadAudio(audioContents, objectIdString, textString);
     } catch (IOException e) {
       String errorMsg = "Unable to generate audio file.";
       logger.severe(errorMsg);
@@ -82,9 +93,12 @@ public class TextToSpeech extends HttpServlet {
     return ttsResponse.getAudioContent();
   }
 
-  private void uploadAudio(ByteString audioContents, HttpServletResponse response, String objectIdString) throws IOException {
+  private void uploadAudio(ByteString audioContents, String objectIdString, String textString) {
     BlobId blobId = BlobId.of(BUCKET_NAME, objectIdString);
-    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("audio/mpeg").build();
+    BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+            .setContentType("audio/mpeg")
+            .setMetadata(Collections.singletonMap("audioTranscript", textString))
+            .build();
     try {
       storage.create(blobInfo, audioContents.toByteArray());
     } catch (StorageException e) {
