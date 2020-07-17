@@ -79,8 +79,9 @@ export default function ArtworkCloseUpCard(props) {
         .then((response) => response.text())
         .then((blobKey) => document.getElementById('audio')
             .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`))
-        .then(() => setAudioLoading(false))
         .catch(() => setError(true));
+        //     .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`))
+        // .catch(() => setError(true));
   }, [artwork, id, alt, artist, department, description, title]);
 
   return (
@@ -98,11 +99,11 @@ export default function ArtworkCloseUpCard(props) {
             </>
           }
         />
-        {audioLoading && (
-          <div className={classes.root}>
-            <LinearProgress />
-          </div>
-        )}
+        {/*{audioLoading && (*/}
+        {/*  <div className={classes.root}>*/}
+        {/*    <LinearProgress />*/}
+        {/*  </div>*/}
+        {/*)}*/}
         {error && (
           <Alert
             severity="error"
