@@ -33,7 +33,7 @@ import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
-import Pagination from '@material-ui/lab/Pagination';
+import AICimg from "./images/aic-inside.jpg";
 
 const drawerWidth = 240;
 
@@ -233,15 +233,12 @@ export default function Dashboard() {
               </Route>
               <Route exact path="/museum-gallery">
                 <Container className={classes.galleryPageWrapper}>
+                  <Banner
+                    title="Museum Gallery"
+                    description="Explore the Art Institute of Chicago!"
+                    imgURL={AICimg}
+                  />
                   <MuseumGallery />
-                  <Container className={classes.pagination}>
-                    <Pagination
-                      count={10}
-                      size="large"
-                      page={museumPage}
-                      onChange={handleChange}
-                    />
-                  </Container>
                 </Container>
               </Route>
               <Route exact path="/upload-artwork">
