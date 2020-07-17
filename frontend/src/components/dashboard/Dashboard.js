@@ -1,5 +1,5 @@
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import {
   BrowserRouter as Router,
@@ -33,7 +33,7 @@ import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
-import AICimg from "./images/aic-inside.jpg";
+import AICimg from './images/aic-inside.jpg';
 
 const drawerWidth = 240;
 
@@ -129,11 +129,6 @@ const useStyles = makeStyles(() => ({
   mission: {
     background: theme.palette.secondary.main,
   },
-  pagination: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: theme.spacing(2),
-  },
 }));
 
 export default function Dashboard() {
@@ -153,13 +148,9 @@ export default function Dashboard() {
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const limit = 9;
-  const [museumPage, setMuseumPage] = useState(1);
-  const handleChange = (event, value) => {
-    setMuseumPage(value);
-  };
   useEffect(() => {
     dispatch(fetchMuseumArtworks(museumPage, limit));
-  }, [dispatch, museumPage]);
+  }, [dispatch]);
 
 
   return (
