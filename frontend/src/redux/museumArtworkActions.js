@@ -95,12 +95,13 @@ function artworksJsonToMap(artworks) {
   return artworksMap;
 }
 
-export function fetchMuseumArtworks(page, limit) {
+export function fetchMuseumArtworks(page, limit, query) {
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
     return getMuseumArtworks('artworks/search', new Map()
         .set('page', page)
-        .set('limit', limit),
+        .set('limit', limit)
+        .set('q', query),
     )
         .then((artworks) => artworks.data)
         .then((artworks) => {
