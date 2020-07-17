@@ -6,22 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import PhotoUploadIcon from '@material-ui/icons/AddPhotoAlternate';
 
-
-/*const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      marginLeft: 0,
-      width: '150ch',
-    },
-    height: '40px',
-    margin: theme.spacing(1),
-    width: '75ch',
-  },
-  input: {
-    display: 'none',
-  },
-})); */
-
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
@@ -38,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
     width: '75ch',
   }
 }));
-
 
 export default function UserUploadForm(props) {
 
