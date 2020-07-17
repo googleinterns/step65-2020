@@ -2,13 +2,16 @@ import React, {useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import ImgMediaCard from './ImgMediaCard';
 import PropTypes from 'prop-types';
-import {generateTextToSpeech, getAudioTranscript} from '../textToSpeechHelpers';
+import {generateTextToSpeech, getMuseumAudioTranscript,
+  getUserAudioTranscript} from '../textToSpeechHelpers';
 import {useSelector} from 'react-redux';
 
 
-export default function Gallery({size}) {
-  const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
-  const loading = useSelector((state) => (state.museumArtworks.loading));
+export default function Gallery({size, isMuseum}) {
+  const artworksMap = useSelector((state) =>
+    (isMuseum ? state.museumArtworks.artworks : state.userArtworks.artworks));
+  const loading = useSelector((state) =>
+    (isMuseum ? state.museumArtworks.loading: state.userArtworks.loading));
   let artworks = Array.from(artworksMap);
   if (size) {
     artworks = artworks.slice(0, size);
@@ -16,11 +19,12 @@ export default function Gallery({size}) {
 
   let cards;
   if (!loading && artworks) {
+    console.log(artworks);
     cards = artworks.map(([key, artwork]) => (
       <Grid key={key} item>
         <ImgMediaCard
           name={artwork.get('title')}
-          link={`/gallery/${key}`}
+          link={`/gallery/${isMuseum}/${key}`}
           alt={artwork.get('alt')}
           url={artwork.get('url')}
         />
@@ -32,7 +36,9 @@ export default function Gallery({size}) {
   useEffect(() => {
     if (!loading && artworks) {
       artworks.forEach(([id, artwork]) => {
-        generateTextToSpeech(getAudioTranscript(artwork), id);
+        generateTextToSpeech(isMuseum ?
+            getMuseumAudioTranscript(artwork) :
+            getUserAudioTranscript(artwork), id);
       });
     }
   });
@@ -54,4 +60,5 @@ export default function Gallery({size}) {
 
 Gallery.propTypes = {
   size: PropTypes.number,
+  isMuseum: PropTypes.bool,
 };

@@ -12,7 +12,8 @@ import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
-import {generateTextToSpeech, getAudioTranscript} from './textToSpeechHelpers';
+import {generateTextToSpeech, getMuseumAudioTranscript,
+  getUserAudioTranscript} from './textToSpeechHelpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +50,10 @@ export default function ArtworkCloseUpCard(props) {
   const subheaderTypographyProps = {color: 'textSecondary'};
 
   const id = props.match.params.id;
-  const artworks = useSelector((state) => (state.museumArtworks.artworks));
+  const isMuseum = props.match.params.isMuseum === 'true';
+  const artworks = useSelector((state) => (isMuseum ?
+      state.museumArtworks.artworks :
+      state.userArtworks.artworks));
 
   useEffect(() => {
     if (artworks && artworks.has(id)) {
@@ -65,7 +69,9 @@ export default function ArtworkCloseUpCard(props) {
         return response;
       }
 
-      generateTextToSpeech(getAudioTranscript(artwork), id)
+      generateTextToSpeech(isMuseum ?
+          getMuseumAudioTranscript(artwork) :
+          getUserAudioTranscript(artwork), id)
           .then(handleErrors)
           .then((response) => response.text())
           .then((blobKey) => {
@@ -78,7 +84,7 @@ export default function ArtworkCloseUpCard(props) {
             setAudioLoading(false);
           });
     }
-  }, [artworks, id]);
+  }, [artworks, id, isMuseum]);
 
   if (!artworks || !artworks.has(id)) {
     return (
@@ -173,6 +179,7 @@ ArtworkCloseUpCard.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,
+      isMuseum: PropTypes.string.isRequired,
     }),
   }).isRequired,
 };

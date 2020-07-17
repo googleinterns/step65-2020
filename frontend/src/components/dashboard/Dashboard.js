@@ -34,6 +34,7 @@ import ColorImg from './images/colorful.jpeg';
 import {useDispatch} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import Pagination from '@material-ui/lab/Pagination';
+import {fetchUserArtworks} from "../../redux/userArtworkActions";
 
 const drawerWidth = 240;
 
@@ -157,6 +158,7 @@ export default function Dashboard() {
   };
   useEffect(() => {
     dispatch(fetchMuseumArtworks(museumPage, limit));
+    dispatch(fetchUserArtworks());
   }, [dispatch, museumPage]);
 
 
@@ -221,10 +223,12 @@ export default function Dashboard() {
                   <GalleryPreview
                     name="Museum Gallery"
                     link="/museum-gallery"
+                    isMuseum={true}
                   />
                   <GalleryPreview
                     name="User Uploads Gallery"
                     link="/user-uploads-gallery"
+                    isMuseum={false}
                   />
                 </Container>
               </Route>
@@ -265,7 +269,7 @@ export default function Dashboard() {
                     imgURL={ColorImg}
                   />
                   <Container>
-                    <Gallery />
+                    <Gallery isMuseum={false}/>
                   </Container>
                 </Container>
               </Route>
@@ -286,7 +290,7 @@ export default function Dashboard() {
                 </Container>
               </Route>
               <Route
-                exact path="/gallery/:id"
+                exact path="/gallery/:isMuseum/:id"
                 component={ArtworkCloseUpCard}
               />
             </Switch>

@@ -1,4 +1,4 @@
-export function getAudioTranscript(artwork) {
+export function getMuseumAudioTranscript(artwork) {
   const title = artwork.get('title');
   const artist = artwork.get('artist');
   const alt = artwork.get('alt');
@@ -7,6 +7,15 @@ export function getAudioTranscript(artwork) {
   return `This is a piece from the ${department} collection 
         titled ${title} by ${artist}. 
         It is ${alt}. ${strippedDescription}`;
+}
+
+export function getUserAudioTranscript(artwork) {
+  const title = artwork.get('title');
+  const artist = artwork.get('artist');
+  const alt = artwork.get('alt');
+  const description = artwork.get('description');
+  return `This is a piece titled ${title} by ${artist}. 
+        It is ${alt}. ${description}`;
 }
 
 function strip(html) {

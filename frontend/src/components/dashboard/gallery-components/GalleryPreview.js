@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GalleryPreview({name, link}) {
+export default function GalleryPreview({name, link, isMuseum}) {
   const classes = useStyles();
 
   return (
@@ -36,7 +36,7 @@ export default function GalleryPreview({name, link}) {
       <Container className={classes.galleryTitle}>
         <Typography variant="h4" component="h2">{name}</Typography>
       </Container>
-      <Gallery size={PREVIEW_SIZE}/>
+      <Gallery size={PREVIEW_SIZE} isMuseum={isMuseum}/>
       <Container className={classes.viewMoreButton}>
         <Link to={link} className={classes.link}>
           <Button variant="contained" color="primary">View More</Button>
@@ -49,4 +49,5 @@ export default function GalleryPreview({name, link}) {
 GalleryPreview.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
+  isMuseum: PropTypes.bool.isRequired,
 };
