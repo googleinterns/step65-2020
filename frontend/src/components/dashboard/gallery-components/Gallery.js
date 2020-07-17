@@ -19,7 +19,6 @@ export default function Gallery({size, isMuseum}) {
 
   let cards;
   if (!loading && artworks) {
-    console.log(artworks);
     cards = artworks.map(([key, artwork]) => (
       <Grid key={key} item>
         <ImgMediaCard
