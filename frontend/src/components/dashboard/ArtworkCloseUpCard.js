@@ -87,7 +87,6 @@ export default function ArtworkCloseUpCard(props) {
       </div>
     );
   } else {
-    console.log(artworks);
     const artwork = artworks.get(id);
     const title = artwork.get('title');
     const artist = artwork.get('artist');
