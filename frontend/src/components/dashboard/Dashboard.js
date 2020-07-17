@@ -147,9 +147,11 @@ export default function Dashboard() {
   const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
-  const limit = 9;
+  const LIMIT = 9;
+  const FIRST_PAGE = 1;
+  const EMPTY_QUERY = '';
   useEffect(() => {
-    dispatch(fetchMuseumArtworks(museumPage, limit));
+    dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
   }, [dispatch]);
 
 
