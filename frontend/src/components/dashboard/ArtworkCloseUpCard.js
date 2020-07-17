@@ -52,6 +52,8 @@ export default function ArtworkCloseUpCard(props) {
   const [error, setError] = useState(false);
   const [audioLoading, setAudioLoading] = useState(true);
 
+  console.log(loading);
+
   const subheaderTypographyProps = {color: 'textSecondary'};
 
   const id = props.match.params.id;
@@ -77,11 +79,15 @@ export default function ArtworkCloseUpCard(props) {
     generateTextToSpeech(getAudioTranscript(artwork), id)
         .then(handleErrors)
         .then((response) => response.text())
-        .then((blobKey) => document.getElementById('audio')
-            .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`))
-        .catch(() => setError(true));
-        //     .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`))
-        // .catch(() => setError(true));
+        .then((blobKey) => {
+          document.getElementById('audio')
+              .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`);
+        })
+        .then(() => setAudioLoading(false))
+        .catch(() => {
+          setError(true);
+          setAudioLoading(false);
+        });
   }, [artwork, id, alt, artist, department, description, title]);
 
   return (
@@ -99,11 +105,11 @@ export default function ArtworkCloseUpCard(props) {
             </>
           }
         />
-        {/*{audioLoading && (*/}
-        {/*  <div className={classes.root}>*/}
-        {/*    <LinearProgress />*/}
-        {/*  </div>*/}
-        {/*)}*/}
+        {audioLoading && (
+          <div className={classes.root}>
+            <LinearProgress />
+          </div>
+        )}
         {error && (
           <Alert
             severity="error"
