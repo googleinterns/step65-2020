@@ -80,6 +80,11 @@ export default function MuseumGallery() {
             id="search-textfield"
             label="Search"
             variant="outlined"
+            onKeyUp = {(event) => {
+              if (event.keyCode == 13){
+                handleChangeSearch();
+              }
+            }}
           />
           <div className={classes.searchButton}>
             <IconButton
