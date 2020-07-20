@@ -71,7 +71,25 @@ export default function MuseumGallery() {
   useEffect(() => {
     dispatch(fetchMuseumArtworks(museumPage, limit, searchQuery));
   }, [dispatch, museumPage, searchQuery]);
-  const noResults = (artworks.length == 0 && museumPage == 1);
+  let paginationNeeded = true;
+  let results;
+  if (artworks.length != 0){
+    results =
+      <Gallery artworks={artworks}/>;
+  } else {
+    if (museumPage > 1){
+      results =
+        <Typography align="center" variant="h5" component="h3">
+          No more results found for {searchQuery}
+        </Typography>;
+    } else {
+      paginationNeeded = false;
+      results =
+        <Typography align="center" variant="h5" component="h3">
+          No results found for {searchQuery}
+        </Typography>;
+    }
+  }
   return (
     <Container>
       <Container className={classes.searchAndFilterBar}>
@@ -115,13 +133,8 @@ export default function MuseumGallery() {
           </FormControl>
         </Container>
       </Container>
-      {(artworks.length != 0) ?
-        <Gallery artworks={artworks}/> :
-        <Typography align="center" variant="h5" component="h3">
-          No results found for {searchQuery}
-        </Typography>
-      }
-      {(!noResults) &&
+      {results}
+      {(paginationNeeded) &&
         <Container className={classes.pagination}>
           <Pagination
             count={10}
