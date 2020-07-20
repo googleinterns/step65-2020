@@ -73,11 +73,11 @@ export default function MuseumGallery() {
   }, [dispatch, museumPage, searchQuery]);
   let paginationNeeded = true;
   let results;
-  if (artworks.length !== 0){
+  if (artworks.length !== 0) {
     results =
       <Gallery artworks={artworks}/>;
   } else {
-    if (museumPage > 1){
+    if (museumPage > 1) {
       results =
         <Typography align="center" variant="h5" component="h3">
           No more results found for {searchQuery}
