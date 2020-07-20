@@ -3,13 +3,10 @@ import Gallery from './gallery-components/Gallery';
 import Banner from './gallery-components/Banner';
 import AICimg from './images/aic-inside.jpg';
 import Container from '@material-ui/core/Container';
-import {useSelector} from 'react-redux';
 import SearchAndFilterBar from './gallery-components/SearchAndFilterBar';
 
 
 export default function MuseumGallery() {
-  const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
-  const artworks = Array.from(artworksMap);
 
   return (
     <>
@@ -20,7 +17,7 @@ export default function MuseumGallery() {
       />
       <Container>
         <SearchAndFilterBar/>
-        <Gallery artworks={artworks}/>
+        <Gallery isMuseum={true}/>
       </Container>
     </>
   );

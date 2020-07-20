@@ -31,9 +31,10 @@ import Banner from './gallery-components/Banner';
 import LandingPage from './LandingPage';
 import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import Pagination from '@material-ui/lab/Pagination';
+import {fetchUserArtworks} from "../../redux/userArtworkActions";
 
 const drawerWidth = 240;
 
@@ -48,7 +49,7 @@ let theme = createMuiTheme({
       light: '#c2a3a8',
     },
     text: {
-      secondary: '#ffffff',
+      light: '#ffffff',
     },
 
     contrastThreshold: 3,
@@ -149,8 +150,6 @@ export default function Dashboard() {
   };
 
   // fetches artworks for GalleryPreview and MuseumGallery
-  const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
-  const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const limit = 9;
   const [museumPage, setMuseumPage] = useState(1);
@@ -159,6 +158,7 @@ export default function Dashboard() {
   };
   useEffect(() => {
     dispatch(fetchMuseumArtworks(museumPage, limit));
+    dispatch(fetchUserArtworks());
   }, [dispatch, museumPage]);
 
 
@@ -223,11 +223,12 @@ export default function Dashboard() {
                   <GalleryPreview
                     name="Museum Gallery"
                     link="/museum-gallery"
-                    artworks={artworks.slice(0, 3)}
+                    isMuseum={true}
                   />
                   <GalleryPreview
                     name="User Uploads Gallery"
                     link="/user-uploads-gallery"
+                    isMuseum={false}
                   />
                 </Container>
               </Route>
@@ -268,7 +269,7 @@ export default function Dashboard() {
                     imgURL={ColorImg}
                   />
                   <Container>
-                    <Gallery />
+                    <Gallery isMuseum={false}/>
                   </Container>
                 </Container>
               </Route>
@@ -289,7 +290,7 @@ export default function Dashboard() {
                 </Container>
               </Route>
               <Route
-                exact path="/gallery/:id"
+                exact path="/gallery/:isMuseum/:id"
                 component={ArtworkCloseUpCard}
               />
             </Switch>
