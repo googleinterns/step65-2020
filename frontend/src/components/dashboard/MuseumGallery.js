@@ -13,6 +13,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import {useDispatch, useSelector} from 'react-redux';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
   searchAndFilterBar: {
@@ -70,7 +71,7 @@ export default function MuseumGallery() {
   useEffect(() => {
     dispatch(fetchMuseumArtworks(museumPage, limit, searchQuery));
   }, [dispatch, museumPage, searchQuery]);
-
+  const noResults = (artworks.length == 0 && museumPage == 1);
   return (
     <Container>
       <Container className={classes.searchAndFilterBar}>
@@ -81,7 +82,7 @@ export default function MuseumGallery() {
             label="Search"
             variant="outlined"
             onKeyUp = {(event) => {
-              if (event.keyCode == 13){
+              if (event.keyCode == 13) {
                 handleChangeSearch();
               }
             }}
@@ -114,15 +115,22 @@ export default function MuseumGallery() {
           </FormControl>
         </Container>
       </Container>
-      <Gallery artworks={artworks}/>
-      <Container className={classes.pagination}>
-        <Pagination
-          count={10}
-          size="large"
-          page={museumPage}
-          onChange={handleChangePage}
-        />
-      </Container>
+      {(artworks.length != 0) ?
+        <Gallery artworks={artworks}/> :
+        <Typography align="center" variant="h5" component="h3">
+          No results found for {searchQuery}
+        </Typography>
+      }
+      {(!noResults) &&
+        <Container className={classes.pagination}>
+          <Pagination
+            count={10}
+            size="large"
+            page={museumPage}
+            onChange={handleChangePage}
+          />
+        </Container>
+      }
     </Container>
   );
 }
