@@ -49,7 +49,7 @@ let theme = createMuiTheme({
       light: '#c2a3a8',
     },
     text: {
-      secondary: '#ffffff',
+      light: '#ffffff',
     },
 
     contrastThreshold: 3,

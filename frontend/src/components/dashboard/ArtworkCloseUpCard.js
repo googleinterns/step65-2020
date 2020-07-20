@@ -47,7 +47,7 @@ export default function ArtworkCloseUpCard(props) {
   const [error, setError] = useState(false);
   const [audioLoading, setAudioLoading] = useState(true);
 
-  const subheaderTypographyProps = {color: 'textSecondary'};
+  const subheaderTypographyProps = {color: 'light'};
 
   const id = props.match.params.id;
   const isMuseum = props.match.params.isMuseum === 'true';
@@ -97,6 +97,7 @@ export default function ArtworkCloseUpCard(props) {
     const title = artwork.get('title');
     const artist = artwork.get('artist');
     const alt = artwork.get('alt');
+    const date = artwork.get('date');
 
     return (
       <Container className={classes.withPadding}>
@@ -144,6 +145,17 @@ export default function ArtworkCloseUpCard(props) {
                 title={artist}
               />
               <CardContent>
+                {isMuseum && (
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    align="center"
+                    component="p"
+                  >
+                    {`${artist}. ${title}, ${date}. 
+                    The Art Institute of Chicago.`}
+                  </Typography>
+                )}
                 <Typography
                   variant="body2"
                   color="primary"
