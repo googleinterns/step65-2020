@@ -52,12 +52,15 @@ public class TextToSpeech extends HttpServlet {
         response.setContentType("text/plain");
         response.getWriter().println(blobKey);
       } catch (IOException e) {
-        String errorMsg = "Unable to generate audio file.";
+        String errorMsg =
+                String.format("Unable to generate audio file. " +
+                                "Provided object: %s and text: %s", objectIdString, textString);
         logger.severe(errorMsg);
         response.sendError(500, errorMsg);
       }
     } else {
-      String errorMsg = "Invalid text or object id.";
+      String errorMsg =
+              String.format("Invalid text or object id. Provided object: %s and text: %s", objectIdString, textString);
       logger.severe(errorMsg);
       response.sendError(400, errorMsg);
     }
@@ -85,7 +88,8 @@ public class TextToSpeech extends HttpServlet {
     try {
       storage.create(blobInfo, audioContents.toByteArray());
     } catch (StorageException e) {
-      logger.severe("Audio file unable to be uploaded to Google Cloud Storage.");
+      logger.severe(String.format("Audio file for object %s unable to be uploaded to Google Cloud Storage.",
+              objectIdString));
     }
     logger.info("Audio file successfully uploaded to Google Cloud Storage.");
   }
