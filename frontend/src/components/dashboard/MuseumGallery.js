@@ -63,6 +63,7 @@ export default function MuseumGallery() {
   const [searchQuery, setSearchQuery] = React.useState('');
   const handleChangeSearch = () => {
     setSearchQuery(document.getElementById('search-textfield').value);
+    setMuseumPage(1);
   };
   const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
   const artworks = Array.from(artworksMap);
