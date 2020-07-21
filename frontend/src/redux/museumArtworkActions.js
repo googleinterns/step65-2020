@@ -19,8 +19,34 @@ const convertToArtworkInfo = (artwork) => {
   return artworkInfo;
 };
 
+const sortByQuerySyntax = new Map()
+    .set('relevance',
+        {
+          '_score': {
+            'order': 'desc',
+          },
+        })
+    .set('artist',
+        {
+          'artist_title.keyword': {
+            'order': 'asc',
+          },
+        })
+    .set('date',
+        {
+          'date_end': {
+            'order': 'desc',
+          },
+        })
+    .set('title',
+        {
+          'title.keyword': {
+            'order': 'asc',
+          },
+        });
+
 // based off of https://github.com/kjschmidt913/AIC/blob/master/script.js
-function getQuery(limit) {
+function getQuery(limit, sortBy) {
   return {
     'resources': 'artworks',
     'mappings': {
@@ -52,11 +78,12 @@ function getQuery(limit) {
     ],
     'limit': limit,
     'sort': [
-      {
-        'title.raw': {
-          'order': 'desc',
-        },
-      },
+      // {
+      //   'artist_title.keyword': {
+      //     'order': 'asc',
+      //   },
+      // },
+      sortBy,
     ],
     'query': {
       'bool': {
@@ -97,7 +124,7 @@ function getQuery(limit) {
   };
 }
 
-function getMuseumArtworks(path, params) {
+function getMuseumArtworks(path, params, sortBy) {
   const apiUrl = new URL('https://aggregator-data.artic.edu/api/v1/');
   apiUrl.pathname += path;
   if (params) {
@@ -112,7 +139,7 @@ function getMuseumArtworks(path, params) {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     },
-    body: JSON.stringify(getQuery(params.get('limit'))),
+    body: JSON.stringify(getQuery(params.get('limit'), sortByQuerySyntax.get(sortBy))),
   })
       .then(handleErrors)
       .then((res) => res.json());
@@ -126,13 +153,15 @@ function artworksJsonToMap(artworks) {
   return artworksMap;
 }
 
-export function fetchMuseumArtworks(page, limit, query) {
+export function fetchMuseumArtworks(page, limit, query, sortBy) {
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
-    return getMuseumArtworks('artworks/search', new Map()
-        .set('page', page)
-        .set('limit', limit)
-        .set('q', query),
+    return getMuseumArtworks('artworks/search',
+        new Map()
+            .set('page', page)
+            .set('limit', limit)
+            .set('q', query),
+        sortBy,
     )
         .then((artworks) => artworks.data)
         .then((artworks) => {
