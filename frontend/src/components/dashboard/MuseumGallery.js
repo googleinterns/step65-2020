@@ -7,7 +7,6 @@ import SearchAndFilterBar from './gallery-components/SearchAndFilterBar';
 
 
 export default function MuseumGallery() {
-
   return (
     <>
       <Banner

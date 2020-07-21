@@ -34,7 +34,7 @@ import ColorImg from './images/colorful.jpeg';
 import {useDispatch} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import Pagination from '@material-ui/lab/Pagination';
-import {fetchUserArtworks} from "../../redux/userArtworkActions";
+import {fetchUserArtworks} from '../../redux/userArtworkActions';
 
 const drawerWidth = 240;
 
