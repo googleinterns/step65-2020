@@ -7,7 +7,6 @@ import com.google.appengine.api.datastore.Entity;
  * that will be used to be converted to json format
  */
 public final class UploadedImage {
-  //name title description timestamp blobkey
   private final long id;
   private final String artistName;
   private final String artTitle;
