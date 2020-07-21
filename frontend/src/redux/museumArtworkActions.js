@@ -30,8 +30,15 @@ function getQuery(limit) {
       'thumbnail',
       'artist_title',
       'description',
+      'department_title',
+      'date_display',
     ],
     'limit': limit,
+    'sort': [
+      {
+        'date_end': 'desc',
+      },
+    ],
     'query': {
       'bool': {
         'must': [
