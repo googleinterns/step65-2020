@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Endpoint to get single image given id
  */
-@WebServlet("/get-image")
+@WebServlet("/getImage")
 public class ServeImage extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
