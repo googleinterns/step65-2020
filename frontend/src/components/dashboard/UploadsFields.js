@@ -24,24 +24,34 @@ export default function UploadsFields() {
 
   return (
     <>
-      <Grid
-        container
-        direction="row"
-        justify="flex-start"
-        alignItems="center"
+      <form
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+        action="/api/v1/uploadInfo"
+        method="POST"
       >
-        <form className={classes.root} noValidate autoComplete="off">
+        <Grid
+          container
+          direction="row"
+          justify="flex-start"
+          alignItems="center"
+        >
           <div>
             <TextField
-              required id="first-name"
-              label="First Name"
+              required
+              id="artist-name"
+              label="Artist Name"
+              name="artistName"
               variant="outlined"
             />
           </div>
           <div>
             <TextField
-              id="last-name"
-              label="Last Name"
+              required
+              id="art-title"
+              label="Art Title"
+              name="artTitle"
               variant="outlined"
             />
           </div>
@@ -51,40 +61,43 @@ export default function UploadsFields() {
               id="image-info"
               label="Image Description"
               multiline
+              name="description"
               placeholder="In this image..."
               rows = {4}
               variant="outlined"
             />
           </div>
-        </form>
-      </Grid>
-      <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-      >
-        <div>
-          <FileName/>
-        </div>
-      </Grid>
-      <Box m={4} />
-      <Grid
-        container
-        direction="row"
-        justify="flex-end"
-        alignItems="center"
-        className={classes.root}
-      >
-        <div>
-          <Button
-            variant="contained"
-            color="secondary"
-          >
-          Submit Artwork
-          </Button>
-        </div>
-      </Grid>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+        >
+          <div>
+            <FileName/>
+          </div>
+        </Grid>
+        <Box m={4} />
+        <Grid
+          container
+          direction="row"
+          justify="flex-end"
+          alignItems="center"
+          className={classes.root}
+        >
+          <div>
+            <Button
+              variant="contained"
+              color="secondary"
+              type="submit"
+            >
+              Submit Artwork
+            </Button>
+          </div>
+        </Grid>
+      </form>
+
     </>
   );
 }

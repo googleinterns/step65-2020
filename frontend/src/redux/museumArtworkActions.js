@@ -15,8 +15,63 @@ const convertToArtworkInfo = (artwork) => {
   artworkInfo.set('title', artwork.title);
   artworkInfo.set('artist', artwork.artist_title);
   artworkInfo.set('description', artwork.description);
+  artworkInfo.set('department', artwork.department_title);
   return artworkInfo;
 };
+
+// based off of https://github.com/kjschmidt913/AIC/blob/master/script.js
+function getQuery(limit) {
+  return {
+    'resources': 'artworks',
+    'fields': [
+      'pagination',
+      'id',
+      'title',
+      'image_id',
+      'thumbnail',
+      'artist_title',
+      'description',
+      'department_title',
+    ],
+    'limit': limit,
+    'query': {
+      'bool': {
+        'must': [
+          {
+            'term': {
+              'is_public_domain': true,
+            },
+          },
+          {
+            'exists': {
+              'field': 'image_id',
+            },
+          },
+          {
+            'exists': {
+              'field': 'thumbnail.width',
+            },
+          },
+          {
+            'exists': {
+              'field': 'thumbnail.height',
+            },
+          },
+          {
+            'exists': {
+              'field': 'description',
+            },
+          },
+          {
+            'exists': {
+              'field': 'department_title',
+            },
+          },
+        ],
+      },
+    },
+  };
+}
 
 function getMuseumArtworks(path, params) {
   const apiUrl = new URL('https://aggregator-data.artic.edu/api/v1/');
@@ -28,10 +83,12 @@ function getMuseumArtworks(path, params) {
   }
   const API = apiUrl.toString();
   return fetch(API, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     },
+    body: JSON.stringify(getQuery(params.get('limit'))),
   })
       .then(handleErrors)
       .then((res) => res.json());
@@ -48,7 +105,7 @@ function artworksJsonToMap(artworks) {
 export function fetchMuseumArtworks(page, limit) {
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
-    return getMuseumArtworks('artworks', new Map()
+    return getMuseumArtworks('artworks/search', new Map()
         .set('page', page)
         .set('limit', limit),
     )
