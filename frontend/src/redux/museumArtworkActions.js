@@ -36,6 +36,13 @@ function getQuery(limit) {
     'limit': limit,
     'query': {
       'bool': {
+        'filter': [
+          {
+            'term': {
+              'artist_title': 'Claude Monet',
+            },
+          },
+        ],
         'must': [
           {
             'term': {
@@ -107,8 +114,8 @@ export function fetchMuseumArtworks(page, limit, query) {
     dispatch(fetchMuseumArtworksBegin());
     return getMuseumArtworks('artworks/search', new Map()
         .set('page', page)
-        .set('limit', limit)
-        .set('q', query),
+        .set('limit', limit),
+        // .set('q', query),
     )
         .then((artworks) => artworks.data)
         .then((artworks) => {
