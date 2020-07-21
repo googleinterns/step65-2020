@@ -91,6 +91,15 @@ export default function UserUploadForm(props) {
             <div>
               <TextField
                 required
+                id="alt-text"
+                label="Alt Text"
+                name="altText"
+                variant="outlined"
+              />
+            </div>
+            <div>
+              <TextField
+                required
                 id="image-info"
                 label="Image Description"
                 multiline
