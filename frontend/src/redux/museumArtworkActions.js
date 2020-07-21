@@ -15,6 +15,7 @@ const convertToArtworkInfo = (artwork) => {
   artworkInfo.set('title', artwork.title);
   artworkInfo.set('artist', artwork.artist_title);
   artworkInfo.set('description', artwork.description);
+  artworkInfo.set('department', artwork.department_title);
   return artworkInfo;
 };
 
@@ -30,6 +31,7 @@ function getQuery(limit) {
       'thumbnail',
       'artist_title',
       'description',
+      'department_title',
     ],
     'limit': limit,
     'query': {
@@ -58,6 +60,11 @@ function getQuery(limit) {
           {
             'exists': {
               'field': 'description',
+            },
+          },
+          {
+            'exists': {
+              'field': 'department_title',
             },
           },
         ],
