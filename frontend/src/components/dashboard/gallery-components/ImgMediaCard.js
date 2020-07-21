@@ -16,6 +16,11 @@ const useStyles = makeStyles((theme) =>({
     textDecoration: 'none',
     color: theme.palette.text.primary,
   },
+  truncate: {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
 }));
 
 export default function ImgMediaCard({name, link, alt, url}) {
@@ -33,7 +38,12 @@ export default function ImgMediaCard({name, link, alt, url}) {
             title={name}
           />
           <CardContent className={classes.name}>
-            <Typography gutterBottom variant="h5" component="h2">
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="h2"
+              className={classes.truncate}
+            >
               {name}
             </Typography>
           </CardContent>
