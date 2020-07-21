@@ -30,6 +30,7 @@ public class ServeImage extends HttpServlet {
 
     Key imageEntityKey = KeyFactory.createKey("ImageInformation", id);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    
     Entity imageEntity = null;
     try{
       imageEntity = datastore.get(imageEntityKey);
@@ -37,7 +38,6 @@ public class ServeImage extends HttpServlet {
       String errorMsg = "Invalid object id.";
       response.sendError(400, errorMsg);
     }
-    
 
     UploadedImage imageObject = UploadedImage.convertToObject(imageEntity);
 
@@ -45,7 +45,6 @@ public class ServeImage extends HttpServlet {
     
     response.setContentType("text/json");
     response.getWriter().println(json);
-
   }
 
   public static String convertToJson(UploadedImage img) {
