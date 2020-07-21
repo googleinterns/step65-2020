@@ -44,7 +44,6 @@ export default function UserUploadForm(props) {
           return response.text();
         })
         .then((imageUploadUrl) => {
-          console.log(imageUploadUrl);
           setURL(imageUploadUrl);
         });
   },[]);
