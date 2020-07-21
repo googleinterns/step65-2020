@@ -31,11 +31,11 @@ public class UserUploadHandler extends HttpServlet{
  
   public static final String GCS_BUCKET_NAME = "upload-imgs";
  
-  private final BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
+  private static final BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
  
-  private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
  
-  private final ImagesService images = ImagesServiceFactory.getImagesService();
+  private static final ImagesService images = ImagesServiceFactory.getImagesService();
  
   /**
    * Creates an upload URL to send the image to in GCS.
