@@ -38,31 +38,38 @@ public class TextToSpeech extends HttpServlet {
   private static final Logger logger = Logger.getLogger(TextToSpeech.class.getName());
   private static final String PROJECT_ID = "igunda-isangimino-nstroupe";
   private static final String BUCKET_NAME = "tts-audio";
-
+  private static final Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_ID).build().getService();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String textString = request.getParameter("text");
     String objectIdString = request.getParameter("id");
     if (!textString.isEmpty() && !objectIdString.isEmpty()) {
-      try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
-        ByteString audioContents = generateAudio(textToSpeechClient, textString);
-        uploadAudio(audioContents, response, objectIdString);
-        String blobKey = generateBlobKey(objectIdString);
-        response.setContentType("text/plain");
-        response.getWriter().println(blobKey);
-      } catch (IOException e) {
-        String errorMsg =
-                String.format("Unable to generate audio file. " +
-                                "Provided object: %s and text: %s", objectIdString, textString);
-        logger.severe(errorMsg);
-        response.sendError(500, errorMsg);
+      if (storage.get(BlobId.of(BUCKET_NAME, objectIdString)) == null) {
+        generateTextToSpeech(textString, objectIdString, response);
       }
+      String blobKey = generateBlobKey(objectIdString);
+      response.setContentType("text/plain");
+      response.getWriter().println(blobKey);
     } else {
       String errorMsg =
               String.format("Invalid text or object id. Provided object: %s and text: %s", objectIdString, textString);
       logger.severe(errorMsg);
       response.sendError(400, errorMsg);
+    }
+  }
+
+  private void generateTextToSpeech(String textString, String objectIdString, HttpServletResponse response)
+          throws IOException {
+    try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
+      ByteString audioContents = generateAudio(textToSpeechClient, textString);
+      uploadAudio(audioContents, response, objectIdString);
+    } catch (IOException e) {
+        String errorMsg =
+                String.format("Unable to generate audio file. " +
+                                "Provided object: %s and text: %s", objectIdString, textString);
+        logger.severe(errorMsg);
+        response.sendError(500, errorMsg);
     }
   }
 
@@ -82,7 +89,6 @@ public class TextToSpeech extends HttpServlet {
   }
 
   private void uploadAudio(ByteString audioContents, HttpServletResponse response, String objectIdString) throws IOException {
-    Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_ID).build().getService();
     BlobId blobId = BlobId.of(BUCKET_NAME, objectIdString);
     BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("audio/mpeg").build();
     try {
