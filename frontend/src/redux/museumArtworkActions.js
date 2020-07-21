@@ -78,11 +78,6 @@ function getQuery(limit, sortBy) {
     ],
     'limit': limit,
     'sort': [
-      // {
-      //   'artist_title.keyword': {
-      //     'order': 'asc',
-      //   },
-      // },
       sortBy,
     ],
     'query': {
@@ -139,7 +134,9 @@ function getMuseumArtworks(path, params, sortBy) {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     },
-    body: JSON.stringify(getQuery(params.get('limit'), sortByQuerySyntax.get(sortBy))),
+    body: JSON.stringify(getQuery(
+        params.get('limit'),
+        sortByQuerySyntax.get(sortBy))),
   })
       .then(handleErrors)
       .then((res) => res.json());
