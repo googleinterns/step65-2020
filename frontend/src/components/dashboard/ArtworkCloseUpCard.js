@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -6,6 +6,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Alert from '@material-ui/lab/Alert';
 import AudioPlayer from 'react-audio-player';
 import Container from '@material-ui/core/Container';
 import PropTypes from 'prop-types';
@@ -40,40 +41,72 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ArtworkCloseUpCard(props) {
   const classes = useStyles();
+  const [error, setError] = useState(false);
 
   const subheaderTypographyProps = {color: 'textSecondary'};
 
   const id = props.match.params.id;
   const artworks = useSelector((state) => (state.museumArtworks.artworks));
   const artwork = artworks.get(id);
+  const title = artwork.get('title');
+  const artist = artwork.get('artist');
+  const alt = artwork.get('alt');
+  const description = artwork.get('description');
+  const department = artwork.get('department');
 
   useEffect(() => {
-    const description = artwork.get('description');
-    document.getElementById('description').innerHTML = description;
+    function handleErrors(response) {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response;
+    }
+
+    const descriptionElement = document.getElementById('description');
+    descriptionElement.innerHTML = description;
+    const strippedDescription = descriptionElement.innerText;
+    const audioText = `This is a piece from the ${department} collection 
+        titled ${title} by ${artist}. 
+        It is ${alt}. ${strippedDescription}`;
 
     const params = new URLSearchParams();
-    params.append('text', description);
+    params.append('text', audioText);
     params.append('id', id);
     fetch('/api/v1/tts', {method: 'POST', body: params})
+        .then(handleErrors)
         .then((response) => response.text())
         .then((blobKey) => document.getElementById('audio')
-            .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`));
-  }, [artwork, id]);
+            .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`))
+        .catch(() => setError(true));
+  }, [artwork, id, alt, artist, department, description, title]);
 
   return (
     <Container className={classes.withPadding}>
       <Card className={classes.root}>
         <CardHeader
-          title={artwork.get('title')}
-          subheader={artwork.get('artist')}
+          title={title}
+          subheader={artist}
           subheaderTypographyProps={subheaderTypographyProps}
           className={classes.header}
+          action={
+            <>
+              <br/>
+              <AudioPlayer controls id="audio" className={classes.audioPlayer}/>
+            </>
+          }
         />
+        {error && (
+          <Alert
+            severity="error"
+          >
+            The audio could not be loaded at this time.
+          </Alert>
+        )}
         <Grid
           container
           direction="column"
           justify="center"
-          alignItems="flex-start"
+          alignItems="center"
           spacing={4}
           className={classes.root}
         >
@@ -81,18 +114,17 @@ export default function ArtworkCloseUpCard(props) {
             <CardMedia
               className={classes.media}
               image={artwork.get('url')}
-              title={artwork.get('title')}
+              title={artist}
             />
-            <CardContent className={classes.content}>
+            <CardContent>
               <Typography
                 variant="body2"
                 color="primary"
                 align="center"
                 component="p"
               >
-                {artwork.get('alt')}
+                {alt}
               </Typography>
-              <AudioPlayer controls id="audio" className={classes.audioPlayer}/>
             </CardContent>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -105,7 +137,7 @@ export default function ArtworkCloseUpCard(props) {
                 gutterBottom
               >
                   Description</Typography>
-              <Typography id="description" paragraph>
+              <Typography id="description" align="left" paragraph>
               </Typography>
             </CardContent>
           </Grid>

@@ -24,18 +24,18 @@ export default function UploadsFields() {
 
   return (
     <>
-      <Grid
-        container
-        direction="row"
-        justify="flex-start"
-        alignItems="center"
+      <form
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+        action="/api/v1/uploadInfo"
+        method="POST"
       >
-        <form
-          className={classes.root}
-          noValidate
-          autoComplete="off"
-          action="/api/v1/uploadInfo"
-          method="POST"
+        <Grid
+          container
+          direction="row"
+          justify="flex-start"
+          alignItems="center"
         >
           <div>
             <TextField
@@ -67,38 +67,36 @@ export default function UploadsFields() {
               variant="outlined"
             />
           </div>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+        >
           <div>
-            <input type="submit" />
+            <FileName/>
           </div>
-        </form>
-      </Grid>
-      <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-      >
-        <div>
-          <FileName/>
-        </div>
-      </Grid>
-      <Box m={4} />
-      <Grid
-        container
-        direction="row"
-        justify="flex-end"
-        alignItems="center"
-        className={classes.root}
-      >
-        <div>
-          <Button
-            variant="contained"
-            color="secondary"
-          >
-          Submit Artwork
-          </Button>
-        </div>
-      </Grid>
+        </Grid>
+        <Box m={4} />
+        <Grid
+          container
+          direction="row"
+          justify="flex-end"
+          alignItems="center"
+          className={classes.root}
+        >
+          <div>
+            <Button
+              variant="contained"
+              color="secondary"
+              type="submit"
+            >
+              Submit Artwork
+            </Button>
+          </div>
+        </Grid>
+      </form>
     </>
   );
 }
