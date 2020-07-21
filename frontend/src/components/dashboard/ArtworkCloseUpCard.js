@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -6,8 +6,11 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Alert from '@material-ui/lab/Alert';
 import AudioPlayer from 'react-audio-player';
-import PlaceholderImage from './images/paint.jpg';
+import Container from '@material-ui/core/Container';
+import PropTypes from 'prop-types';
+import {useSelector} from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,69 +34,123 @@ const useStyles = makeStyles((theme) => ({
   audioPlayer: {
     margin: theme.spacing(1),
   },
+  withPadding: {
+    padding: theme.spacing(3),
+  },
 }));
 
-export default function ArtworkCloseUpCard() {
+export default function ArtworkCloseUpCard(props) {
   const classes = useStyles();
+  const [error, setError] = useState(false);
+
+  const subheaderTypographyProps = {color: 'textSecondary'};
+
+  const id = props.match.params.id;
+  const artworks = useSelector((state) => (state.museumArtworks.artworks));
+  const artwork = artworks.get(id);
+  const title = artwork.get('title');
+  const artist = artwork.get('artist');
+  const alt = artwork.get('alt');
+  const description = artwork.get('description');
+  const department = artwork.get('department');
+
+  useEffect(() => {
+    function handleErrors(response) {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response;
+    }
+
+    const descriptionElement = document.getElementById('description');
+    descriptionElement.innerHTML = description;
+    const strippedDescription = descriptionElement.innerText;
+    const audioText = `This is a piece from the ${department} collection 
+        titled ${title} by ${artist}. 
+        It is ${alt}. ${strippedDescription}`;
+
+    const params = new URLSearchParams();
+    params.append('text', audioText);
+    params.append('id', id);
+    fetch('/api/v1/tts', {method: 'POST', body: params})
+        .then(handleErrors)
+        .then((response) => response.text())
+        .then((blobKey) => document.getElementById('audio')
+            .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`))
+        .catch(() => setError(true));
+  }, [artwork, id, alt, artist, department, description, title]);
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        title="Artwork Name"
-        subheader="Artist Name"
-        className={classes.header}
-      />
-      <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="flex-start"
-        spacing={4}
-        className={classes.root}
-      >
-        <Grid item xs={12} md={8}>
-          <CardMedia
-            className={classes.media}
-            image={PlaceholderImage}
-            title="Artwork"
-          />
-          <CardContent className={classes.content}>
-            <Typography
-              variant="body2"
-              color="textSecondary"
-              align="center"
-              component="p"
-            >
-              This a is short physical description of the artwork.
-            </Typography>
-            <AudioPlayer controls className={classes.audioPlayer}/>
-          </CardContent>
+    <Container className={classes.withPadding}>
+      <Card className={classes.root}>
+        <CardHeader
+          title={title}
+          subheader={artist}
+          subheaderTypographyProps={subheaderTypographyProps}
+          className={classes.header}
+          action={
+            <>
+              <br/>
+              <AudioPlayer controls id="audio" className={classes.audioPlayer}/>
+            </>
+          }
+        />
+        {error && (
+          <Alert
+            severity="error"
+          >
+            The audio could not be loaded at this time.
+          </Alert>
+        )}
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+          spacing={4}
+          className={classes.root}
+        >
+          <Grid item xs={12} md={8}>
+            <CardMedia
+              className={classes.media}
+              image={artwork.get('url')}
+              title={artist}
+            />
+            <CardContent>
+              <Typography
+                variant="body2"
+                color="primary"
+                align="center"
+                component="p"
+              >
+                {alt}
+              </Typography>
+            </CardContent>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <CardContent className={classes.content}>
+              <Typography
+                variant="h4"
+                color="primary"
+                component="h2"
+                align="center"
+                gutterBottom
+              >
+                  Description</Typography>
+              <Typography id="description" align="left" paragraph>
+              </Typography>
+            </CardContent>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={4}>
-          <CardContent className={classes.content}>
-            <Typography
-              variant="h4"
-              color="primary"
-              component="h2"
-              align="center"
-              gutterBottom
-            >
-              Description</Typography>
-            <Typography paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua. Consectetur lorem donec massa sapien.
-              Purus faucibus ornare suspendisse sed. Id neque aliquam
-              vestibulum morbi blandit cursus risus. Amet dictum sit amet
-              justo donec enim diam vulputate. Velit dignissim sodales ut
-              eu sem integer vitae. Quisque egestas diam in arcu cursus.
-              Non diam phasellus vestibulum lorem. Proin fermentum leo vel
-              orci. Purus semper eget duis at tellus at. Id aliquet risus
-              feugiat in.
-            </Typography>
-          </CardContent>
-        </Grid>
-      </Grid>
-    </Card>
+      </Card>
+    </Container>
   );
 }
+
+ArtworkCloseUpCard.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+};
