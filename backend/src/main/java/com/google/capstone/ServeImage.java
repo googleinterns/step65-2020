@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Endpoint to get single image given id
  */
-
 @WebServlet("/get-image")
 public class ServeImage extends HttpServlet {
   @Override
