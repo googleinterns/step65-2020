@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/*
+/**
  * Servlet takes input of BlobKey to serve audio file from Google Cloud Storage
  */
 @WebServlet(name = "ServeBlob", value = "/api/v1/get-blob")
