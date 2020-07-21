@@ -31,10 +31,11 @@ export default function UserUploadForm(props) {
         if(e.target.files.length > 0) {
           // Accessed .name from file 
           setName(e.target.files[0].name);
+          setBtnDisabled(false);
         }
       break;
       default:
-        setName( e.target.value);
+        setName(e.target.value);
      }
   };
 
@@ -56,6 +57,8 @@ export default function UserUploadForm(props) {
 
   const [actionURL, setURL] = useState('');
 
+  const [btnDisabled, setBtnDisabled] = useState(true);
+
   file = fileName 
       ? ( <span>File Selected - {fileName}</span>) 
       : ( <span>Choose a file...</span> );
@@ -73,6 +76,7 @@ export default function UserUploadForm(props) {
             <div>
               <TextField
                 required
+                autoComplete="off"
                 id="artist-name"
                 label="Artist Name"
                 name="artistName"
@@ -82,6 +86,7 @@ export default function UserUploadForm(props) {
             <div>
               <TextField
                 required
+                autoComplete="off"
                 id="art-title"
                 label="Art Title"
                 name="artTitle"
@@ -91,6 +96,7 @@ export default function UserUploadForm(props) {
             <div>
               <TextField
                 required
+                autoComplete="off"
                 id="alt-text"
                 label="Alt Text"
                 name="altText"
@@ -100,6 +106,7 @@ export default function UserUploadForm(props) {
             <div>
               <TextField
                 required
+                autoComplete="off"
                 id="image-info"
                 label="Image Description"
                 multiline
@@ -163,6 +170,7 @@ export default function UserUploadForm(props) {
                 variant="contained"
                 color="secondary"
                 type="submit"
+                disabled={btnDisabled}
               >
                 Submit Artwork
               </Button>
