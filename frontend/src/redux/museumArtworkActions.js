@@ -23,6 +23,22 @@ const convertToArtworkInfo = (artwork) => {
 function getQuery(limit) {
   return {
     'resources': 'artworks',
+    'mappings': {
+      '_doc': {
+        'properties': {
+          'title': {
+            'type': 'string',
+            'analyzer': 'english',
+            'fields': {
+              'raw': {
+                'type': 'string',
+                'index': 'not_analyzed',
+              },
+            },
+          },
+        },
+      },
+    },
     'fields': [
       'pagination',
       'id',
@@ -37,7 +53,9 @@ function getQuery(limit) {
     'limit': limit,
     'sort': [
       {
-        'date_end': 'desc',
+        'date_end': {
+          'order': 'desc',
+        },
       },
     ],
     'query': {
