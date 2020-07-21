@@ -53,7 +53,7 @@ function getQuery(limit) {
     'limit': limit,
     'sort': [
       {
-        'date_end': {
+        'title.raw': {
           'order': 'desc',
         },
       },
