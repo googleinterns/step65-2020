@@ -24,7 +24,7 @@ import NavigationItems from './NavigationItems';
 import MuseumGallery from './MuseumGallery';
 import GalleryPreview from './gallery-components/GalleryPreview';
 import ArtworkCloseUpCard from './ArtworkCloseUpCard';
-import UploadsFields from './UploadsFields';
+import UserUploadForm from './UserUploadForm';
 import DescLinks from './DescLinks';
 import Gallery from './gallery-components/Gallery';
 import Banner from './gallery-components/Banner';
@@ -257,7 +257,7 @@ export default function Dashboard() {
                     description, we&apos;ve provided some links below to some
                     resources that can help guide you!
                   </Typography>
-                  <UploadsFields name="User Information"/>
+                  <UserUploadForm name="User Information"/>
                   <DescLinks name="Description Links"/>
                 </Container>
               </Route>
@@ -271,22 +271,6 @@ export default function Dashboard() {
                   <Container>
                     <Gallery isMuseum={false}/>
                   </Container>
-                </Container>
-              </Route>
-              <Route exact path="/upload-artwork">
-                <Container className={classes.withPadding}>
-                  <Typography variant="h3" gutterBottom>
-                    Upload Artwork
-                  </Typography>
-                  <Typography variant="body1" gutterBottom>
-                    Here you can upload artwork of your own! Please be sure to
-                    include your name and a very detailed description of your
-                    artwork. If you are unsure of what qualifies as a good
-                    description, we&apos;ve provided some links below to some
-                    resources that can help guide you!
-                  </Typography>
-                  <UploadsFields name="User Information"/>
-                  <DescLinks name="Description Links"/>
                 </Container>
               </Route>
               <Route
