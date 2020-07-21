@@ -1,30 +1,53 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import BackgroundImage from './images/landing-page.JPG';
+import MobileBackgroundImage from './images/mobile-landing-page.JPG'
 import {Typography} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import ArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import {Link as ScrollLink} from 'react-scroll';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   banner: {
-    background: 'url('+BackgroundImage+')',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    height: '100vh',
-    margin: '0',
-    position: 'relative',
-    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      background: 'url('+MobileBackgroundImage+')',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      height: '90vh',
+      margin: '0',
+      position: 'relative',
+      width: '100%',
+    },
+    [theme.breakpoints.up('md')]: {
+      background: 'url('+BackgroundImage+')',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      height: '100vh',
+      margin: '0',
+      position: 'relative',
+      width: '100%',
+    },
   },
   bannerText: {
-    left: '30%',
-    position: 'absolute',
-    textAlign: 'center',
-    top: '40%',
-    transform: 'translate(-50%,-50%)',
-    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      left: '50%',
+      position: 'absolute',
+      textAlign: 'center',
+      top: '70%',
+      transform: 'translate(-50%,-50%)',
+      width: '100%',
+    },
+    [theme.breakpoints.up('md')]: {
+      left: '30%',
+      position: 'absolute',
+      textAlign: 'center',
+      top: '40%',
+      transform: 'translate(-50%,-50%)',
+      width: '100%',
+    },
   },
 }));
 
