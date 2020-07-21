@@ -23,6 +23,7 @@
     <maven>3.5</maven>
   </prerequisites>
 
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -63,7 +64,6 @@
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-texttospeech</artifactId>
     </dependency>
-
 
 
     <!-- Test Dependencies -->

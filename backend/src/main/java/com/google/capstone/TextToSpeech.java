@@ -13,7 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.cloud.storage.*;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageException;
+import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.texttospeech.v1.AudioConfig;
 import com.google.cloud.texttospeech.v1.AudioEncoding;
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
@@ -37,7 +41,6 @@ public class TextToSpeech extends HttpServlet {
   private static final String BUCKET_NAME = "tts-audio";
   private static final Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_ID).build().getService();
 
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String textString = request.getParameter("text");
@@ -50,7 +53,8 @@ public class TextToSpeech extends HttpServlet {
       response.setContentType("text/plain");
       response.getWriter().println(blobKey);
     } else {
-      String errorMsg = "Invalid text or object id.";
+      String errorMsg =
+              String.format("Invalid text or object id. Provided object: %s and text: %s", objectIdString, textString);
       logger.severe(errorMsg);
       response.sendError(400, errorMsg);
     }
@@ -72,9 +76,11 @@ public class TextToSpeech extends HttpServlet {
       ByteString audioContents = generateAudio(textToSpeechClient, textString);
       uploadAudio(audioContents, objectIdString, textString);
     } catch (IOException e) {
-      String errorMsg = "Unable to generate audio file.";
-      logger.severe(errorMsg);
-      response.sendError(500, errorMsg);
+        String errorMsg =
+                String.format("Unable to generate audio file. " +
+                                "Provided object: %s and text: %s", objectIdString, textString);
+        logger.severe(errorMsg);
+        response.sendError(500, errorMsg);
     }
   }
 
@@ -102,7 +108,8 @@ public class TextToSpeech extends HttpServlet {
     try {
       storage.create(blobInfo, audioContents.toByteArray());
     } catch (StorageException e) {
-      logger.severe("Audio file unable to be uploaded to Google Cloud Storage.");
+      logger.severe(String.format("Audio file for object %s unable to be uploaded to Google Cloud Storage.",
+              objectIdString));
     }
     logger.info("Audio file successfully uploaded to Google Cloud Storage.");
   }
