@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import PhotoUploadIcon from '@material-ui/icons/AddPhotoAlternate';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,9 +12,9 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: 0,
       width: '150ch',
     },
-    height: '40px',
-    margin: theme.spacing(1),
-    width: '75ch',
+    'height': '40px',
+    'margin': theme.spacing(1),
+    'width': '75ch',
   },
   input: {
     display: 'none',
@@ -29,10 +30,12 @@ export default function FileName(props) {
           // Accessed .name from file 
           setName(e.target.files[0].name);
         }
-      break;
+        break;
       default:
+
         setName( e.target.value);
      }
+
   };
 
   useEffect(() => {
@@ -61,14 +64,20 @@ export default function FileName(props) {
       <>
         <form name="image-upload" action={actionURL} method="POST" encType="multipart/form-data">
           <Grid 
-          alignItems="center"
-          container 
-          className={classes.root}
-          justify="flex-start" 
-          spacing={2}
+            alignItems="center"
+            container
+            className={classes.root}
+            justify="flex-start"
+            spacing={2}
           >
             <Grid item xs={8}>
-              <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="grey.300">
+              <Box
+                display="flex"
+                flexDirection="row"
+                p={1}
+                m={1}
+                bgcolor="grey.300"
+              >
                 {file}
               </Box>
             </Grid>
@@ -82,9 +91,9 @@ export default function FileName(props) {
                 onChange={onChange}
               />
               <label htmlFor="select-file">
-                <Button 
-                  variant="contained" 
-                  color="primary" 
+                <Button
+                  variant="contained"
+                  color="primary"
                   component="span"
                   id="shown-button"
                   startIcon={<PhotoUploadIcon />}

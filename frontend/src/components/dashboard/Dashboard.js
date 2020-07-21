@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import clsx from 'clsx';
 import {
   BrowserRouter as Router,
@@ -22,15 +22,18 @@ import {ThemeProvider} from '@material-ui/styles';
 import {Element as ScrollElement} from 'react-scroll';
 import NavigationItems from './NavigationItems';
 import MuseumGallery from './MuseumGallery';
-import GalleryPreview from './GalleryPreview';
+import GalleryPreview from './gallery-components/GalleryPreview';
 import ArtworkCloseUpCard from './ArtworkCloseUpCard';
 import UploadsFields from './UploadsFields';
 import DescLinks from './DescLinks';
-import Gallery from './Gallery';
-import Banner from './Banner';
+import Gallery from './gallery-components/Gallery';
+import Banner from './gallery-components/Banner';
 import LandingPage from './LandingPage';
 import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
+import Pagination from '@material-ui/lab/Pagination';
 
 const drawerWidth = 240;
 
@@ -41,8 +44,11 @@ let theme = createMuiTheme({
       light: '#05b2dc',
     },
     secondary: {
-      main: '#a07178',
+      main: '#99666F',
       light: '#c2a3a8',
+    },
+    text: {
+      secondary: '#ffffff',
     },
 
     contrastThreshold: 3,
@@ -123,6 +129,11 @@ const useStyles = makeStyles(() => ({
   mission: {
     background: theme.palette.secondary.main,
   },
+  pagination: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: theme.spacing(2),
+  },
 }));
 
 export default function Dashboard() {
@@ -136,6 +147,20 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  // fetches artworks for GalleryPreview and MuseumGallery
+  const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
+  const artworks = Array.from(artworksMap);
+  const dispatch = useDispatch();
+  const limit = 9;
+  const [museumPage, setMuseumPage] = useState(1);
+  const handleChange = (event, value) => {
+    setMuseumPage(value);
+  };
+  useEffect(() => {
+    dispatch(fetchMuseumArtworks(museumPage, limit));
+  }, [dispatch, museumPage]);
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -195,7 +220,11 @@ export default function Dashboard() {
                   <ScrollElement id="OurMission" className={classes.mission}>
                     <OurMission/>
                   </ScrollElement>
-                  <GalleryPreview name="Museum Gallery" link="/museum-gallery"/>
+                  <GalleryPreview
+                    name="Museum Gallery"
+                    link="/museum-gallery"
+                    artworks={artworks.slice(0, 3)}
+                  />
                   <GalleryPreview
                     name="User Uploads Gallery"
                     link="/user-uploads-gallery"
@@ -205,6 +234,14 @@ export default function Dashboard() {
               <Route exact path="/museum-gallery">
                 <Container className={classes.galleryPageWrapper}>
                   <MuseumGallery />
+                  <Container className={classes.pagination}>
+                    <Pagination
+                      count={10}
+                      size="large"
+                      page={museumPage}
+                      onChange={handleChange}
+                    />
+                  </Container>
                 </Container>
               </Route>
               <Route exact path="/upload-artwork">
@@ -251,11 +288,10 @@ export default function Dashboard() {
                   <DescLinks name="Description Links"/>
                 </Container>
               </Route>
-              <Route exact path="/picture-id">
-                <Container className={classes.withPadding}>
-                  <ArtworkCloseUpCard/>
-                </Container>
-              </Route>
+              <Route
+                exact path="/gallery/:id"
+                component={ArtworkCloseUpCard}
+              />
             </Switch>
           </main>
         </div>

@@ -63,5 +63,4 @@ public class UploadImg extends HttpServlet{
       //development link
       response.sendRedirect("https://3001-ba659410-163c-49e0-b45f-c22c5b2dc8b5.us-central1.cloudshell.dev/user-uploads-gallery");
   }
-
 }
