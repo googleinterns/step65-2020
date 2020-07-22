@@ -97,19 +97,8 @@ export default function MuseumGallery() {
   }
   return (
     <Container>
-      <Container className={classes.searchAndSortByBar}>
-        <Container className={classes.searchForm}>
-          <TextField
-            className={classes.searchTextField}
-            id="search-textfield"
-            label="Search"
-            variant="outlined"
-            onKeyUp = {(event) => {
-              if (event.keyCode === 13) {
-                handleChangeSearch();
-              }
-            }}
-          />
+      <Container className={classes.searchForm}>
+        <Container className={classes.searchAndSortByBar}>
           <Container className={classes.selectMenu}>
             <FormControl className={classes.formControl}>
               <InputLabel shrink id="search-field-label">Search By</InputLabel>
@@ -124,6 +113,17 @@ export default function MuseumGallery() {
               </Select>
             </FormControl>
           </Container>
+          <TextField
+            className={classes.searchTextField}
+            id="search-textfield"
+            label="Search"
+            variant="outlined"
+            onKeyUp = {(event) => {
+              if (event.keyCode === 13) {
+                handleChangeSearch();
+              }
+            }}
+          />
           <div className={classes.searchButton}>
             <IconButton
               aria-label="search"
