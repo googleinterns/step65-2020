@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet that gets all stored entities from Datastore
- * Turns entities to UplaodedImage objects and converts to json
+ * Turns entities to UploadedImage objects and converts to json
  * then returns the json in response
  */
 @WebServlet("/api/v1/serveUploads")
