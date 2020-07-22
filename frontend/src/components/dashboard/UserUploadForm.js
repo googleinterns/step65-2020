@@ -49,6 +49,8 @@ export default function UserUploadForm(props) {
   },[]);
 
   const classes = useStyles();
+  
+  const redirectUrl = document.location.origin + '/user-uploads-gallery';
 
   const [fileName, setName] = useState('');
   let file = null;
@@ -62,6 +64,7 @@ export default function UserUploadForm(props) {
   return(
       <>
         <form name="image-upload" action={actionURL} method="POST" encType="multipart/form-data">
+          <input type="hidden" name="redirectUrl" value={redirectUrl} />
           <Grid
             className={classes.root}
             container
