@@ -22,8 +22,6 @@
   <prerequisites>
     <maven>3.5</maven>
   </prerequisites>
-
-
   <dependencyManagement>
     <dependencies>
       <dependency>
