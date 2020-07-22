@@ -165,7 +165,8 @@ function artworksJsonToMap(artworks) {
   return artworksMap;
 }
 
-export function fetchMuseumArtworks(page, limit, searchQuery='', sortBy='relevance', searchField='') {
+export function fetchMuseumArtworks(
+    page, limit, searchQuery='', sortBy='relevance', searchField='') {
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
     return getMuseumArtworks('artworks/search',

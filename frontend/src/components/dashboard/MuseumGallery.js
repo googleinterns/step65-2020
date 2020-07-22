@@ -8,7 +8,6 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import {makeStyles} from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
@@ -123,7 +122,6 @@ export default function MuseumGallery() {
                 <MenuItem value="title">Title</MenuItem>
                 <MenuItem value="artist_title">Artist</MenuItem>
               </Select>
-              <FormHelperText>Sort images by...</FormHelperText>
             </FormControl>
           </Container>
           <div className={classes.searchButton}>
@@ -149,7 +147,6 @@ export default function MuseumGallery() {
               <MenuItem value="date">Date</MenuItem>
               <MenuItem value="title">Title</MenuItem>
             </Select>
-            <FormHelperText>Sort images by...</FormHelperText>
           </FormControl>
         </Container>
       </Container>
