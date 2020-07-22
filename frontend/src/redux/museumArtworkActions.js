@@ -53,7 +53,7 @@ const convertSearchToQuerySyntax = (searchField, search) => {
 };
 
 // based off of https://github.com/kjschmidt913/AIC/blob/master/script.js
-function getQuery(limit, sortBy, searchQuery = convertSearchToQuerySyntax('artist_title', 'Claude Monet')) {
+function getQuery(limit, sortBy, searchQuery) {
   return {
     'resources': 'artworks',
     'mappings': {
@@ -131,7 +131,7 @@ function getQuery(limit, sortBy, searchQuery = convertSearchToQuerySyntax('artis
   };
 }
 
-function getMuseumArtworks(path, params, sortBy) {
+function getMuseumArtworks(path, params, sortBy, searchField, search) {
   const apiUrl = new URL('https://aggregator-data.artic.edu/api/v1/');
   apiUrl.pathname += path;
   if (params) {
@@ -148,7 +148,8 @@ function getMuseumArtworks(path, params, sortBy) {
     },
     body: JSON.stringify(getQuery(
         params.get('limit'),
-        sortByQuerySyntax.get(sortBy))),
+        sortByQuerySyntax.get(sortBy),
+        convertSearchToQuerySyntax(searchField, search))),
   })
       .then(handleErrors)
       .then((res) => res.json());
@@ -162,15 +163,17 @@ function artworksJsonToMap(artworks) {
   return artworksMap;
 }
 
-export function fetchMuseumArtworks(page, limit, query, sortBy='relevance') {
+export function fetchMuseumArtworks(
+    page, limit, sortBy='relevance', searchField = 'artist_title', search = 'Claude Monet') {
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
     return getMuseumArtworks('artworks/search',
         new Map()
             .set('page', page)
-            .set('limit', limit)
-            .set('q', query),
+            .set('limit', limit),
         sortBy,
+        searchField,
+        search,
     )
         .then((artworks) => artworks.data)
         .then((artworks) => {
