@@ -76,7 +76,7 @@ export default function MuseumGallery() {
   let results;
   if (artworks.length !== 0) {
     results =
-      <Gallery artworks={artworks}/>;
+      <Gallery isMuseum={true}/>;
   } else {
     if (museumPage > 1) {
       results =
@@ -91,6 +91,7 @@ export default function MuseumGallery() {
         </Typography>;
     }
   }
+
   return (
     <Container>
       <Container className={classes.searchAndFilterBar}>

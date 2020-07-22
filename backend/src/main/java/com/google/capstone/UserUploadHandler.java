@@ -4,6 +4,9 @@ import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.blobstore.FileInfo;
 import com.google.appengine.api.blobstore.UploadOptions;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
@@ -13,10 +16,6 @@ import com.google.cloud.storage.StorageOptions;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  * Successfully uploads images, but redirects to backend server so needs fixing
  */
 @WebServlet("/api/v1/uploadImgs")
-public class UploadImg extends HttpServlet{
+public class UserUploadHandler extends HttpServlet{
 
   public static final String GCS_BUCKET_NAME = "upload-imgs";
 
@@ -49,18 +48,33 @@ public class UploadImg extends HttpServlet{
   }
   
   /**
-   * doesn't do anything other than handle the redirect from the backend back to the frontend (as of now)
+   * Gets image information from form and stores in Datastore 
+   * Note to self: store blobkey for access?
    */
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
+      String artistName = getParameter(request, "artistName");
+      String artTitle = getParameter(request, "artTitle");
+      String description = getParameter(request, "description");
+      long timestamp = System.currentTimeMillis();
 
-      Map<String, List<FileInfo>> uploads = blobstore.getFileInfos(request);
-      List<FileInfo> fileInfos = uploads.get("files");
+      Entity mssgEntity = new Entity("ImageInformation");
+      mssgEntity.setProperty("artistName", artistName);
+      mssgEntity.setProperty("artTitle", artTitle);
+      mssgEntity.setProperty("description", description);
+      mssgEntity.setProperty("timestamp", timestamp);
 
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(mssgEntity); 
+      
       //deployment link
       //response.sendRedirect("https://igunda-isangimino-nstroupe.uc.r.appspot.com/user-uploads-gallery");
       //development link
       response.sendRedirect("https://3001-ba659410-163c-49e0-b45f-c22c5b2dc8b5.us-central1.cloudshell.dev/user-uploads-gallery");
+  }
+  
+  private String getParameter(HttpServletRequest request, String name) {
+    String value = request.getParameter(name);
+    return value;
   }
 }
