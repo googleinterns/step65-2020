@@ -33,7 +33,7 @@ import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
 import {useDispatch} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
-import {fetchUserArtworks} from "../../redux/userArtworkActions";
+import {fetchUserArtworks} from '../../redux/userArtworkActions';
 import AICimg from './images/aic-inside.jpg';
 
 const drawerWidth = 240;
