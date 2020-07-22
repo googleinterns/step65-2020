@@ -87,11 +87,7 @@ public class UserUploadHandler extends HttpServlet{
       
       datastore.put(mssgEntity);  
       
-      //deployment link
-      response.sendRedirect("https://igunda-isangimino-nstroupe.uc.r.appspot.com/user-uploads-gallery");
- 
-      //development link
-      //response.sendRedirect("https://3001-ba659410-163c-49e0-b45f-c22c5b2dc8b5.us-central1.cloudshell.dev/user-uploads-gallery");
+      response.sendRedirect(request.getParameter("redirectUrl"));
   }
   
   private static String getParameter(HttpServletRequest request, String name, String defaultValue) {
