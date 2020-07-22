@@ -50,7 +50,7 @@ export default function ArtworkCloseUpCard(props) {
   const subheaderTypographyProps = {color: 'textSecondary'};
 
   const id = props.match.params.id;
-  const isMuseum = props.match.params.isMuseum === 'true';
+  const isMuseum = props.match.params.collection === 'museum';
   const artworks = useSelector((state) => (isMuseum ?
       state.museumArtworks.artworks :
       state.userArtworks.artworks));
@@ -179,7 +179,7 @@ ArtworkCloseUpCard.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,
-      isMuseum: PropTypes.string.isRequired,
+      collection: PropTypes.string.isRequired,
     }),
   }).isRequired,
 };

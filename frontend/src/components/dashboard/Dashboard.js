@@ -290,7 +290,7 @@ export default function Dashboard() {
                 </Container>
               </Route>
               <Route
-                exact path="/gallery/:isMuseum/:id"
+                exact path="/gallery/:collection/:id"
                 component={ArtworkCloseUpCard}
               />
             </Switch>
