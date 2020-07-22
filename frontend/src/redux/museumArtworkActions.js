@@ -46,10 +46,12 @@ const sortByQuerySyntax = new Map()
         });
 
 const convertSearchToQuerySyntax = (searchField, search) => {
-  const key = searchField;
-  const json = { };
-  json[key] = search;
-  return json;
+  if (searchField !== '' && search !== '') {
+    const json = { };
+    json[searchField] = search;
+    return json;
+  }
+  return null;
 };
 
 // based off of https://github.com/kjschmidt913/AIC/blob/master/script.js
@@ -89,11 +91,11 @@ function getQuery(limit, sortBy, searchQuery) {
     ],
     'query': {
       'bool': {
-        'filter': [
+        ...searchQuery && {'filter': [
           {
             'match': searchQuery,
           },
-        ],
+        ]},
         'must': [
           {
             'term': {
@@ -163,8 +165,7 @@ function artworksJsonToMap(artworks) {
   return artworksMap;
 }
 
-export function fetchMuseumArtworks(
-    page, limit, sortBy='relevance', searchField = 'artist_title', search = 'Claude Monet') {
+export function fetchMuseumArtworks(page, limit, searchQuery='', sortBy='relevance', searchField='') {
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
     return getMuseumArtworks('artworks/search',
@@ -173,7 +174,7 @@ export function fetchMuseumArtworks(
             .set('limit', limit),
         sortBy,
         searchField,
-        search,
+        searchQuery,
     )
         .then((artworks) => artworks.data)
         .then((artworks) => {

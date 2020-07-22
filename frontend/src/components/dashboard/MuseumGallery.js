@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     display: 'flex',
   },
-  sortByForm: {
+  selectMenu: {
     alignItems: 'center',
     display: 'flex',
     width: 'auto',
@@ -65,17 +65,18 @@ export default function MuseumGallery() {
     setSearchQuery(document.getElementById('search-textfield').value);
     setMuseumPage(1);
   };
-  // const [searchField, setSearchField] = React.useState('relevance');
-  // const handleChangeSearchField = (event) => {
-  //   setSearchField(event.target.value);
-  // };
+  const [searchField, setSearchField] = React.useState('title');
+  const handleChangeSearchField = (event) => {
+    setSearchField(event.target.value);
+  };
   const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const limit = 9;
   useEffect(() => {
-    dispatch(fetchMuseumArtworks(museumPage, limit, sortBy, 'artist_title', 'Claude Monet'));
-  }, [dispatch, museumPage, searchQuery, sortBy]);
+    dispatch(fetchMuseumArtworks(
+        museumPage, limit, searchQuery, sortBy, searchField));
+  }, [dispatch, museumPage, searchQuery, sortBy, searchField]);
   let paginationNeeded = true;
   let results;
   if (artworks.length !== 0) {
@@ -110,6 +111,21 @@ export default function MuseumGallery() {
               }
             }}
           />
+          <Container className={classes.selectMenu}>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="search-field-label">Search By</InputLabel>
+              <Select
+                labelId="search-field-label"
+                id="search-field"
+                value={searchField}
+                onChange={handleChangeSearchField}
+              >
+                <MenuItem value="title">Title</MenuItem>
+                <MenuItem value="artist_title">Artist</MenuItem>
+              </Select>
+              <FormHelperText>Sort images by...</FormHelperText>
+            </FormControl>
+          </Container>
           <div className={classes.searchButton}>
             <IconButton
               aria-label="search"
@@ -118,7 +134,8 @@ export default function MuseumGallery() {
             </IconButton>
           </div>
         </Container>
-        <Container className={classes.sortByForm}>
+
+        <Container className={classes.selectMenu}>
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="sort-by-label">Sort By</InputLabel>
             <Select
@@ -135,23 +152,6 @@ export default function MuseumGallery() {
             <FormHelperText>Sort images by...</FormHelperText>
           </FormControl>
         </Container>
-        {/*<Container className={classes.sortByForm}>*/}
-        {/*  <FormControl className={classes.formControl}>*/}
-        {/*    <InputLabel shrink id="search-field-label">Sort By</InputLabel>*/}
-        {/*    <Select*/}
-        {/*      labelId="search-field-label"*/}
-        {/*      id="search-field"*/}
-        {/*      value={searchField}*/}
-        {/*      onChange={handleChangeSearchField}*/}
-        {/*    >*/}
-        {/*      <MenuItem value="relevance">Term</MenuItem>*/}
-        {/*      <MenuItem value="artist">Artist</MenuItem>*/}
-        {/*      <MenuItem value="date">Date</MenuItem>*/}
-        {/*      <MenuItem value="title">Title</MenuItem>*/}
-        {/*    </Select>*/}
-        {/*    <FormHelperText>Sort images by...</FormHelperText>*/}
-        {/*  </FormControl>*/}
-        {/*</Container>*/}
       </Container>
       {results}
       {(paginationNeeded) &&
