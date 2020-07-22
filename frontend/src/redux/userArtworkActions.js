@@ -4,6 +4,7 @@ function convertToArtworkInfo(artwork) {
   artworkInfo.set('url', '/api/v1/get-blob?blob-key='.concat(artwork.blobKey));
   artworkInfo.set('title', artwork.artTitle);
   artworkInfo.set('artist', artwork.artistName);
+
   artworkInfo.set('description', artwork.description);
   return artworkInfo;
 }

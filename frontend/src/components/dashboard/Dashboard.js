@@ -1,5 +1,5 @@
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import {
   BrowserRouter as Router,
@@ -33,8 +33,8 @@ import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
 import {useDispatch} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
-import Pagination from '@material-ui/lab/Pagination';
-import {fetchUserArtworks} from "../../redux/userArtworkActions";
+import {fetchUserArtworks} from '../../redux/userArtworkActions';
+import AICimg from './images/aic-inside.jpg';
 
 const drawerWidth = 240;
 
@@ -130,11 +130,6 @@ const useStyles = makeStyles(() => ({
   mission: {
     background: theme.palette.secondary.main,
   },
-  pagination: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: theme.spacing(2),
-  },
 }));
 
 export default function Dashboard() {
@@ -151,15 +146,14 @@ export default function Dashboard() {
 
   // fetches artworks for GalleryPreview and MuseumGallery
   const dispatch = useDispatch();
-  const limit = 9;
-  const [museumPage, setMuseumPage] = useState(1);
-  const handleChange = (event, value) => {
-    setMuseumPage(value);
-  };
+  const LIMIT = 9;
+  const FIRST_PAGE = 1;
+  const EMPTY_QUERY = '';
   useEffect(() => {
-    dispatch(fetchMuseumArtworks(museumPage, limit));
+    dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
     dispatch(fetchUserArtworks());
-  }, [dispatch, museumPage]);
+  }, [dispatch]);
+
 
 
   return (
@@ -234,15 +228,12 @@ export default function Dashboard() {
               </Route>
               <Route exact path="/museum-gallery">
                 <Container className={classes.galleryPageWrapper}>
+                  <Banner
+                    title="Museum Gallery"
+                    description="Explore the Art Institute of Chicago!"
+                    imgURL={AICimg}
+                  />
                   <MuseumGallery />
-                  <Container className={classes.pagination}>
-                    <Pagination
-                      count={10}
-                      size="large"
-                      page={museumPage}
-                      onChange={handleChange}
-                    />
-                  </Container>
                 </Container>
               </Route>
               <Route exact path="/upload-artwork">
@@ -258,6 +249,7 @@ export default function Dashboard() {
                     resources that can help guide you!
                   </Typography>
                   <UserUploadForm name="User Information"/>
+
                   <DescLinks name="Description Links"/>
                 </Container>
               </Route>
@@ -274,7 +266,7 @@ export default function Dashboard() {
                 </Container>
               </Route>
               <Route
-                exact path="/gallery/:isMuseum/:id"
+                exact path="/gallery/:collection/:id"
                 component={ArtworkCloseUpCard}
               />
             </Switch>

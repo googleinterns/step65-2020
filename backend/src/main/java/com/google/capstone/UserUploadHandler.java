@@ -19,12 +19,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import javax.servlet.ServletException;
  
 /**
  * Servlet used to handle image upload to Google Cloud Storage using the Blobstore API
  * Also uploads Image information, blobkey, and servingURL to the Datastore
- * Note: must be updated before deployment to redirect to proper frontend server
  */
 @WebServlet("/api/v1/uploadImgs")
 public class UserUploadHandler extends HttpServlet{
@@ -92,6 +92,7 @@ public class UserUploadHandler extends HttpServlet{
     if (value == null) {
       return defaultValue;
     }
+
     return value;
   }
 }
