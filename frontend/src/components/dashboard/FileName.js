@@ -55,6 +55,17 @@ class FileName extends React.Component {
         });
   };
 
+  getBlobstoreURL = () => {
+    fetch('/api/v1/uploadImgs')
+        .then((response) => {
+          return response.text();
+        })
+        .then((imageUploadUrl) => {
+          console.log(imageUploadUrl);
+          this.setState({actionURL: imageUploadUrl});
+        });
+  };
+
   render(){
     const {classes} = this.props;
 
