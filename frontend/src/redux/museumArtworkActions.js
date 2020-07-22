@@ -45,10 +45,15 @@ const sortByQuerySyntax = new Map()
           },
         });
 
-const convertSearchByToQuerySyntax = (searchBy) => {};
+const convertSearchToQuerySyntax = (searchField, search) => {
+  const key = searchField;
+  const json = { };
+  json[key] = search;
+  return json;
+};
 
 // based off of https://github.com/kjschmidt913/AIC/blob/master/script.js
-function getQuery(limit, sortBy) {
+function getQuery(limit, sortBy, searchQuery = convertSearchToQuerySyntax('artist_title', 'Claude Monet')) {
   return {
     'resources': 'artworks',
     'mappings': {
@@ -86,9 +91,7 @@ function getQuery(limit, sortBy) {
       'bool': {
         'filter': [
           {
-            'match': {
-              'artist_title': 'Claude Monet',
-            },
+            'match': searchQuery,
           },
         ],
         'must': [
