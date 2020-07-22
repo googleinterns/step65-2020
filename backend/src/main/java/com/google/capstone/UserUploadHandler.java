@@ -35,8 +35,6 @@ public class UserUploadHandler extends HttpServlet{
  
   private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
  
-  private final ImagesService images = ImagesServiceFactory.getImagesService();
- 
   /**
    * Creates an upload URL to send the image to in GCS.
    * is used in the fetch that returns URL to action in form
@@ -83,7 +81,6 @@ public class UserUploadHandler extends HttpServlet{
  
       String blobKey = blobKeys.get(0).getKeyString();
       mssgEntity.setProperty("blobKey", blobKey);
-      mssgEntity.setProperty("url", "/api/v1/get-blob?blob-key=" + blobKey);
       
       datastore.put(mssgEntity);  
       
