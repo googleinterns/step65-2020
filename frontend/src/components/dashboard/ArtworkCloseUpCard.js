@@ -11,6 +11,7 @@ import AudioPlayer from 'react-audio-player';
 import Container from '@material-ui/core/Container';
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
+import {generateTextToSpeech, getAudioTranscript} from './textToSpeechHelpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,6 +56,9 @@ export default function ArtworkCloseUpCard(props) {
   const department = artwork.get('department');
 
   useEffect(() => {
+    const descriptionElement = document.getElementById('description');
+    descriptionElement.innerHTML = description;
+
     function handleErrors(response) {
       if (!response.ok) {
         throw Error(response.statusText);
@@ -62,17 +66,7 @@ export default function ArtworkCloseUpCard(props) {
       return response;
     }
 
-    const descriptionElement = document.getElementById('description');
-    descriptionElement.innerHTML = description;
-    const strippedDescription = descriptionElement.innerText;
-    const audioText = `This is a piece from the ${department} collection 
-        titled ${title} by ${artist}. 
-        It is ${alt}. ${strippedDescription}`;
-
-    const params = new URLSearchParams();
-    params.append('text', audioText);
-    params.append('id', id);
-    fetch('/api/v1/tts', {method: 'POST', body: params})
+    generateTextToSpeech(getAudioTranscript(artwork), id)
         .then(handleErrors)
         .then((response) => response.text())
         .then((blobKey) => document.getElementById('audio')
