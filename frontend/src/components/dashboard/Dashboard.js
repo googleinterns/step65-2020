@@ -262,7 +262,7 @@ export default function Dashboard() {
                     <Gallery isMuseum={false}/>
                   </Container>
                 </Container>
-              </Route>   
+              </Route>
               <Route
                 exact path="/gallery/:collection/:id"
                 component={ArtworkCloseUpCard}
