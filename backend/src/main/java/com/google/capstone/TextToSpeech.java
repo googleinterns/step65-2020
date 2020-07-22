@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.repackaged.com.google.common.hash.HashFunction;
+import com.google.appengine.repackaged.com.google.common.hash.Hashing;
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
@@ -25,6 +28,7 @@ import com.google.cloud.texttospeech.v1.SynthesisInput;
 import com.google.cloud.texttospeech.v1.SynthesizeSpeechResponse;
 import com.google.cloud.texttospeech.v1.TextToSpeechClient;
 import com.google.cloud.texttospeech.v1.VoiceSelectionParams;
+import com.google.common.base.Charsets;
 import com.google.protobuf.ByteString;
 
 
@@ -40,6 +44,7 @@ public class TextToSpeech extends HttpServlet {
   private static final String PROJECT_ID = "igunda-isangimino-nstroupe";
   private static final String BUCKET_NAME = "tts-audio";
   private static final Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_ID).build().getService();
+  private static final HashFunction hashFunction = Hashing.md5();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -64,7 +69,7 @@ public class TextToSpeech extends HttpServlet {
     Blob blob = storage.get(BlobId.of(BUCKET_NAME, objectIdString));
     if (blob != null) {
       String transcript = blob.getMetadata().get("audioTranscript");
-      return transcript.equals(textString);
+      return transcript.equals(getHashString(textString));
     } else {
       return false;
     }
@@ -103,7 +108,7 @@ public class TextToSpeech extends HttpServlet {
     BlobId blobId = BlobId.of(BUCKET_NAME, objectIdString);
     BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
             .setContentType("audio/mpeg")
-            .setMetadata(Collections.singletonMap("audioTranscript", textString))
+            .setMetadata(Collections.singletonMap("audioTranscript", getHashString(textString)))
             .build();
     try {
       storage.create(blobInfo, audioContents.toByteArray());
@@ -119,6 +124,10 @@ public class TextToSpeech extends HttpServlet {
     BlobKey blobKey = blobstoreService.createGsBlobKey(
             "/gs/" + BUCKET_NAME + "/" + objectIdString);
     return blobKey.getKeyString();
+  }
+
+  private String getHashString(String textString) {
+    return hashFunction.newHasher().putString(textString, Charsets.UTF_8).hash().toString();
   }
 
 }
