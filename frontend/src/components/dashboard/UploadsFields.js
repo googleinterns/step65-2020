@@ -97,7 +97,6 @@ export default function UploadsFields() {
           </div>
         </Grid>
       </form>
-
     </>
   );
 }
