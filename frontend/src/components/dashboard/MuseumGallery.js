@@ -109,7 +109,7 @@ export default function MuseumGallery() {
           </FormControl>
         </Container>
       </Container>
-      <Gallery artworks={artworks}/>
+      <Gallery isMuseum={true}/>
       <Container className={classes.pagination}>
         <Pagination
           count={10}

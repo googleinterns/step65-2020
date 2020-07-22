@@ -33,6 +33,7 @@ import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
 import {useDispatch} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
+import {fetchUserArtworks} from '../../redux/userArtworkActions';
 import AICimg from './images/aic-inside.jpg';
 
 const drawerWidth = 240;
@@ -150,6 +151,7 @@ export default function Dashboard() {
   const EMPTY_QUERY = '';
   useEffect(() => {
     dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
+    dispatch(fetchUserArtworks());
   }, [dispatch]);
 
 
@@ -214,10 +216,12 @@ export default function Dashboard() {
                   <GalleryPreview
                     name="Museum Gallery"
                     link="/museum-gallery"
+                    isMuseum={true}
                   />
                   <GalleryPreview
                     name="User Uploads Gallery"
                     link="/user-uploads-gallery"
+                    isMuseum={false}
                   />
                 </Container>
               </Route>
@@ -255,7 +259,7 @@ export default function Dashboard() {
                     imgURL={ColorImg}
                   />
                   <Container>
-                    <Gallery />
+                    <Gallery isMuseum={false}/>
                   </Container>
                 </Container>
               </Route>
@@ -276,7 +280,7 @@ export default function Dashboard() {
                 </Container>
               </Route>
               <Route
-                exact path="/gallery/:id"
+                exact path="/gallery/:collection/:id"
                 component={ArtworkCloseUpCard}
               />
             </Switch>
