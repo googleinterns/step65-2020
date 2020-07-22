@@ -53,9 +53,9 @@ public class UserUploadHandler extends HttpServlet{
    */
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      String artistName = getParameter(request, "artistName", "");
-      String artTitle = getParameter(request, "artTitle", "");
-      String description = getParameter(request, "description", "");
+      String artistName = getParameter(request, "artistName");
+      String artTitle = getParameter(request, "artTitle");
+      String description = getParameter(request, "description");
       long timestamp = System.currentTimeMillis();
 
       Entity mssgEntity = new Entity("ImageInformation");
@@ -73,11 +73,8 @@ public class UserUploadHandler extends HttpServlet{
       response.sendRedirect("https://3001-ba659410-163c-49e0-b45f-c22c5b2dc8b5.us-central1.cloudshell.dev/user-uploads-gallery");
   }
   
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+  private String getParameter(HttpServletRequest request, String name) {
     String value = request.getParameter(name);
-    if (value == null) {
-      return defaultValue;
-    }
     return value;
   }
 }
