@@ -1,49 +1,125 @@
-import React, {useEffect} from 'react';
-import Gallery from './Gallery';
-import Banner from './Banner';
-import AICimg from './images/aic-inside.jpg';
+import React, {useEffect, useState} from 'react';
+import Gallery from './gallery-components/Gallery';
 import Container from '@material-ui/core/Container';
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import {makeStyles} from '@material-ui/core/styles';
+import Pagination from '@material-ui/lab/Pagination';
+import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
+import {useDispatch, useSelector} from 'react-redux';
 
-export default function MuseumGallery(props) {
-  const API = 'https://aggregator-data.artic.edu/api/v1/artworks/249689?limit=2';
+const useStyles = makeStyles((theme) => ({
+  searchAndFilterBar: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: theme.spacing(2),
+  },
+  searchTextField: {
+    margin: theme.spacing(2),
+    width: '75ch',
+  },
+  searchForm: {
+    display: 'flex',
+    width: 'auto',
+  },
+  searchButton: {
+    alignItems: 'center',
+    display: 'flex',
+  },
+  filterForm: {
+    alignItems: 'center',
+    display: 'flex',
+    width: 'auto',
+  },
+  formControl: {
+    minWidth: 200,
+  },
+  pagination: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: theme.spacing(2),
+  },
+}));
 
-  // from https://github.com/art-institute-of-chicago/browser-extension/blob/master/script.js
-  const getIIIFLevel = (artwork, displayWidth) => {
-    return {
-      url: 'https://www.artic.edu/iiif/2/' + artwork.image_id + '/full/' + displayWidth + ',/0/default.jpg',
-      width: displayWidth,
-      height: Math.floor(artwork.thumbnail.height *
-        displayWidth / artwork.thumbnail.width),
-    };
+export default function MuseumGallery() {
+  const classes = useStyles();
+
+  const [filter, setFilter] = React.useState('');
+  const handleChangeFilter = (event) => {
+    setFilter(event.target.value);
   };
-
+  const [museumPage, setMuseumPage] = useState(1);
+  const handleChangePage = (event, value) => {
+    setMuseumPage(value);
+  };
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const handleChangeSearch = () => {
+    setSearchQuery(document.getElementById('search-textfield').value);
+  };
+  const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
+  const artworks = Array.from(artworksMap);
+  const dispatch = useDispatch();
+  const limit = 9;
   useEffect(() => {
-    fetch(API, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    })
-        .then((response) => response.json())
-        .then((result) => {
-          document.getElementById('photo')
-              .setAttribute('alt', result.data.thumbnail.alt_text);
-          const linkToImage = getIIIFLevel(result.data, 500);
-          document.getElementById('photo').setAttribute('src', linkToImage.url);
-        });
-  });
+    dispatch(fetchMuseumArtworks(museumPage, limit, searchQuery));
+  }, [dispatch, museumPage, searchQuery]);
 
   return (
-    <>
-      <Banner
-        title="Museum Gallery"
-        description="Explore the Art Institute of Chicago!"
-        imgURL={AICimg}
-      />
-      <img id="photo" alt=""/>
-      <Container>
-        <Gallery />
+    <Container>
+      <Container className={classes.searchAndFilterBar}>
+        <Container className={classes.searchForm}>
+          <TextField
+            className={classes.searchTextField}
+            id="search-textfield"
+            label="Search"
+            variant="outlined"
+          />
+          <div className={classes.searchButton}>
+            <IconButton
+              aria-label="search"
+              onClick={handleChangeSearch}>
+              <SearchIcon fontSize="large" />
+            </IconButton>
+          </div>
+        </Container>
+        <Container className={classes.filterForm}>
+          <FormControl className={classes.formControl}>
+            <InputLabel id="search-filter-label">Filter</InputLabel>
+            <Select
+              labelId="search-filter-label"
+              id="search-filter"
+              value={filter}
+              onChange={handleChangeFilter}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="artist">By Artist</MenuItem>
+              <MenuItem value="date">By Date</MenuItem>
+              <MenuItem value="title">By Title</MenuItem>
+            </Select>
+            <FormHelperText>Sort images by...</FormHelperText>
+          </FormControl>
+        </Container>
       </Container>
-    </>
+      <Gallery isMuseum={true}/>
+      <Container className={classes.pagination}>
+        <Pagination
+          count={10}
+          size="large"
+          page={museumPage}
+          onChange={handleChangePage}
+        />
+      </Container>
+    </Container>
   );
 }
+
+

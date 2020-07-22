@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import {
   BrowserRouter as Router,
@@ -22,15 +22,19 @@ import {ThemeProvider} from '@material-ui/styles';
 import {Element as ScrollElement} from 'react-scroll';
 import NavigationItems from './NavigationItems';
 import MuseumGallery from './MuseumGallery';
-import GalleryPreview from './GalleryPreview';
+import GalleryPreview from './gallery-components/GalleryPreview';
 import ArtworkCloseUpCard from './ArtworkCloseUpCard';
 import UserUploadForm from './UserUploadForm';
 import DescLinks from './DescLinks';
-import Gallery from './Gallery';
-import Banner from './Banner';
+import Gallery from './gallery-components/Gallery';
+import Banner from './gallery-components/Banner';
 import LandingPage from './LandingPage';
 import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
+import {useDispatch} from 'react-redux';
+import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
+import {fetchUserArtworks} from '../../redux/userArtworkActions';
+import AICimg from './images/aic-inside.jpg';
 
 const drawerWidth = 240;
 
@@ -41,8 +45,11 @@ let theme = createMuiTheme({
       light: '#05b2dc',
     },
     secondary: {
-      main: '#a07178',
+      main: '#99666F',
       light: '#c2a3a8',
+    },
+    text: {
+      secondary: '#ffffff',
     },
 
     contrastThreshold: 3,
@@ -137,6 +144,17 @@ export default function Dashboard() {
     setOpen(false);
   };
 
+  // fetches artworks for GalleryPreview and MuseumGallery
+  const dispatch = useDispatch();
+  const LIMIT = 9;
+  const FIRST_PAGE = 1;
+  const EMPTY_QUERY = '';
+  useEffect(() => {
+    dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
+    dispatch(fetchUserArtworks());
+  }, [dispatch]);
+
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -195,15 +213,25 @@ export default function Dashboard() {
                   <ScrollElement id="OurMission" className={classes.mission}>
                     <OurMission/>
                   </ScrollElement>
-                  <GalleryPreview name="Museum Gallery" link="/museum-gallery"/>
+                  <GalleryPreview
+                    name="Museum Gallery"
+                    link="/museum-gallery"
+                    isMuseum={true}
+                  />
                   <GalleryPreview
                     name="User Uploads Gallery"
                     link="/user-uploads-gallery"
+                    isMuseum={false}
                   />
                 </Container>
               </Route>
               <Route exact path="/museum-gallery">
                 <Container className={classes.galleryPageWrapper}>
+                  <Banner
+                    title="Museum Gallery"
+                    description="Explore the Art Institute of Chicago!"
+                    imgURL={AICimg}
+                  />
                   <MuseumGallery />
                 </Container>
               </Route>
@@ -231,15 +259,14 @@ export default function Dashboard() {
                     imgURL={ColorImg}
                   />
                   <Container>
-                    <Gallery />
+                    <Gallery isMuseum={false}/>
                   </Container>
                 </Container>
-              </Route>
-              <Route exact path="/picture-id">
-                <Container className={classes.withPadding}>
-                  <ArtworkCloseUpCard/>
-                </Container>
-              </Route>
+              </Route>   
+              <Route
+                exact path="/gallery/:collection/:id"
+                component={ArtworkCloseUpCard}
+              />
             </Switch>
           </main>
         </div>
