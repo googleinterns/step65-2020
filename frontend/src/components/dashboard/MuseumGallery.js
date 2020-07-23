@@ -60,10 +60,14 @@ const useStyles = makeStyles((theme) => ({
   },
   filterOptions: {
     display: 'none',
+    justifyContent: 'center',
     paddingBottom: theme.spacing(5),
   },
   drawerButton: {
     maxWidth: '15ch',
+  },
+  filterSelects: {
+    margin: theme.spacing(2),
   },
 }));
 
@@ -72,10 +76,10 @@ export default function MuseumGallery() {
 
   const handleDrawerChange = (event) => {
     const content = document.getElementById('filter-options');
-    if (content.style.display === 'block') {
+    if (content.style.display === 'flex') {
       content.style.display = 'none';
     } else {
-      content.style.display = 'block';
+      content.style.display = 'flex';
     }
   };
 
@@ -150,15 +154,12 @@ export default function MuseumGallery() {
       <Container className={classes.searchAndSortByBar}>
         <Container className={classes.selectMenu}>
           <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel shrink id="search-field-label">Search By</InputLabel>
             <Select
-              labelId="search-field-label"
               id="search-field"
               value={searchField}
               onChange={handleChangeSearchField}
-              label="Search By"
             >
-              <MenuItem value="all-fields">All fields</MenuItem>
+              <MenuItem value="all-fields">Search by: All fields</MenuItem>
               <MenuItem value="artist_title">Artist</MenuItem>
               <MenuItem value="description">Description</MenuItem>
               <MenuItem value="title">Title</MenuItem>
@@ -201,7 +202,7 @@ export default function MuseumGallery() {
         </Container>
       </Container>
       <Container id="filter-options" className={classes.filterOptions}>
-        <FormControl variant="outlined" className={classes.formControl}>
+        <FormControl variant="filled" className={[classes.filterSelects, classes.formControl].join(" ")}>
           <InputLabel shrink id="sort-by-label">Sort By</InputLabel>
           <Select
             labelId="sort-by-label"
@@ -214,6 +215,32 @@ export default function MuseumGallery() {
             <MenuItem value="artist">Artist</MenuItem>
             <MenuItem value="date">Date</MenuItem>
             <MenuItem value="title">Title</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl variant="filled" className={[classes.filterSelects, classes.formControl].join(" ")}>
+          <InputLabel shrink id="placeholder-label">Placeholder</InputLabel>
+          <Select
+            labelId="placeholder-label"
+            id="placeholder"
+            label="Placeholder"
+          >
+            <MenuItem value="relevance">Placeholder</MenuItem>
+            <MenuItem value="artist">Placeholder</MenuItem>
+            <MenuItem value="date">Placeholder</MenuItem>
+            <MenuItem value="title">Placeholder</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl variant="filled" className={[classes.filterSelects, classes.formControl].join(" ")}>
+          <InputLabel shrink id="placeholder-label">Placeholder</InputLabel>
+          <Select
+            labelId="placeholder-label"
+            id="placeholder"
+            label="Placeholder"
+          >
+            <MenuItem value="relevance">Placeholder</MenuItem>
+            <MenuItem value="artist">Placeholder</MenuItem>
+            <MenuItem value="date">Placeholder</MenuItem>
+            <MenuItem value="title">Placeholder</MenuItem>
           </Select>
         </FormControl>
       </Container>
