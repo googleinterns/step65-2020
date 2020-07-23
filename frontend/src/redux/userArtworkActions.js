@@ -1,6 +1,7 @@
 function convertToArtworkInfo(artwork) {
   const artworkInfo = new Map();
   artworkInfo.set('id', artwork.id);
+  artworkInfo.set('alt', artwork.altText);
   artworkInfo.set('url', artwork.url);
   artworkInfo.set('title', artwork.artTitle);
   artworkInfo.set('artist', artwork.artistName);
