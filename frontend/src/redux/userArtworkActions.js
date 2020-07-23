@@ -20,7 +20,7 @@ function artworksJsonToMap(artworks) {
 export function fetchUserArtworks() {
   return (dispatch) => {
     dispatch(fetchUserArtworksBegin());
-    fetch("api/v1/serveUploads")
+    fetch('api/v1/serveUploads')
         .then((response) => response.json())
         .then((artworks) => artworksJsonToMap(artworks))
         .then((artworksMap) => {
