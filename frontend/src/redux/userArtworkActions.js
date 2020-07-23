@@ -2,7 +2,7 @@ function convertToArtworkInfo(artwork) {
   const artworkInfo = new Map();
   artworkInfo.set('id', artwork.id);
   artworkInfo.set('alt', artwork.altText);
-  artworkInfo.set('url', artwork.url);
+  artworkInfo.set('url', '/api/v1/get-blob?blob-key='.concat(artwork.blobKey));
   artworkInfo.set('title', artwork.artTitle);
   artworkInfo.set('artist', artwork.artistName);
   artworkInfo.set('description', artwork.description);
@@ -20,7 +20,7 @@ function artworksJsonToMap(artworks) {
 export function fetchUserArtworks() {
   return (dispatch) => {
     dispatch(fetchUserArtworksBegin());
-    fetch("api/v1/serveUploads")
+    fetch('api/v1/serveUploads')
         .then((response) => response.json())
         .then((artworks) => artworksJsonToMap(artworks))
         .then((artworksMap) => {

@@ -13,18 +13,16 @@ public final class UploadedImage {
   private final String altText;
   private final String description;
   private final String blobkey;
-  private final String url;
   private final long timestamp;
  
   public UploadedImage(long id, String artistName, String artTitle, String altText, 
-      String description, String blobkey, String url, long timestamp) {
+      String description, String blobkey, long timestamp) {
     this.id = id; 
     this.artistName = artistName;
     this.artTitle = artTitle;
     this.altText = altText;
     this.description = description;
     this.blobkey = blobkey;
-    this.url = url;
     this.timestamp = timestamp;
   }
  
@@ -35,8 +33,7 @@ public final class UploadedImage {
     String altText = (String) entity.getProperty("altText");
     String description = (String) entity.getProperty("description");
     String blobKey = (String) entity.getProperty("blobKey");
-    String url = (String) entity.getProperty("url");
     long timestamp = (long) entity.getProperty("timestamp");
-    return new UploadedImage(id, artistName, artTitle, altText, description, blobKey, url, timestamp);
+    return new UploadedImage(id, artistName, artTitle, altText, description, blobKey, timestamp);
   }
 }
