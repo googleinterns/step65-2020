@@ -51,16 +51,25 @@ const useStyles = makeStyles((theme) => ({
 export default function MuseumGallery() {
   const classes = useStyles();
 
+  /*
+   only set newQuery to be true when there is a change to the page number,
+   the "sort by" field, or when the search button is pressed
+  */
+  const [newQuery, setNewQuery] = React.useState(false);
+
   const [sortBy, setSortBy] = React.useState('relevance');
   const handleChangeSortBy = (event) => {
+    setNewQuery(true);
     setSortBy(event.target.value);
   };
   const [museumPage, setMuseumPage] = useState(1);
   const handleChangePage = (event, value) => {
+    setNewQuery(true);
     setMuseumPage(value);
   };
   const [searchQuery, setSearchQuery] = React.useState('');
   const handleChangeSearch = () => {
+    setNewQuery(true);
     setSearchQuery(document.getElementById('search-textfield').value);
     setMuseumPage(1);
   };
@@ -68,14 +77,19 @@ export default function MuseumGallery() {
   const handleChangeSearchField = (event) => {
     setSearchField(event.target.value);
   };
+
   const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
-  const limit = 9;
+  const LIMIT = 9;
   useEffect(() => {
-    dispatch(fetchMuseumArtworks(
-        museumPage, limit, searchQuery, sortBy, searchField));
-  }, [dispatch, museumPage, searchQuery, sortBy, searchField]);
+    if (newQuery) {
+      dispatch(fetchMuseumArtworks(
+          museumPage, LIMIT, searchQuery, sortBy, searchField))
+          .then(setNewQuery(false));
+    }
+  }, [dispatch, newQuery]);
+
   let paginationNeeded = true;
   let results;
   if (artworks.length !== 0) {
