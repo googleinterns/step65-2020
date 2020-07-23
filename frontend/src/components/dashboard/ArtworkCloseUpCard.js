@@ -50,7 +50,9 @@ export default function ArtworkCloseUpCard(props) {
   const subheaderTypographyProps = {color: 'light'};
 
   const id = props.match.params.id;
+
   const isMuseum = props.match.params.collection === 'museum';
+
   const artworks = useSelector((state) => (isMuseum ?
       state.museumArtworks.artworks :
       state.userArtworks.artworks));

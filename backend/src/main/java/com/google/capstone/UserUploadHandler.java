@@ -69,6 +69,7 @@ public class UserUploadHandler extends HttpServlet{
       //gets info from form, entered by user
       String artistName = getParameter(request, "artistName", "");
       String artTitle = getParameter(request, "artTitle", "");
+      String altText = getParameter(request, "altText", "");
       String description = getParameter(request, "description", "");
       long timestamp = System.currentTimeMillis();
  
@@ -76,6 +77,7 @@ public class UserUploadHandler extends HttpServlet{
       Entity mssgEntity = new Entity("ImageInformation");
       mssgEntity.setProperty("artistName", artistName);
       mssgEntity.setProperty("artTitle", artTitle);
+      mssgEntity.setProperty("altText", altText);
       mssgEntity.setProperty("description", description);
       mssgEntity.setProperty("timestamp", timestamp);
  
@@ -92,7 +94,6 @@ public class UserUploadHandler extends HttpServlet{
     if (value == null) {
       return defaultValue;
     }
-
     return value;
   }
 }

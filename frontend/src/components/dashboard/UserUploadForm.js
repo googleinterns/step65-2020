@@ -51,7 +51,6 @@ export default function UserUploadForm(props) {
 
   const redirectUrl = document.location.origin + '/user-uploads-gallery';
 
-
   const [fileName, setName] = useState('');
   let file = null;
 
@@ -96,6 +95,15 @@ export default function UserUploadForm(props) {
               id="art-title"
               label="Art Title"
               name="artTitle"
+              variant="outlined"
+            />
+          </div>
+          <div>
+            <TextField
+              required
+              id="alt-text"
+              label="Alt Text"
+              name="altText"
               variant="outlined"
             />
           </div>

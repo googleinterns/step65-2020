@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+
 import com.google.appengine.repackaged.com.google.common.hash.HashFunction;
 import com.google.appengine.repackaged.com.google.common.hash.Hashing;
 
@@ -48,6 +49,7 @@ public class TextToSpeech extends HttpServlet {
   private static final Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_ID).build().getService();
 
   private static final HashFunction hashFunction = Hashing.md5();
+
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -86,7 +88,6 @@ public class TextToSpeech extends HttpServlet {
       ByteString audioContents = generateAudio(textToSpeechClient, textString);
       uploadAudio(audioContents, objectIdString, textString);
     } catch (IOException e) {
-
         String errorMsg =
                 String.format("Unable to generate audio file. " +
                                 "Provided object: %s and text: %s", objectIdString, textString);

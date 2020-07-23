@@ -1,10 +1,10 @@
 function convertToArtworkInfo(artwork) {
   const artworkInfo = new Map();
   artworkInfo.set('id', artwork.id);
+  artworkInfo.set('alt', artwork.altText);
   artworkInfo.set('url', '/api/v1/get-blob?blob-key='.concat(artwork.blobKey));
   artworkInfo.set('title', artwork.artTitle);
   artworkInfo.set('artist', artwork.artistName);
-
   artworkInfo.set('description', artwork.description);
   return artworkInfo;
 }
