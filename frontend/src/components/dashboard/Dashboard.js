@@ -247,7 +247,8 @@ export default function Dashboard() {
                     description, we&apos;ve provided some links below to some
                     resources that can help guide you!
                   </Typography>
-                  <UserUploadForm name="User Upload Form"/>
+                  <UserUploadForm name="User Information"/>
+
                   <DescLinks name="Description Links"/>
                 </Container>
               </Route>

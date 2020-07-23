@@ -15,12 +15,14 @@ import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.repackaged.com.google.common.hash.HashFunction;
 import com.google.appengine.repackaged.com.google.common.hash.Hashing;
+
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
+
 import com.google.cloud.texttospeech.v1.AudioConfig;
 import com.google.cloud.texttospeech.v1.AudioEncoding;
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
@@ -44,6 +46,7 @@ public class TextToSpeech extends HttpServlet {
   private static final String PROJECT_ID = "igunda-isangimino-nstroupe";
   private static final String BUCKET_NAME = "tts-audio";
   private static final Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_ID).build().getService();
+
   private static final HashFunction hashFunction = Hashing.md5();
 
   @Override
@@ -58,6 +61,7 @@ public class TextToSpeech extends HttpServlet {
       response.setContentType("text/plain");
       response.getWriter().println(blobKey);
     } else {
+      
       String errorMsg =
               String.format("Invalid text or object id. Provided object: %s and text: %s", objectIdString, textString);
       logger.severe(errorMsg);
@@ -69,6 +73,7 @@ public class TextToSpeech extends HttpServlet {
     Blob blob = storage.get(BlobId.of(BUCKET_NAME, objectIdString));
     if (blob != null) {
       String transcript = blob.getMetadata().get("audioTranscript");
+      
       return transcript.equals(getHashString(textString));
     } else {
       return false;
@@ -81,6 +86,7 @@ public class TextToSpeech extends HttpServlet {
       ByteString audioContents = generateAudio(textToSpeechClient, textString);
       uploadAudio(audioContents, objectIdString, textString);
     } catch (IOException e) {
+
         String errorMsg =
                 String.format("Unable to generate audio file. " +
                                 "Provided object: %s and text: %s", objectIdString, textString);
