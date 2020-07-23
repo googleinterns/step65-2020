@@ -73,7 +73,7 @@ export default function MuseumGallery() {
     setSearchQuery(document.getElementById('search-textfield').value);
     setMuseumPage(1);
   };
-  const [searchField, setSearchField] = React.useState('title');
+  const [searchField, setSearchField] = React.useState('all-fields');
   const handleChangeSearchField = (event) => {
     setSearchField(event.target.value);
   };
@@ -134,6 +134,7 @@ export default function MuseumGallery() {
                 value={searchField}
                 onChange={handleChangeSearchField}
               >
+                <MenuItem value="all-fields">All Fields</MenuItem>
                 <MenuItem value="title">Title</MenuItem>
                 <MenuItem value="artist_title">Artist</MenuItem>
               </Select>
