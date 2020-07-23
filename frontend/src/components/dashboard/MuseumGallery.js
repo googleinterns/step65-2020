@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Gallery from './gallery-components/Gallery';
 import Container from '@material-ui/core/Container';
-import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import FormControl from '@material-ui/core/FormControl';
@@ -14,7 +13,11 @@ import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import {useDispatch, useSelector} from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import InputBase from '@material-ui/core/InputBase'
+import InputBase from '@material-ui/core/InputBase';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +31,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   searchTextField: {
-    border: 'solid 1px black',
+    border: 'solid 1px #808080',
+    borderRadius: '15px',
     margin: theme.spacing(2),
     padding: theme.spacing(2),
     width: '60ch',
@@ -54,11 +58,24 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     marginTop: theme.spacing(2),
   },
+  filterOptions: {
+    backgroundColor: '#808080',
+    display: 'none',
+    paddingBottom: theme.spacing(5),
+  },
 }));
 
 export default function MuseumGallery() {
   const classes = useStyles();
 
+  const handleDrawerChange = (event) => {
+    const content = document.getElementById('filter-options');
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+    } else {
+      content.style.display = 'block';
+    }
+  };
   const [sortBy, setSortBy] = React.useState('relevance');
   const handleChangeSortBy = (event) => {
     setSortBy(event.target.value);
@@ -77,7 +94,8 @@ export default function MuseumGallery() {
     setSearchField(event.target.value);
   };
   const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
-  const artworksLoading = useSelector((state) => (state.museumArtworks.loading));
+  const artworksLoading = useSelector(
+      (state) => (state.museumArtworks.loading));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const limit = 9;
@@ -89,7 +107,7 @@ export default function MuseumGallery() {
   let results;
   if (artworks.length !== 0) {
     results =
-      <Gallery artworks={artworks}/>;
+      <Gallery isMuseum={true}/>;
   } else if (searchQuery !== '') {
     if (museumPage > 1) {
       results =
@@ -104,6 +122,7 @@ export default function MuseumGallery() {
         </Typography>;
     }
   }
+
   return (
     <Container>
       {artworksLoading && (
@@ -114,13 +133,14 @@ export default function MuseumGallery() {
       <Container className={classes.searchForm}>
         <Container className={classes.searchAndSortByBar}>
           <Container className={classes.selectMenu}>
-            <FormControl className={classes.formControl}>
+            <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel shrink id="search-field-label">Search By</InputLabel>
               <Select
                 labelId="search-field-label"
                 id="search-field"
                 value={searchField}
                 onChange={handleChangeSearchField}
+                label="Sort By"
               >
                 <MenuItem value="title">Title</MenuItem>
                 <MenuItem value="artist_title">Artist</MenuItem>
@@ -142,17 +162,6 @@ export default function MuseumGallery() {
               }
             }}
           />
-          {/*<TextField*/}
-          {/*  className={classes.searchTextField}*/}
-          {/*  id="search-textfield"*/}
-          {/*  label="Search"*/}
-          {/*  variant="outlined"*/}
-          {/*  onKeyUp = {(event) => {*/}
-          {/*    if (event.keyCode === 13) {*/}
-          {/*      handleChangeSearch();*/}
-          {/*    }*/}
-          {/*  }}*/}
-          {/*/>*/}
           <div className={classes.searchButton}>
             <IconButton
               aria-label="search"
@@ -160,26 +169,60 @@ export default function MuseumGallery() {
               <SearchIcon fontSize="large" />
             </IconButton>
           </div>
-
-
-        <Container className={classes.selectMenu}>
-          <FormControl className={classes.formControl}>
-            <InputLabel shrink id="sort-by-label">Sort By</InputLabel>
-            <Select
-              labelId="sort-by-label"
-              id="sort-by"
-              value={sortBy}
-              onChange={handleChangeSortBy}
+          <div>
+            <IconButton
+              aria-label="filtering options"
+              onClick={handleDrawerChange}
             >
-              <MenuItem value="relevance">Relevance</MenuItem>
-              <MenuItem value="artist">Artist</MenuItem>
-              <MenuItem value="date">Date</MenuItem>
-              <MenuItem value="title">Title</MenuItem>
-            </Select>
-          </FormControl>
+              <Typography>Filtering</Typography>
+              <ExpandMoreIcon/>
+            </IconButton>
+          </div>
         </Container>
       </Container>
+      <Container id="filter-options" className={classes.filterOptions}>
+        <FormControl className={classes.formControl}>
+          <InputLabel shrink id="sort-by-label">Sort By</InputLabel>
+          <Select
+            labelId="sort-by-label"
+            id="sort-by"
+            value={sortBy}
+            onChange={handleChangeSortBy}
+          >
+            <MenuItem value="relevance">Relevance</MenuItem>
+            <MenuItem value="artist">Artist</MenuItem>
+            <MenuItem value="date">Date</MenuItem>
+            <MenuItem value="title">Title</MenuItem>
+          </Select>
+        </FormControl>
       </Container>
+      {/* <Accordion>*/}
+      {/*  <AccordionSummary*/}
+      {/*    expandIcon={<ExpandMoreIcon />}*/}
+      {/*    aria-controls="panel1a-content"*/}
+      {/*    id="panel1a-header"*/}
+      {/*  >*/}
+      {/*    <Typography className={classes.heading}>Accordion 1</Typography>*/}
+      {/*  </AccordionSummary>*/}
+      {/*  <AccordionDetails>*/}
+      {/*    <Container className={classes.selectMenu}>*/}
+      {/*      <FormControl className={classes.formControl}>*/}
+      {/*        <InputLabel shrink id="sort-by-label">Sort By</InputLabel>*/}
+      {/*        <Select*/}
+      {/*          labelId="sort-by-label"*/}
+      {/*          id="sort-by"*/}
+      {/*          value={sortBy}*/}
+      {/*          onChange={handleChangeSortBy}*/}
+      {/*        >*/}
+      {/*          <MenuItem value="relevance">Relevance</MenuItem>*/}
+      {/*          <MenuItem value="artist">Artist</MenuItem>*/}
+      {/*          <MenuItem value="date">Date</MenuItem>*/}
+      {/*          <MenuItem value="title">Title</MenuItem>*/}
+      {/*        </Select>*/}
+      {/*      </FormControl>*/}
+      {/*    </Container>*/}
+      {/*  </AccordionDetails>*/}
+      {/* </Accordion>*/}
       {results}
       {(paginationNeeded) &&
         <Container className={classes.pagination}>

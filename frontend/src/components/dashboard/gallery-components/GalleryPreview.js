@@ -7,6 +7,8 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Gallery from './Gallery';
 
+const PREVIEW_SIZE = 3;
+
 const useStyles = makeStyles((theme) => ({
   galleryTitle: {
     alignItems: 'center',
@@ -26,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GalleryPreview({name, link, artworks}) {
+export default function GalleryPreview({name, link, isMuseum}) {
   const classes = useStyles();
 
   return (
@@ -34,7 +36,7 @@ export default function GalleryPreview({name, link, artworks}) {
       <Container className={classes.galleryTitle}>
         <Typography variant="h4" component="h2">{name}</Typography>
       </Container>
-      <Gallery artworks={artworks}/>
+      <Gallery size={PREVIEW_SIZE} isMuseum={isMuseum}/>
       <Container className={classes.viewMoreButton}>
         <Link to={link} className={classes.link}>
           <Button variant="contained" color="primary">View More</Button>
@@ -47,5 +49,5 @@ export default function GalleryPreview({name, link, artworks}) {
 GalleryPreview.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
-  artworks: PropTypes.array.isRequired,
+  isMuseum: PropTypes.bool.isRequired,
 };
