@@ -27,8 +27,11 @@ const useStyles = makeStyles((theme) => ({
   searchAndSortByBar: {
     alignItems: 'center',
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     marginBottom: theme.spacing(2),
+  },
+  searchComponents: {
+    display: 'flex',
   },
   searchTextField: {
     border: 'solid 1px #808080',
@@ -59,9 +62,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   filterOptions: {
-    backgroundColor: '#808080',
+    // backgroundColor: '#808080',
     display: 'none',
     paddingBottom: theme.spacing(5),
+  },
+  big: {
+    // border: '1px black solid',
   },
 }));
 
@@ -139,7 +145,7 @@ export default function MuseumGallery() {
   }
 
   return (
-    <Container>
+    <Container className={classes.big}>
       {artworksLoading && (
         <div className={classes.root}>
           <LinearProgress />
@@ -164,28 +170,30 @@ export default function MuseumGallery() {
               </Select>
             </FormControl>
           </Container>
-          <InputBase
-            placeholder="Search…"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{'aria-label': 'search'}}
-            className={classes.searchTextField}
-            id="search-textfield"
-            onKeyUp = {(event) => {
-              if (event.keyCode === 13) {
-                handleChangeSearch();
-              }
-            }}
-          />
-          <div className={classes.searchButton}>
-            <IconButton
-              aria-label="search"
-              onClick={handleChangeSearch}>
-              <SearchIcon fontSize="large" />
-            </IconButton>
-          </div>
+          <Container className={classes.searchComponents}>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{'aria-label': 'search'}}
+              className={classes.searchTextField}
+              id="search-textfield"
+              onKeyUp = {(event) => {
+                if (event.keyCode === 13) {
+                  handleChangeSearch();
+                }
+              }}
+            />
+            <div className={classes.searchButton}>
+              <IconButton
+                aria-label="search"
+                onClick={handleChangeSearch}>
+                <SearchIcon fontSize="large" />
+              </IconButton>
+            </div>
+          </Container>
           <div>
             <IconButton
               aria-label="filtering options"
