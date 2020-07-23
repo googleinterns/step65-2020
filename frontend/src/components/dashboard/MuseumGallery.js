@@ -13,6 +13,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import {useDispatch, useSelector} from 'react-redux';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
   searchAndFilterBar: {
@@ -62,6 +63,7 @@ export default function MuseumGallery() {
   const [searchQuery, setSearchQuery] = React.useState('');
   const handleChangeSearch = () => {
     setSearchQuery(document.getElementById('search-textfield').value);
+    setMuseumPage(1);
   };
   const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
   const artworks = Array.from(artworksMap);
@@ -70,6 +72,25 @@ export default function MuseumGallery() {
   useEffect(() => {
     dispatch(fetchMuseumArtworks(museumPage, limit, searchQuery));
   }, [dispatch, museumPage, searchQuery]);
+  let paginationNeeded = true;
+  let results;
+  if (artworks.length !== 0) {
+    results =
+      <Gallery isMuseum={true}/>;
+  } else {
+    if (museumPage > 1) {
+      results =
+        <Typography align="center" variant="h5" component="h3">
+          No more results found for {searchQuery}
+        </Typography>;
+    } else {
+      paginationNeeded = false;
+      results =
+        <Typography align="center" variant="h5" component="h3">
+          No results found for {searchQuery}
+        </Typography>;
+    }
+  }
 
   return (
     <Container>
@@ -80,6 +101,11 @@ export default function MuseumGallery() {
             id="search-textfield"
             label="Search"
             variant="outlined"
+            onKeyUp = {(event) => {
+              if (event.keyCode === 13) {
+                handleChangeSearch();
+              }
+            }}
           />
           <div className={classes.searchButton}>
             <IconButton
@@ -109,15 +135,17 @@ export default function MuseumGallery() {
           </FormControl>
         </Container>
       </Container>
-      <Gallery isMuseum={true}/>
-      <Container className={classes.pagination}>
-        <Pagination
-          count={10}
-          size="large"
-          page={museumPage}
-          onChange={handleChangePage}
-        />
-      </Container>
+      {results}
+      {(paginationNeeded) &&
+        <Container className={classes.pagination}>
+          <Pagination
+            count={10}
+            size="large"
+            page={museumPage}
+            onChange={handleChangePage}
+          />
+        </Container>
+      }
     </Container>
   );
 }
