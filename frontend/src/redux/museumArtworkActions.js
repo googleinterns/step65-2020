@@ -113,6 +113,11 @@ function getQuery(limit, sortBy) {
               'field': 'department_title',
             },
           },
+          {
+            'exists': {
+              'field': 'artist_title',
+            },
+          },
         ],
       },
     },
