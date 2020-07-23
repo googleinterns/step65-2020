@@ -213,35 +213,8 @@ export default function MuseumGallery() {
           </Select>
         </FormControl>
       </Container>
-      {/* <Accordion>*/}
-      {/*  <AccordionSummary*/}
-      {/*    expandIcon={<ExpandMoreIcon />}*/}
-      {/*    aria-controls="panel1a-content"*/}
-      {/*    id="panel1a-header"*/}
-      {/*  >*/}
-      {/*    <Typography className={classes.heading}>Accordion 1</Typography>*/}
-      {/*  </AccordionSummary>*/}
-      {/*  <AccordionDetails>*/}
-      {/*    <Container className={classes.selectMenu}>*/}
-      {/*      <FormControl className={classes.formControl}>*/}
-      {/*        <InputLabel shrink id="sort-by-label">Sort By</InputLabel>*/}
-      {/*        <Select*/}
-      {/*          labelId="sort-by-label"*/}
-      {/*          id="sort-by"*/}
-      {/*          value={sortBy}*/}
-      {/*          onChange={handleChangeSortBy}*/}
-      {/*        >*/}
-      {/*          <MenuItem value="relevance">Relevance</MenuItem>*/}
-      {/*          <MenuItem value="artist">Artist</MenuItem>*/}
-      {/*          <MenuItem value="date">Date</MenuItem>*/}
-      {/*          <MenuItem value="title">Title</MenuItem>*/}
-      {/*        </Select>*/}
-      {/*      </FormControl>*/}
-      {/*    </Container>*/}
-      {/*  </AccordionDetails>*/}
-      {/* </Accordion>*/}
       {results}
-      {(paginationNeeded) &&
+      {(paginationNeeded && !artworksLoading) &&
         <Container className={classes.pagination}>
           <Pagination
             count={10}
