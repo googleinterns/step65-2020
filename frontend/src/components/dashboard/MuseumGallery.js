@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     display: 'flex',
   },
-  selectMenu: {
+  sortByForm: {
     alignItems: 'center',
     display: 'flex',
     width: 'auto',
