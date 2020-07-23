@@ -14,9 +14,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import InputBase from '@material-ui/core/InputBase';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,29 +25,29 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'space-around',
+    padding: '0px',
     marginBottom: theme.spacing(2),
+    width: 'auto',
   },
   searchComponents: {
     display: 'flex',
+    maxWidth: '100ch',
   },
   searchTextField: {
-    border: 'solid 1px #808080',
+    border: 'solid 1px #c3c3c3',
     borderRadius: '15px',
     margin: theme.spacing(2),
     padding: theme.spacing(2),
     width: '60ch',
   },
-  searchForm: {
-    display: 'flex',
-    width: 'auto',
-  },
   searchButton: {
     alignItems: 'center',
     display: 'flex',
   },
-  sortByForm: {
+  selectMenu: {
     alignItems: 'center',
     display: 'flex',
+    padding: theme.spacing(2),
     width: 'auto',
   },
   formControl: {
@@ -62,12 +59,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   filterOptions: {
-    // backgroundColor: '#808080',
     display: 'none',
     paddingBottom: theme.spacing(5),
   },
-  big: {
-    // border: '1px black solid',
+  drawerButton: {
+    maxWidth: '15ch',
   },
 }));
 
@@ -151,68 +147,68 @@ export default function MuseumGallery() {
           <LinearProgress />
         </div>
       )}
-      <Container className={classes.searchForm}>
-        <Container className={classes.searchAndSortByBar}>
-          <Container className={classes.selectMenu}>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel shrink id="search-field-label">Search By</InputLabel>
-              <Select
-                labelId="search-field-label"
-                id="search-field"
-                value={searchField}
-                onChange={handleChangeSearchField}
-                label="Sort By"
-              >
-                <MenuItem value="all-fields">All Fields</MenuItem>
-                <MenuItem value="artist_title">Artist</MenuItem>
-                <MenuItem value="description">Description</MenuItem>
-                <MenuItem value="title">Title</MenuItem>
-              </Select>
-            </FormControl>
-          </Container>
-          <Container className={classes.searchComponents}>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{'aria-label': 'search'}}
-              className={classes.searchTextField}
-              id="search-textfield"
-              onKeyUp = {(event) => {
-                if (event.keyCode === 13) {
-                  handleChangeSearch();
-                }
-              }}
-            />
-            <div className={classes.searchButton}>
-              <IconButton
-                aria-label="search"
-                onClick={handleChangeSearch}>
-                <SearchIcon fontSize="large" />
-              </IconButton>
-            </div>
-          </Container>
-          <div>
-            <IconButton
-              aria-label="filtering options"
-              onClick={handleDrawerChange}
+      <Container className={classes.searchAndSortByBar}>
+        <Container className={classes.selectMenu}>
+          <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel shrink id="search-field-label">Search By</InputLabel>
+            <Select
+              labelId="search-field-label"
+              id="search-field"
+              value={searchField}
+              onChange={handleChangeSearchField}
+              label="Search By"
             >
-              <Typography>Filtering</Typography>
-              <ExpandMoreIcon/>
+              <MenuItem value="all-fields">All fields</MenuItem>
+              <MenuItem value="artist_title">Artist</MenuItem>
+              <MenuItem value="description">Description</MenuItem>
+              <MenuItem value="title">Title</MenuItem>
+            </Select>
+          </FormControl>
+        </Container>
+        <Container className={classes.searchComponents}>
+          <InputBase
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            inputProps={{'aria-label': 'search'}}
+            className={classes.searchTextField}
+            id="search-textfield"
+            onKeyUp = {(event) => {
+              if (event.keyCode === 13) {
+                handleChangeSearch();
+              }
+            }}
+            autoComplete = "off"
+          />
+          <div className={classes.searchButton}>
+            <IconButton
+              aria-label="search"
+              onClick={handleChangeSearch}>
+              <SearchIcon fontSize="large" />
             </IconButton>
           </div>
         </Container>
+        <Container className={classes.drawerButton}>
+          <IconButton
+            aria-label="filtering options"
+            onClick={handleDrawerChange}
+          >
+            <Typography>Filtering</Typography>
+            <ExpandMoreIcon/>
+          </IconButton>
+        </Container>
       </Container>
       <Container id="filter-options" className={classes.filterOptions}>
-        <FormControl className={classes.formControl}>
+        <FormControl variant="outlined" className={classes.formControl}>
           <InputLabel shrink id="sort-by-label">Sort By</InputLabel>
           <Select
             labelId="sort-by-label"
             id="sort-by"
             value={sortBy}
             onChange={handleChangeSortBy}
+            label="Sort By"
           >
             <MenuItem value="relevance">Relevance</MenuItem>
             <MenuItem value="artist">Artist</MenuItem>
