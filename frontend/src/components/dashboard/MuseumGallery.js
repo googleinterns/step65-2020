@@ -135,8 +135,9 @@ export default function MuseumGallery() {
                 onChange={handleChangeSearchField}
               >
                 <MenuItem value="all-fields">All Fields</MenuItem>
-                <MenuItem value="title">Title</MenuItem>
                 <MenuItem value="artist_title">Artist</MenuItem>
+                <MenuItem value="description">Description</MenuItem>
+                <MenuItem value="title">Title</MenuItem>
               </Select>
             </FormControl>
           </Container>
