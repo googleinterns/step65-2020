@@ -33,7 +33,7 @@ export default function UserUploadForm(props) {
         }
         break;
       default:
-        setName( e.target.value);
+        setName(e.target.value);
     }
   };
 
@@ -43,12 +43,13 @@ export default function UserUploadForm(props) {
           return response.text();
         })
         .then((imageUploadUrl) => {
-          console.log(imageUploadUrl);
           setURL(imageUploadUrl);
         });
   }, []);
 
   const classes = useStyles();
+
+  const redirectUrl = document.location.origin + '/user-uploads-gallery';
 
   const [fileName, setName] = useState('');
   let file = null;
@@ -67,6 +68,11 @@ export default function UserUploadForm(props) {
         method="POST"
         encType="multipart/form-data"
       >
+        <input
+          type="hidden"
+          name="redirectUrl"
+          value={redirectUrl}
+        />
         <Grid
           className={classes.root}
           container
@@ -89,6 +95,15 @@ export default function UserUploadForm(props) {
               id="art-title"
               label="Art Title"
               name="artTitle"
+              variant="outlined"
+            />
+          </div>
+          <div>
+            <TextField
+              required
+              id="alt-text"
+              label="Alt Text"
+              name="altText"
               variant="outlined"
             />
           </div>

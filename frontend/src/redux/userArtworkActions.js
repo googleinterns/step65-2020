@@ -1,98 +1,10 @@
-import PlaceholderImage from '../components/dashboard/images/colorful.jpeg';
-
-function fakeGetUserArtworks() {
-  return new Promise((resolve) => {
-    // Resolve after a timeout so we can see the loading indicator
-    setTimeout(
-        () =>
-          resolve({
-            artworks: [
-              {
-                id: 0,
-                title: 'title',
-                artist: 'artist',
-                alt: 'alt text',
-                description: 'description',
-                img: PlaceholderImage,
-              },
-              {
-                id: 1,
-                title: 'title',
-                artist: 'artist',
-                alt: 'alt text',
-                description: 'description',
-                img: PlaceholderImage,
-              },
-              {
-                id: 2,
-                title: 'title',
-                artist: 'artist',
-                alt: 'alt text',
-                description: 'description',
-                img: PlaceholderImage,
-              },
-              {
-                id: 3,
-                title: 'title',
-                artist: 'artist',
-                alt: 'alt text',
-                description: 'description',
-                img: PlaceholderImage,
-              },
-              {
-                id: 4,
-                title: 'title',
-                artist: 'artist',
-                alt: 'alt text',
-                description: 'description',
-                img: PlaceholderImage,
-              },
-              {
-                id: 5,
-                title: 'title',
-                artist: 'artist',
-                alt: 'alt text',
-                description: 'description',
-                img: PlaceholderImage,
-              },
-              {
-                id: 6,
-                title: 'title',
-                artist: 'artist',
-                alt: 'alt text',
-                description: 'description',
-                img: PlaceholderImage,
-              },
-              {
-                id: 7,
-                title: 'title',
-                artist: 'artist',
-                alt: 'alt text',
-                description: 'description',
-                img: PlaceholderImage,
-              },
-              {
-                id: 8,
-                title: 'title',
-                artist: 'artist',
-                alt: 'alt text',
-                description: 'description',
-                img: PlaceholderImage,
-              },
-            ],
-          }),
-        1000,
-    );
-  });
-}
-
 function convertToArtworkInfo(artwork) {
   const artworkInfo = new Map();
   artworkInfo.set('id', artwork.id);
-  artworkInfo.set('alt', artwork.alt);
-  artworkInfo.set('url', artwork.img);
-  artworkInfo.set('title', artwork.title);
-  artworkInfo.set('artist', artwork.artist);
+  artworkInfo.set('alt', artwork.altText);
+  artworkInfo.set('url', '/api/v1/get-blob?blob-key='.concat(artwork.blobKey));
+  artworkInfo.set('title', artwork.artTitle);
+  artworkInfo.set('artist', artwork.artistName);
   artworkInfo.set('description', artwork.description);
   return artworkInfo;
 }
@@ -108,8 +20,8 @@ function artworksJsonToMap(artworks) {
 export function fetchUserArtworks() {
   return (dispatch) => {
     dispatch(fetchUserArtworksBegin());
-    return fakeGetUserArtworks()
-        .then((json) => json.artworks)
+    fetch('api/v1/serveUploads')
+        .then((response) => response.json())
         .then((artworks) => artworksJsonToMap(artworks))
         .then((artworksMap) => {
           dispatch(fetchUserArtworksSuccess(artworksMap));

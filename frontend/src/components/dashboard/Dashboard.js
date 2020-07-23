@@ -49,7 +49,7 @@ let theme = createMuiTheme({
       light: '#c2a3a8',
     },
     text: {
-      secondary: '#ffffff',
+      light: '#ffffff',
     },
 
     contrastThreshold: 3,
@@ -247,7 +247,7 @@ export default function Dashboard() {
                     description, we&apos;ve provided some links below to some
                     resources that can help guide you!
                   </Typography>
-                  <UserUploadForm name="User Upload Form"/>
+                  <UserUploadForm name="User Information"/>
                   <DescLinks name="Description Links"/>
                 </Container>
               </Route>
