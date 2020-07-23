@@ -22,14 +22,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Endpoint to get single image given id
  */
-@WebServlet("/get-image")
+@WebServlet("/getImage")
 public class ServeImage extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     long id = Long.parseLong(request.getParameter("id"));
 
     Key imageEntityKey = KeyFactory.createKey("ImageInformation", id);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService()
     Entity imageEntity = null;
     try{
       imageEntity = datastore.get(imageEntityKey);
@@ -37,7 +37,6 @@ public class ServeImage extends HttpServlet {
       String errorMsg = "Invalid object id.";
       response.sendError(400, errorMsg);
     }
-    
 
     UploadedImage imageObject = UploadedImage.convertToObject(imageEntity);
 
@@ -45,7 +44,6 @@ public class ServeImage extends HttpServlet {
     
     response.setContentType("text/json");
     response.getWriter().println(json);
-
   }
 
   public static String convertToJson(UploadedImage img) {

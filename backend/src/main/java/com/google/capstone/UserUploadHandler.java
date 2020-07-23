@@ -24,16 +24,15 @@ import javax.servlet.ServletException;
 /**
  * Servlet used to handle image upload to Google Cloud Storage using the Blobstore API
  * Also uploads Image information, blobkey, and servingURL to the Datastore
- * Note: must be updated before deployment to redirect to proper frontend server
  */
 @WebServlet("/api/v1/uploadImgs")
 public class UserUploadHandler extends HttpServlet{
  
   public static final String GCS_BUCKET_NAME = "upload-imgs";
  
-  private final BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
+  private static final BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
  
-  private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
  
   /**
    * Creates an upload URL to send the image to in GCS.
@@ -56,7 +55,7 @@ public class UserUploadHandler extends HttpServlet{
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       Map<String, List<BlobKey>> blobs = blobstore.getUploads(request);
       List<BlobKey> blobKeys = blobs.get("selectedFile"); 
- 
+
       //gets info from form, entered by user
       String artistName = getParameter(request, "artistName", "");
       String artTitle = getParameter(request, "artTitle", "");
@@ -72,12 +71,9 @@ public class UserUploadHandler extends HttpServlet{
       mssgEntity.setProperty("description", description);
       mssgEntity.setProperty("timestamp", timestamp);
  
-      String blobKey = blobKeys.get(0).getKeyString();
-      mssgEntity.setProperty("blobKey", blobKey);
-      mssgEntity.setProperty("url", "/api/v1/get-blob?blob-key=" + blobKey);
+      mssgEntity.setProperty("blobKey", blobKeys.get(0).getKeyString());
       
       datastore.put(mssgEntity);  
-      
       
       response.sendRedirect(request.getParameter("redirectUrl"));
   }

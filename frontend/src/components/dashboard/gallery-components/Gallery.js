@@ -23,7 +23,7 @@ export default function Gallery({size, isMuseum}) {
       <Grid key={key} item>
         <ImgMediaCard
           name={artwork.get('title')}
-          link={`/gallery/${isMuseum}/${key}`}
+          link={`/gallery/${isMuseum ? 'museum' : 'user'}/${key}`}
           alt={artwork.get('alt')}
           url={artwork.get('url')}
         />
