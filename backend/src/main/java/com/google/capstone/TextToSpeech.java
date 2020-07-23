@@ -2,6 +2,7 @@ package com.google.capstone;
 
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.logging.Logger;
 
 import javax.servlet.annotation.WebServlet;
@@ -12,11 +13,17 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+
+import com.google.appengine.repackaged.com.google.common.hash.HashFunction;
+import com.google.appengine.repackaged.com.google.common.hash.Hashing;
+
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
+
 import com.google.cloud.texttospeech.v1.AudioConfig;
 import com.google.cloud.texttospeech.v1.AudioEncoding;
 import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
@@ -24,6 +31,7 @@ import com.google.cloud.texttospeech.v1.SynthesisInput;
 import com.google.cloud.texttospeech.v1.SynthesizeSpeechResponse;
 import com.google.cloud.texttospeech.v1.TextToSpeechClient;
 import com.google.cloud.texttospeech.v1.VoiceSelectionParams;
+import com.google.common.base.Charsets;
 import com.google.protobuf.ByteString;
 
 
@@ -40,18 +48,22 @@ public class TextToSpeech extends HttpServlet {
   private static final String BUCKET_NAME = "tts-audio";
   private static final Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_ID).build().getService();
 
+  private static final HashFunction hashFunction = Hashing.md5();
+
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String textString = request.getParameter("text");
     String objectIdString = request.getParameter("id");
     if (!textString.isEmpty() && !objectIdString.isEmpty()) {
-      if (storage.get(BlobId.of(BUCKET_NAME, objectIdString)) == null) {
+      if (!inStorage(objectIdString, textString)) {
         generateTextToSpeech(textString, objectIdString, response);
       }
       String blobKey = generateBlobKey(objectIdString);
       response.setContentType("text/plain");
       response.getWriter().println(blobKey);
     } else {
+      
       String errorMsg =
               String.format("Invalid text or object id. Provided object: %s and text: %s", objectIdString, textString);
       logger.severe(errorMsg);
@@ -59,11 +71,22 @@ public class TextToSpeech extends HttpServlet {
     }
   }
 
+  private boolean inStorage(String objectIdString, String textString) {
+    Blob blob = storage.get(BlobId.of(BUCKET_NAME, objectIdString));
+    if (blob != null) {
+      String transcript = blob.getMetadata().get("audioTranscript");
+      
+      return transcript.equals(getHashString(textString));
+    } else {
+      return false;
+    }
+  }
+
   private void generateTextToSpeech(String textString, String objectIdString, HttpServletResponse response)
           throws IOException {
     try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
       ByteString audioContents = generateAudio(textToSpeechClient, textString);
-      uploadAudio(audioContents, response, objectIdString);
+      uploadAudio(audioContents, objectIdString, textString);
     } catch (IOException e) {
         String errorMsg =
                 String.format("Unable to generate audio file. " +
@@ -88,9 +111,12 @@ public class TextToSpeech extends HttpServlet {
     return ttsResponse.getAudioContent();
   }
 
-  private void uploadAudio(ByteString audioContents, HttpServletResponse response, String objectIdString) throws IOException {
+  private void uploadAudio(ByteString audioContents, String objectIdString, String textString) {
     BlobId blobId = BlobId.of(BUCKET_NAME, objectIdString);
-    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("audio/mpeg").build();
+    BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+            .setContentType("audio/mpeg")
+            .setMetadata(Collections.singletonMap("audioTranscript", getHashString(textString)))
+            .build();
     try {
       storage.create(blobInfo, audioContents.toByteArray());
     } catch (StorageException e) {
@@ -105,6 +131,10 @@ public class TextToSpeech extends HttpServlet {
     BlobKey blobKey = blobstoreService.createGsBlobKey(
             "/gs/" + BUCKET_NAME + "/" + objectIdString);
     return blobKey.getKeyString();
+  }
+
+  private String getHashString(String textString) {
+    return hashFunction.newHasher().putString(textString, Charsets.UTF_8).hash().toString();
   }
 
 }
