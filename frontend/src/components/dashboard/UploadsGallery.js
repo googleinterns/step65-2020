@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UploadsGallery() {
   const classes = useStyles();
-  
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,11 +29,11 @@ export default function UploadsGallery() {
         <Gallery isMuseum={false}/>
       </Container>
       <Container className={classes.pagination}>
-          <Pagination
-            count={10}
-            size="large"
-          />
-        </Container>
+        <Pagination
+          count={10}
+          size="large"
+        />
+      </Container>
     </>
-  )
+  );
 }

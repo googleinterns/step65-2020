@@ -59,16 +59,16 @@ export default function UserUploadForm(props) {
 
   const [btnDisabled, setBtnDisabled] = useState(true);
 
-  file = fileName 
-      ? ( <span>File Selected - {fileName}</span>) 
-      : ( <span>Choose a file...</span> );
+  file = fileName ?
+      ( <span>File Selected - {fileName}</span>) :
+      ( <span>Choose a file...</span> );
 
-  return(
+  return (
     <>
-      <form 
-        name="image-upload" 
-        action={actionURL} 
-        method="POST" 
+      <form
+        name="image-upload"
+        action={actionURL}
+        method="POST"
         encType="multipart/form-data"
       >
         <input
