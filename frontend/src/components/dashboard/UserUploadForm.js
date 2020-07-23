@@ -176,6 +176,7 @@ export default function UserUploadForm(props) {
               variant="contained"
               color="secondary"
               type="submit"
+              disabled={btnDisabled}
             >
                 Submit Artwork
             </Button>
