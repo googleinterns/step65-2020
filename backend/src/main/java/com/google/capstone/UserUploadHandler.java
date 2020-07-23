@@ -31,9 +31,9 @@ public class UserUploadHandler extends HttpServlet{
  
   public static final String GCS_BUCKET_NAME = "upload-imgs";
  
-  private final BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
+  private static final BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
  
-  private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
  
   /**
    * Creates an upload URL to send the image to in GCS.
@@ -59,9 +59,9 @@ public class UserUploadHandler extends HttpServlet{
  
       //checks to make sure image was added to create blobkey
       if (blobKeys == null || blobKeys.isEmpty()) {
-        /* NOTE: add error page here, no file selected!!
-           Will create better error handling in future update :) 
-           Currently redirect to museumGallery for testing reasons */
+        //NOTE: add error page here, no file selected!!
+        //Will create better error handling in future update :) 
+        //Currently redirect to museumGallery for testing reasons
         response.sendRedirect("https://3001-ba659410-163c-49e0-b45f-c22c5b2dc8b5.us-central1.cloudshell.dev/museum-gallery");
         return;
       }
@@ -87,11 +87,7 @@ public class UserUploadHandler extends HttpServlet{
       
       datastore.put(mssgEntity);  
       
-      //deployment link
-      response.sendRedirect("https://igunda-isangimino-nstroupe.uc.r.appspot.com/user-uploads-gallery");
- 
-      //development link
-      //response.sendRedirect("https://3001-ba659410-163c-49e0-b45f-c22c5b2dc8b5.us-central1.cloudshell.dev/user-uploads-gallery");
+      response.sendRedirect(request.getParameter("redirectUrl"));
   }
   
   private static String getParameter(HttpServletRequest request, String name, String defaultValue) {
