@@ -13,8 +13,14 @@ import Pagination from '@material-ui/lab/Pagination';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import {useDispatch, useSelector} from 'react-redux';
 import Typography from '@material-ui/core/Typography';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import InputBase from '@material-ui/core/InputBase'
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    flexDirection: 'row',
+  },
   searchAndSortByBar: {
     alignItems: 'center',
     display: 'flex',
@@ -22,8 +28,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   searchTextField: {
+    border: 'solid 1px black',
     margin: theme.spacing(2),
-    width: '75ch',
+    padding: theme.spacing(2),
+    width: '60ch',
   },
   searchForm: {
     display: 'flex',
@@ -69,6 +77,7 @@ export default function MuseumGallery() {
     setSearchField(event.target.value);
   };
   const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
+  const artworksLoading = useSelector((state) => (state.museumArtworks.loading));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const limit = 9;
@@ -81,7 +90,7 @@ export default function MuseumGallery() {
   if (artworks.length !== 0) {
     results =
       <Gallery artworks={artworks}/>;
-  } else {
+  } else if (searchQuery !== '') {
     if (museumPage > 1) {
       results =
         <Typography align="center" variant="h5" component="h3">
@@ -97,6 +106,11 @@ export default function MuseumGallery() {
   }
   return (
     <Container>
+      {artworksLoading && (
+        <div className={classes.root}>
+          <LinearProgress />
+        </div>
+      )}
       <Container className={classes.searchForm}>
         <Container className={classes.searchAndSortByBar}>
           <Container className={classes.selectMenu}>
@@ -113,17 +127,32 @@ export default function MuseumGallery() {
               </Select>
             </FormControl>
           </Container>
-          <TextField
+          <InputBase
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            inputProps={{'aria-label': 'search'}}
             className={classes.searchTextField}
             id="search-textfield"
-            label="Search"
-            variant="outlined"
             onKeyUp = {(event) => {
               if (event.keyCode === 13) {
                 handleChangeSearch();
               }
             }}
           />
+          {/*<TextField*/}
+          {/*  className={classes.searchTextField}*/}
+          {/*  id="search-textfield"*/}
+          {/*  label="Search"*/}
+          {/*  variant="outlined"*/}
+          {/*  onKeyUp = {(event) => {*/}
+          {/*    if (event.keyCode === 13) {*/}
+          {/*      handleChangeSearch();*/}
+          {/*    }*/}
+          {/*  }}*/}
+          {/*/>*/}
           <div className={classes.searchButton}>
             <IconButton
               aria-label="search"
@@ -131,7 +160,7 @@ export default function MuseumGallery() {
               <SearchIcon fontSize="large" />
             </IconButton>
           </div>
-        </Container>
+
 
         <Container className={classes.selectMenu}>
           <FormControl className={classes.formControl}>
@@ -149,6 +178,7 @@ export default function MuseumGallery() {
             </Select>
           </FormControl>
         </Container>
+      </Container>
       </Container>
       {results}
       {(paginationNeeded) &&
