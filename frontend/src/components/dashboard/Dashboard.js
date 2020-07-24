@@ -147,6 +147,9 @@ export default function Dashboard() {
   const uploadsError = useSelector(
       (state) => (state.userArtworks.error));
 
+  const museumError = useSelector(
+      (state) => (state.museumArtworks.error));
+
   // fetches artworks for GalleryPreview and MuseumGallery
   const dispatch = useDispatch();
   const LIMIT = 9;
@@ -220,6 +223,7 @@ export default function Dashboard() {
                     name="Museum Gallery"
                     link="/museum-gallery"
                     isMuseum={true}
+                    artworksError={museumError}
                   />
                   <GalleryPreview
                     name="User Uploads Gallery"

@@ -62,4 +62,5 @@ GalleryPreview.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   isMuseum: PropTypes.bool.isRequired,
+  artworksError: PropTypes.bool.isRequired,
 };
