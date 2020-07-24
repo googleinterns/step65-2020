@@ -6,5 +6,5 @@ import {firebaseReducer} from 'react-redux-firebase';
 export default combineReducers({
   museumArtworks,
   userArtworks,
-  firebase: firebaseReducer
+  firebase: firebaseReducer,
 });
