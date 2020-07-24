@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'flex-start',
-    padding: theme.spacing(5),
+    padding: theme.spacing(3),
   },
   viewMoreButton: {
     alignItems: 'center',
@@ -26,9 +27,12 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     color: theme.palette.text.primary,
   },
+  alert: {
+    marginBottom: theme.spacing(3),
+  },
 }));
 
-export default function GalleryPreview({name, link, isMuseum}) {
+export default function GalleryPreview({name, link, isMuseum, artworksError}) {
   const classes = useStyles();
 
   return (
@@ -36,6 +40,14 @@ export default function GalleryPreview({name, link, isMuseum}) {
       <Container className={classes.galleryTitle}>
         <Typography variant="h4" component="h2">{name}</Typography>
       </Container>
+      {artworksError && (
+        <Alert
+          severity="error"
+          className={classes.alert}
+        >
+            The images could not be loaded at this time.
+        </Alert>
+      )}
       <Gallery size={PREVIEW_SIZE} isMuseum={isMuseum}/>
       <Container className={classes.viewMoreButton}>
         <Link to={link} className={classes.link}>

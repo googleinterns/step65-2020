@@ -31,7 +31,7 @@ import Banner from './gallery-components/Banner';
 import LandingPage from './LandingPage';
 import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import {fetchUserArtworks} from '../../redux/userArtworkActions';
 import AICimg from './images/aic-inside.jpg';
@@ -144,6 +144,9 @@ export default function Dashboard() {
     setOpen(false);
   };
 
+  const uploadsError = useSelector(
+      (state) => (state.userArtworks.error));
+
   // fetches artworks for GalleryPreview and MuseumGallery
   const dispatch = useDispatch();
   const LIMIT = 9;
@@ -222,6 +225,7 @@ export default function Dashboard() {
                     name="User Uploads Gallery"
                     link="/user-uploads-gallery"
                     isMuseum={false}
+                    artworksError={uploadsError}
                   />
                 </Container>
               </Route>
