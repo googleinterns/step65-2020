@@ -7,7 +7,7 @@ import {
 const initialState = {
   artworks: new Map(),
   loading: false,
-  error: null,
+  error: false,
 };
 
 export default function userArtworkReducer(
@@ -19,7 +19,7 @@ export default function userArtworkReducer(
       return {
         ...state,
         loading: true,
-        error: null,
+        error: false,
       };
 
     case FETCH_USER_ARTWORKS_SUCCESS:
@@ -33,7 +33,7 @@ export default function userArtworkReducer(
       return {
         ...state,
         loading: false,
-        error: action.payload.error,
+        error: true,
         artworks: new Map(),
       };
 
