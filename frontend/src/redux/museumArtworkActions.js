@@ -171,10 +171,11 @@ function getMuseumArtworks(path, params, sortBy, searchField, search) {
 
 function artworksJsonToMap(artworks) {
   const artworksMap = new Map();
-  for (const artwork of artworks) {
+  const numOfPgs = artworks.pagination.total_pages;
+  for (const artwork of artworks.data) {
     artworksMap.set(artwork.id.toString(), convertToArtworkInfo(artwork));
   }
-  return artworksMap;
+  return {artworksMap, numOfPgs};
 }
 
 export function fetchMuseumArtworks(
@@ -201,12 +202,13 @@ export function fetchMuseumArtworks(
         searchFieldArgument,
         searchQuery,
     )
-        .then((artworks) => artworks.data)
         .then((artworks) => {
           return artworksJsonToMap(artworks);
         })
         .then((artworks) => {
-          dispatch(fetchMuseumArtworksSuccess(artworks));
+          dispatch(fetchMuseumArtworksSuccess(
+              artworks.artworksMap,
+              artworks.numOfPgs));
           return artworks;
         })
         .catch((error) =>
@@ -234,9 +236,9 @@ export const fetchMuseumArtworksBegin = () => ({
   type: FETCH_MUSEUM_ARTWORKS_BEGIN,
 });
 
-export const fetchMuseumArtworksSuccess = (artworks) => ({
+export const fetchMuseumArtworksSuccess = (artworks, numOfPgs) => ({
   type: FETCH_MUSEUM_ARTWORKS_SUCCESS,
-  payload: {artworks},
+  payload: {artworks, numOfPgs},
 });
 
 export const fetchMuseumArtworksFailure = (error) => ({
