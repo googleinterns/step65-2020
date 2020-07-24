@@ -20,7 +20,7 @@ function artworksJsonToMap(artworks) {
 export function fetchUserArtworks(uploadsPageNum) {
   return (dispatch) => {
     dispatch(fetchUserArtworksBegin());
-    fetch('api/v1/serveUploads?uploadsPageNum='.concat(uploadsPageNum))
+    fetch(`api/v1/serveUploads?uploadsPageNum=${uploadsPageNum}`)
         .then((response) => response.json())
         .then((artworks) => artworksJsonToMap(artworks))
         .then((artworksMap) => {
