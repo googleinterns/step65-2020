@@ -17,7 +17,7 @@ import InputBase from '@material-ui/core/InputBase';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  loading: {
     flexGrow: 1,
     flexDirection: 'row',
   },
@@ -25,9 +25,16 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'space-around',
-    padding: '0px',
+    marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
+    padding: '0px',
     width: 'auto',
+  },
+  searchByContainer: {
+    width: 'auto',
+  },
+  formControl: {
+    minWidth: 200,
   },
   searchComponents: {
     display: 'flex',
@@ -44,30 +51,21 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     display: 'flex',
   },
-  selectMenu: {
-    alignItems: 'center',
-    display: 'flex',
-    padding: theme.spacing(2),
-    width: 'auto',
-  },
-  formControl: {
-    minWidth: 200,
-  },
-  pagination: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: theme.spacing(2),
-  },
-  filterOptions: {
+  filterDrawer: {
     display: 'none',
     justifyContent: 'center',
     paddingBottom: theme.spacing(5),
   },
   drawerButton: {
-    maxWidth: '15ch',
+    width: 'auto',
   },
   filterSelects: {
     margin: theme.spacing(2),
+  },
+  pagination: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -75,7 +73,7 @@ export default function MuseumGallery() {
   const classes = useStyles();
 
   const handleDrawerChange = (event) => {
-    const content = document.getElementById('filter-options');
+    const content = document.getElementById('filter-drawer');
     if (content.style.display === 'flex') {
       content.style.display = 'none';
     } else {
@@ -145,14 +143,14 @@ export default function MuseumGallery() {
   }
 
   return (
-    <Container className={classes.big}>
+    <Container className={classes.root}>
       {artworksLoading && (
-        <div className={classes.root}>
+        <div className={classes.loading}>
           <LinearProgress />
         </div>
       )}
       <Container className={classes.searchAndSortByBar}>
-        <Container className={classes.selectMenu}>
+        <Container className={classes.searchByContainer}>
           <FormControl variant="outlined" className={classes.formControl}>
             <Select
               id="search-field"
@@ -169,10 +167,6 @@ export default function MuseumGallery() {
         <Container className={classes.searchComponents}>
           <InputBase
             placeholder="Search…"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
             inputProps={{'aria-label': 'search'}}
             className={classes.searchTextField}
             id="search-textfield"
@@ -201,8 +195,11 @@ export default function MuseumGallery() {
           </IconButton>
         </Container>
       </Container>
-      <Container id="filter-options" className={classes.filterOptions}>
-        <FormControl variant="filled" className={[classes.filterSelects, classes.formControl].join(" ")}>
+      <Container id="filter-drawer" className={classes.filterDrawer}>
+        <FormControl
+          variant="filled"
+          className={[classes.filterSelects, classes.formControl].join(' ')}
+        >
           <InputLabel shrink id="sort-by-label">Sort By</InputLabel>
           <Select
             labelId="sort-by-label"
@@ -217,7 +214,10 @@ export default function MuseumGallery() {
             <MenuItem value="title">Title</MenuItem>
           </Select>
         </FormControl>
-        <FormControl variant="filled" className={[classes.filterSelects, classes.formControl].join(" ")}>
+        <FormControl
+          variant="filled"
+          className={[classes.filterSelects, classes.formControl].join(' ')}
+        >
           <InputLabel shrink id="placeholder-label">Placeholder</InputLabel>
           <Select
             labelId="placeholder-label"
@@ -230,7 +230,10 @@ export default function MuseumGallery() {
             <MenuItem value="title">Placeholder</MenuItem>
           </Select>
         </FormControl>
-        <FormControl variant="filled" className={[classes.filterSelects, classes.formControl].join(" ")}>
+        <FormControl
+          variant="filled"
+          className={[classes.filterSelects, classes.formControl].join(' ')}
+        >
           <InputLabel shrink id="placeholder-label">Placeholder</InputLabel>
           <Select
             labelId="placeholder-label"
