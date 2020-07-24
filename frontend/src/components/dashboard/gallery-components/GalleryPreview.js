@@ -36,7 +36,7 @@ export default function GalleryPreview({name, link, isMuseum}) {
       <Container className={classes.galleryTitle}>
         <Typography variant="h4" component="h2">{name}</Typography>
       </Container>
-      <Gallery size={PREVIEW_SIZE} isMuseum={isMuseum}/>
+      <Gallery size={PREVIEW_SIZE} isMuseum={isMuseum} isPreview={true}/>
       <Container className={classes.viewMoreButton}>
         <Link to={link} className={classes.link}>
           <Button variant="contained" color="primary">View More</Button>
