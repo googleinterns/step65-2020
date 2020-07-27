@@ -67,11 +67,11 @@ public class UserUploadHandler extends HttpServlet{
       }
  
       //gets info from form, entered by user
-      String artistName = getParameter(request, "artistName", "");
-      String artTitle = getParameter(request, "artTitle", "");
-      String altText = getParameter(request, "altText", "");
-      String description = getParameter(request, "description", "");
-      String uniqueUserID = getParameter(request, "uniqueUserID", "");
+      String artistName = request.getParameter("artistName");
+      String artTitle = request.getParameter("artTitle");
+      String altText = request.getParameter("altText");
+      String description = request.getParameter("description");
+      String uniqueUserID = request.getParameter("uniqueUserID");
       long timestamp = System.currentTimeMillis();
  
       //ImageInformation entity to be added into datastore
@@ -89,13 +89,5 @@ public class UserUploadHandler extends HttpServlet{
       datastore.put(mssgEntity);  
       
       response.sendRedirect(request.getParameter("redirectUrl"));
-  }
-  
-  private static String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-    if (value == null) {
-      return defaultValue;
-    }
-    return value;
   }
 }
