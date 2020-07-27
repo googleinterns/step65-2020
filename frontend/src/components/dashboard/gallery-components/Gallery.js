@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {generateTextToSpeech, getMuseumAudioTranscript,
   getUserAudioTranscript} from '../textToSpeechHelpers';
 import {useSelector, useDispatch} from 'react-redux';
-import {fetchMuseumArtworks} from "../../../redux/museumArtworkActions";
+import {fetchMuseumArtworks} from '../../../redux/museumArtworkActions';
 
 
 export default function Gallery({size, isMuseum, isPreview}) {
@@ -38,7 +38,6 @@ export default function Gallery({size, isMuseum, isPreview}) {
   const EMPTY_QUERY = '';
   useEffect(() => {
     if (isPreview) {
-      console.log("dispatch");
       dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
     }
   }, [dispatch]);
