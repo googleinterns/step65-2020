@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import InputBase from '@material-ui/core/InputBase';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles((theme) => ({
   loading: {
@@ -153,20 +154,20 @@ export default function MuseumGallery() {
         </div>
       )}
       <Container className={classes.searchAndSortByBar}>
-        <Container className={classes.searchByContainer}>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <Select
-              id="search-field"
-              value={searchField}
-              onChange={handleChangeSearchField}
-            >
-              <MenuItem value="all-fields">Search by: All fields</MenuItem>
-              <MenuItem value="artist_title">Artist</MenuItem>
-              <MenuItem value="description">Description</MenuItem>
-              <MenuItem value="title">Title</MenuItem>
-            </Select>
-          </FormControl>
-        </Container>
+        {/*<Container className={classes.searchByContainer}>*/}
+        {/*  <FormControl variant="outlined" className={classes.formControl}>*/}
+        {/*    <Select*/}
+        {/*      id="search-field"*/}
+        {/*      value={searchField}*/}
+        {/*      onChange={handleChangeSearchField}*/}
+        {/*    >*/}
+        {/*      <MenuItem value="all-fields">Search by: All fields</MenuItem>*/}
+        {/*      <MenuItem value="artist_title">Artist</MenuItem>*/}
+        {/*      <MenuItem value="description">Description</MenuItem>*/}
+        {/*      <MenuItem value="title">Title</MenuItem>*/}
+        {/*    </Select>*/}
+        {/*  </FormControl>*/}
+        {/*</Container>*/}
         <Container className={classes.searchComponents}>
           <InputBase
             placeholder="Search…"
@@ -197,8 +198,40 @@ export default function MuseumGallery() {
             <ExpandMoreIcon/>
           </IconButton>
         </Container>
+        <Button variant="contained" color="secondary">
+          Random artwork
+        </Button>
       </Container>
       <Container id="filter-drawer" className={classes.filterDrawer}>
+          {/*<FormControl variant="outlined" className={classes.formControl}>*/}
+          {/*  <Select*/}
+          {/*    id="search-field"*/}
+          {/*    value={searchField}*/}
+          {/*    onChange={handleChangeSearchField}*/}
+          {/*  >*/}
+          {/*    <MenuItem value="all-fields">Search by: All fields</MenuItem>*/}
+          {/*    <MenuItem value="artist_title">Artist</MenuItem>*/}
+          {/*    <MenuItem value="description">Description</MenuItem>*/}
+          {/*    <MenuItem value="title">Title</MenuItem>*/}
+          {/*  </Select>*/}
+          {/*</FormControl>*/}
+        <FormControl
+          variant="filled"
+          className={[classes.filterSelects, classes.formControl].join(' ')}
+        >
+          <InputLabel shrink id="placeholder-label">Search By</InputLabel>
+          <Select
+            labelId="placeholder-label"
+            id="placeholder"
+            label="Placeholder"
+            value="allFields"
+          >
+            <MenuItem value="allFields">All fields</MenuItem>
+            <MenuItem value="artist">Placeholder</MenuItem>
+            <MenuItem value="date">Placeholder</MenuItem>
+            <MenuItem value="title">Placeholder</MenuItem>
+          </Select>
+        </FormControl>
         <FormControl
           variant="filled"
           className={[classes.filterSelects, classes.formControl].join(' ')}
@@ -215,40 +248,6 @@ export default function MuseumGallery() {
             <MenuItem value="artist">Artist</MenuItem>
             <MenuItem value="date">Date</MenuItem>
             <MenuItem value="title">Title</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl
-          variant="filled"
-          className={[classes.filterSelects, classes.formControl].join(' ')}
-        >
-          <InputLabel shrink id="placeholder-label">Placeholder</InputLabel>
-          <Select
-            labelId="placeholder-label"
-            id="placeholder"
-            label="Placeholder"
-            value=""
-          >
-            <MenuItem value="relevance">Placeholder</MenuItem>
-            <MenuItem value="artist">Placeholder</MenuItem>
-            <MenuItem value="date">Placeholder</MenuItem>
-            <MenuItem value="title">Placeholder</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl
-          variant="filled"
-          className={[classes.filterSelects, classes.formControl].join(' ')}
-        >
-          <InputLabel shrink id="placeholder-label">Placeholder</InputLabel>
-          <Select
-            labelId="placeholder-label"
-            id="placeholder"
-            label="Placeholder"
-            value=""
-          >
-            <MenuItem value="relevance">Placeholder</MenuItem>
-            <MenuItem value="artist">Placeholder</MenuItem>
-            <MenuItem value="date">Placeholder</MenuItem>
-            <MenuItem value="title">Placeholder</MenuItem>
           </Select>
         </FormControl>
       </Container>
