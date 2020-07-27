@@ -36,8 +36,8 @@ export function fetchUserArtworks() {
 export function fetchSingleUserArtwork(id) {
   return (dispatch) => {
     dispatch(fetchSingleUserArtworkBegin());
-    return fakeGetSingleUserArtwork(id)
-        .then((json) => json.artworks)
+    fetch(`/api/v1/get-image?id=${id}`)
+        .then((response) => response.json())
         .then((artwork) => {
           return convertToArtworkInfo(artwork);
         })
