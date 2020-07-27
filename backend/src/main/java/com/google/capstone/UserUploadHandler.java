@@ -71,6 +71,7 @@ public class UserUploadHandler extends HttpServlet{
       String artTitle = getParameter(request, "artTitle", "");
       String altText = getParameter(request, "altText", "");
       String description = getParameter(request, "description", "");
+      String uniqueUserID = getParameter(request, "uniqueUserID", "");
       long timestamp = System.currentTimeMillis();
  
       //ImageInformation entity to be added into datastore
@@ -79,6 +80,7 @@ public class UserUploadHandler extends HttpServlet{
       mssgEntity.setProperty("artTitle", artTitle);
       mssgEntity.setProperty("altText", altText);
       mssgEntity.setProperty("description", description);
+      mssgEntity.setProperty("uniqueUserID", uniqueUserID);
       mssgEntity.setProperty("timestamp", timestamp);
  
       String blobKey = blobKeys.get(0).getKeyString();

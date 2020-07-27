@@ -8,6 +8,7 @@ import com.google.appengine.api.datastore.Entity;
  */
 public final class UploadedImage {
   private final long id;
+  private final String uniqueUserID;
   private final String artistName;
   private final String artTitle;
   private final String altText;
@@ -15,9 +16,10 @@ public final class UploadedImage {
   private final String blobkey;
   private final long timestamp;
  
-  public UploadedImage(long id, String artistName, String artTitle, String altText, 
+  public UploadedImage(long id, String uniqueUserID, String artistName, String artTitle, String altText, 
       String description, String blobkey, long timestamp) {
     this.id = id; 
+    this.uniqueUserID = uniqueUserID;
     this.artistName = artistName;
     this.artTitle = artTitle;
     this.altText = altText;
@@ -28,12 +30,13 @@ public final class UploadedImage {
  
   public static UploadedImage convertToObject(Entity entity) {
     long id = entity.getKey().getId();
+    String uniqueUserID = (String) entity.getProperty("uniqueUserID");
     String artistName = (String) entity.getProperty("artistName");
     String artTitle = (String) entity.getProperty("artTitle");
     String altText = (String) entity.getProperty("altText");
     String description = (String) entity.getProperty("description");
     String blobKey = (String) entity.getProperty("blobKey");
     long timestamp = (long) entity.getProperty("timestamp");
-    return new UploadedImage(id, artistName, artTitle, altText, description, blobKey, timestamp);
+    return new UploadedImage(id, uniqueUserID, artistName, artTitle, altText, description, blobKey, timestamp);
   }
 }

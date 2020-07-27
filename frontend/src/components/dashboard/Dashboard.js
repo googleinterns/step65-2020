@@ -40,6 +40,7 @@ import AvatarHeader from './account-components/AvatarHeader';
 import {isLoaded, isEmpty} from 'react-redux-firebase';
 import SignOutNavigationItem from './account-components/SignOutNavigationItem';
 import SignInButton from './account-components/SignInButton';
+import PrivateRoute from './account-components/PrivateRoute';
 
 const drawerWidth = 240;
 
@@ -249,7 +250,7 @@ export default function Dashboard() {
                   <MuseumGallery />
                 </Container>
               </Route>
-              <Route exact path="/upload-artwork">
+              <PrivateRoute exact path="/upload-artwork">
                 <Container className={classes.withPadding}>
                   <Typography variant="h3" gutterBottom>
                         Upload Artwork
@@ -264,7 +265,7 @@ export default function Dashboard() {
                   <UserUploadForm name="User Information"/>
                   <DescLinks name="Description Links"/>
                 </Container>
-              </Route>
+              </PrivateRoute>
               <Route exact path="/user-uploads-gallery">
                 <Container className={classes.galleryPageWrapper}>
                   <Banner
