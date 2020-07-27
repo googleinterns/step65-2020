@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   withPadding: {
     padding: theme.spacing(3),
   },
-  box: {
+  headerActionBox: {
     display: 'flex',
     textColor: theme.palette.secondary.contrastText,
   },
@@ -126,7 +126,7 @@ export default function ArtworkCloseUpCard(props) {
             subheaderTypographyProps={subheaderTypographyProps}
             className={classes.header}
             action={
-              <Box className={classes.box}>
+              <Box className={classes.headerActionBox}>
                 <AudioPlayer
                   controls
                   id="audio"
