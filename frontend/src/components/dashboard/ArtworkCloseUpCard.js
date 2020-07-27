@@ -18,6 +18,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Box from '@material-ui/core/Box';
+import {isLoaded, isEmpty} from 'react-redux-firebase';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,6 +65,8 @@ export default function ArtworkCloseUpCard(props) {
   const id = props.match.params.id;
 
   const isMuseum = props.match.params.collection === 'museum';
+
+  const auth = useSelector((state) => state.firebase.auth);
 
   const artworks = useSelector((state) => (isMuseum ?
       state.museumArtworks.artworks :
@@ -132,7 +135,7 @@ export default function ArtworkCloseUpCard(props) {
                   id="audio"
                   className={classes.audioPlayer}
                 />
-                <IconButton
+                {isLoaded(auth) && !isEmpty(auth) && (<IconButton
                   aria-label="add to favorites"
                   onClick={handleAddToFavorites}
                   className={classes.favorite}
@@ -140,7 +143,7 @@ export default function ArtworkCloseUpCard(props) {
                   {isFavorite ?
                       <FavoriteIcon fontSize="large"/> :
                       <FavoriteBorderIcon fontSize="large"/>}
-                </IconButton>
+                </IconButton>)}
               </Box>
             }
           />
