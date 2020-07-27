@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /** Servlet responsible for getting favorites for a given user. */
-@WebServlet(name = "GetFavorites", value = "/get-favorites")
+@WebServlet(name = "GetFavorites", value = "/api/v1/get-favorites")
 public class GetFavorites extends HttpServlet {
-  //vWill later be passed in as a parameter once pagination is done.
+  //Will later be passed in as a parameter once pagination is done.
   private static final int MAX_FAVORITES = 20;
   private static final Gson gson = new Gson();
 
@@ -31,12 +31,12 @@ public class GetFavorites extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     List<Entity> results = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(MAX_FAVORITES));
 
-    List<Favorite> comments =
+    List<Favorite> favorites =
             results.stream()
                     .map(entity -> Favorite.entityToFavoriteConverter(entity))
                     .collect(Collectors.toList());
 
     response.setContentType("application/json");
-    response.getWriter().println(gson.toJson(comments));
+    response.getWriter().println(gson.toJson(favorites));
   }
 }

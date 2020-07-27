@@ -163,8 +163,10 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
     dispatch(fetchUserArtworks());
-    dispatch(fetchFavorites(auth.uid));
-  }, [dispatch]);
+    if (isLoaded(auth) && !isEmpty(auth)) {
+      dispatch(fetchFavorites(auth.uid));
+    }
+  }, [dispatch, auth]);
 
 
   return (

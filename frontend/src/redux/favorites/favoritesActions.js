@@ -1,3 +1,10 @@
+function handleErrors(response) {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+}
+
 function getFavorites(uid) {
   return fetch(`/api/v1/get-favorites?uid=${uid}`)
       .then(handleErrors);
@@ -22,25 +29,18 @@ export function fetchFavorites(uid) {
   };
 }
 
-export function updateFavorites(uid, isMuseum, artworkId) {
+export function updateFavorites(uid, collection, artworkId) {
   return (dispatch) => {
     const params = new URLSearchParams();
     params.append('uid', uid);
-    params.append('is-museum', isMuseum);
+    params.append('collection', collection);
     params.append('artwork-id', artworkId);
-    fetch('/delete-comment', {method: 'POST', body: params})
+    fetch('/api/v1/add-to-favorites', {method: 'POST', body: params})
         .then(() => dispatch(addFavorite()))
         .then(() => dispatchFavorites(dispatch, uid));
   };
 }
 
-// Handle HTTP errors since fetch won't.
-function handleErrors(response) {
-  if (!response.ok) {
-    throw Error(response.statusText);
-  }
-  return response;
-}
 
 export const FETCH_FAVORITES_BEGIN =
     'FETCH_FAVORITES_BEGIN';
@@ -66,5 +66,5 @@ export const fetchFavoritesFailure = (error) => ({
 });
 
 export const addFavorite = () => ({
-  type: FETCH_FAVORITES_FAILURE,
+  type: ADD_FAVORITE,
 });

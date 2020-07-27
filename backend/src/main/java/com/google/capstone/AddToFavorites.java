@@ -19,12 +19,12 @@ public class AddToFavorites extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) {
     String uid = request.getParameter("uid");
-    String isMuseum = request.getParameter("is-museum");
+    String collection = request.getParameter("collection");
     String artworkId = request.getParameter("artwork-id");
     long timestamp = System.currentTimeMillis();
 
     Entity favoritesEntity = new Entity(uid + "Favorites");
-    favoritesEntity.setProperty("isMuseum", isMuseum);
+    favoritesEntity.setProperty("collection", collection);
     favoritesEntity.setProperty("artworkId", artworkId);
     favoritesEntity.setProperty("timestamp", timestamp);
 

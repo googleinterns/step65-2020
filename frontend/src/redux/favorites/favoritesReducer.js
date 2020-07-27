@@ -34,7 +34,7 @@ export default function favoritesReducer(
         ...state,
         loading: false,
         error: action.payload.error,
-        artworks: new Map(),
+        artworks: [],
       };
 
     default:

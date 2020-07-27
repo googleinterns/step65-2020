@@ -11,7 +11,7 @@ import AudioPlayer from 'react-audio-player';
 import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import PropTypes from 'prop-types';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {generateTextToSpeech, getMuseumAudioTranscript,
   getUserAudioTranscript} from './textToSpeechHelpers';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,6 +19,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Box from '@material-ui/core/Box';
 import {isLoaded, isEmpty} from 'react-redux-firebase';
+import {updateFavorites} from '../../redux/favorites/favoritesActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,12 +60,14 @@ export default function ArtworkCloseUpCard(props) {
   const [error, setError] = useState(false);
   const [audioLoading, setAudioLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
+  const dispatch = useDispatch();
 
   const subheaderTypographyProps = {color: 'light'};
 
   const id = props.match.params.id;
 
-  const isMuseum = props.match.params.collection === 'museum';
+  const collection = props.match.params.collection;
+  const isMuseum = collection === 'museum';
 
   const auth = useSelector((state) => state.firebase.auth);
 
@@ -72,11 +75,18 @@ export default function ArtworkCloseUpCard(props) {
       state.museumArtworks.artworks :
       state.userArtworks.artworks));
 
+  const favorites = useSelector((state) => state.favorites.artworks);
+
   const handleAddToFavorites = () => {
     setIsFavorite(true);
+    dispatch(updateFavorites(auth.uid, collection, id));
   };
 
   useEffect(() => {
+    if (favorites.some((favorite) =>
+      favorite.artworkId === id && favorite.collection === collection)) {
+      setIsFavorite(true);
+    }
     if (artworks && artworks.has(id)) {
       const artwork = artworks.get(id);
       const description = artwork.get('description');
@@ -105,7 +115,7 @@ export default function ArtworkCloseUpCard(props) {
             setAudioLoading(false);
           });
     }
-  }, [artworks, id, isMuseum]);
+  }, [artworks, id, isMuseum, favorites, collection]);
 
   if (!artworks || !artworks.has(id)) {
     return (
