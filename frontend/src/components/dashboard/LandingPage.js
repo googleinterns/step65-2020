@@ -11,7 +11,7 @@ import {Link as ScrollLink} from 'react-scroll';
 const useStyles = makeStyles((theme) => ({
   banner: {
     [theme.breakpoints.down('sm')]: {
-      background: 'url('+MobileBackgroundImage+')',
+      background: 'url(' + MobileBackgroundImage + ')',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
     },
     [theme.breakpoints.up('md')]: {
-      background: 'url('+BackgroundImage+')',
+      background: 'url(' + BackgroundImage + ')',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
