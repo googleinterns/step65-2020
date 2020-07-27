@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 const useStyles = makeStyles((theme) => ({
   banner: {
     height: '40vh',
-    marginBottom: theme.spacing(2),
     position: 'relative',
     width: '100%',
+    marginBottom: theme.spacing(2),
   },
   bannerText: {
     color: 'white',
