@@ -20,10 +20,61 @@ const convertToArtworkInfo = (artwork) => {
   return artworkInfo;
 };
 
+const sortByQuerySyntax = new Map()
+    .set('relevance',
+        {
+          '_score': {
+            'order': 'desc',
+          },
+        })
+    .set('artist',
+        {
+          'artist_title.keyword': {
+            'order': 'asc',
+          },
+        })
+    .set('date',
+        {
+          'date_end': {
+            'order': 'desc',
+          },
+        })
+    .set('title',
+        {
+          'title.keyword': {
+            'order': 'asc',
+          },
+        });
+
+const convertSearchToQuerySyntax = (searchField, search) => {
+  if (searchField !== '' && search !== '') {
+    const json = { };
+    json[searchField] = search;
+    return json;
+  }
+  return null;
+};
+
 // based off of https://github.com/kjschmidt913/AIC/blob/master/script.js
-function getQuery(limit) {
+function getQuery(limit, sortBy, searchQuery) {
   return {
     'resources': 'artworks',
+    'mappings': {
+      '_doc': {
+        'properties': {
+          'title': {
+            'type': 'string',
+            'analyzer': 'english',
+            'fields': {
+              'raw': {
+                'type': 'string',
+                'index': 'not_analyzed',
+              },
+            },
+          },
+        },
+      },
+    },
     'fields': [
       'pagination',
       'id',
@@ -36,8 +87,16 @@ function getQuery(limit) {
       'date_display',
     ],
     'limit': limit,
+    'sort': [
+      sortBy,
+    ],
     'query': {
       'bool': {
+        ...searchQuery && {'filter': [
+          {
+            'match': searchQuery,
+          },
+        ]},
         'must': [
           {
             'term': {
@@ -85,7 +144,7 @@ function getQuery(limit) {
   };
 }
 
-function getMuseumArtworks(path, params) {
+function getMuseumArtworks(path, params, sortBy, searchField, search) {
   const apiUrl = new URL('https://aggregator-data.artic.edu/api/v1/');
   apiUrl.pathname += path;
   if (params) {
@@ -100,7 +159,10 @@ function getMuseumArtworks(path, params) {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     },
-    body: JSON.stringify(getQuery(params.get('limit'))),
+    body: JSON.stringify(getQuery(
+        params.get('limit'),
+        sortByQuerySyntax.get(sortBy),
+        convertSearchToQuerySyntax(searchField, search))),
   })
       .then(handleErrors)
       .then((res) => res.json());
@@ -114,12 +176,17 @@ function artworksJsonToMap(artworks) {
   return artworksMap;
 }
 
-export function fetchMuseumArtworks(page, limit) {
+export function fetchMuseumArtworks(
+    page, limit, searchQuery='', sortBy='relevance', searchField='') {
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
-    return getMuseumArtworks('artworks/search', new Map()
-        .set('page', page)
-        .set('limit', limit),
+    return getMuseumArtworks('artworks/search',
+        new Map()
+            .set('page', page)
+            .set('limit', limit),
+        sortBy,
+        searchField,
+        searchQuery,
     )
         .then((artworks) => artworks.data)
         .then((artworks) => {

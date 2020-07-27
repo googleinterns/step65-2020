@@ -1,5 +1,5 @@
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import {
   BrowserRouter as Router,
@@ -24,7 +24,7 @@ import NavigationItems from './NavigationItems';
 import MuseumGallery from './MuseumGallery';
 import GalleryPreview from './gallery-components/GalleryPreview';
 import ArtworkCloseUpCard from './ArtworkCloseUpCard';
-import UploadsFields from './UploadsFields';
+import UserUploadForm from './UserUploadForm';
 import DescLinks from './DescLinks';
 import Gallery from './gallery-components/Gallery';
 import Banner from './gallery-components/Banner';
@@ -33,8 +33,8 @@ import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
 import {useDispatch} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
-import Pagination from '@material-ui/lab/Pagination';
 import {fetchUserArtworks} from '../../redux/userArtworkActions';
+import AICimg from './images/aic-inside.jpg';
 
 const drawerWidth = 240;
 
@@ -130,11 +130,6 @@ const useStyles = makeStyles(() => ({
   mission: {
     background: theme.palette.secondary.main,
   },
-  pagination: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: theme.spacing(2),
-  },
 }));
 
 export default function Dashboard() {
@@ -151,15 +146,13 @@ export default function Dashboard() {
 
   // fetches artworks for GalleryPreview and MuseumGallery
   const dispatch = useDispatch();
-  const limit = 9;
-  const [museumPage, setMuseumPage] = useState(1);
-  const handleChange = (event, value) => {
-    setMuseumPage(value);
-  };
+  const LIMIT = 9;
+  const FIRST_PAGE = 1;
+  const EMPTY_QUERY = '';
   useEffect(() => {
-    dispatch(fetchMuseumArtworks(museumPage, limit));
+    dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
     dispatch(fetchUserArtworks());
-  }, [dispatch, museumPage]);
+  }, [dispatch]);
 
 
   return (
@@ -234,15 +227,12 @@ export default function Dashboard() {
               </Route>
               <Route exact path="/museum-gallery">
                 <Container className={classes.galleryPageWrapper}>
+                  <Banner
+                    title="Museum Gallery"
+                    description="Explore the Art Institute of Chicago!"
+                    imgURL={AICimg}
+                  />
                   <MuseumGallery />
-                  <Container className={classes.pagination}>
-                    <Pagination
-                      count={10}
-                      size="large"
-                      page={museumPage}
-                      onChange={handleChange}
-                    />
-                  </Container>
                 </Container>
               </Route>
               <Route exact path="/upload-artwork">
@@ -257,7 +247,7 @@ export default function Dashboard() {
                     description, we&apos;ve provided some links below to some
                     resources that can help guide you!
                   </Typography>
-                  <UploadsFields name="User Information"/>
+                  <UserUploadForm name="User Information"/>
                   <DescLinks name="Description Links"/>
                 </Container>
               </Route>
@@ -273,24 +263,8 @@ export default function Dashboard() {
                   </Container>
                 </Container>
               </Route>
-              <Route exact path="/upload-artwork">
-                <Container className={classes.withPadding}>
-                  <Typography variant="h3" gutterBottom>
-                    Upload Artwork
-                  </Typography>
-                  <Typography variant="body1" gutterBottom>
-                    Here you can upload artwork of your own! Please be sure to
-                    include your name and a very detailed description of your
-                    artwork. If you are unsure of what qualifies as a good
-                    description, we&apos;ve provided some links below to some
-                    resources that can help guide you!
-                  </Typography>
-                  <UploadsFields name="User Information"/>
-                  <DescLinks name="Description Links"/>
-                </Container>
-              </Route>
               <Route
-                exact path="/gallery/:isMuseum/:id"
+                exact path="/gallery/:collection/:id"
                 component={ArtworkCloseUpCard}
               />
             </Switch>
