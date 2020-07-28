@@ -277,7 +277,7 @@ export default function Dashboard() {
                 <Container className={classes.galleryPageWrapper}>
                   <Banner
                     title="My Art"
-                    description="Explore artwork from other users!"
+                    description="Art you've uploaded!"
                     imgURL={UnsplashImg}
                   />
                   <Container>
