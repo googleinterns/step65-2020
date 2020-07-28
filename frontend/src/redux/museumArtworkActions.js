@@ -190,7 +190,6 @@ export function fetchMuseumArtworks(
     searchFieldArgument = '';
   }
 
-
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
     return getMuseumArtworks('artworks/search',
