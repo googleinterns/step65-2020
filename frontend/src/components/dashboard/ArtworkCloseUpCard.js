@@ -87,7 +87,7 @@ export default function ArtworkCloseUpCard(props) {
       state.museumArtworks.loading :
       state.userArtworks.loading));
 
-  const favorites = useSelector((state) => state.favorites.artworks);
+  const favorites = useSelector((state) => state.favorites.artworkIds);
 
   const handleAddToFavorites = () => {
     setIsFavorite(true);

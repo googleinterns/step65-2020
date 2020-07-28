@@ -5,9 +5,10 @@ import {
 } from './favoritesActions';
 
 const initialState = {
+  artworkIds: [],
   artworks: [],
   loading: false,
-  error: null,
+  error: false,
 };
 
 export default function favoritesReducer(
@@ -26,15 +27,15 @@ export default function favoritesReducer(
       return {
         ...state,
         loading: false,
-        artworks: action.payload.artworks,
+        artworkIds: action.payload.artworkIds,
       };
 
     case FETCH_FAVORITES_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload.error,
-        artworks: [],
+        error: true,
+        artworkIds: [],
       };
 
     default:

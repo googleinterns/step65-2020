@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet responsible for getting favorites for a given user. */
 @WebServlet(name = "GetFavorites", value = "/api/v1/get-favorites")
 public class GetFavorites extends HttpServlet {
-  //Will later be passed in as a parameter once pagination is done.
-  private static final int MAX_FAVORITES = 20;
+  // Will later be passed in as a parameter once pagination is done.
+  private static final int MAX_FAVORITES = 9;
   private static final Gson gson = new Gson();
 
   @Override

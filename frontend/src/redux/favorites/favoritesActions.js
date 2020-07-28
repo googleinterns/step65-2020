@@ -14,9 +14,9 @@ export function dispatchFavorites(dispatch, uid) {
   dispatch(fetchFavoritesBegin());
   return getFavorites(uid)
       .then((response) => response.json())
-      .then((artworks) => {
-        dispatch(fetchFavoritesSuccess(artworks));
-        return artworks;
+      .then((artworkIds) => {
+        dispatch(fetchFavoritesSuccess(artworkIds));
+        return artworkIds;
       })
       .catch((error) =>
         dispatch(fetchFavoritesFailure(error)),
@@ -55,9 +55,9 @@ export const fetchFavoritesBegin = () => ({
   type: FETCH_FAVORITES_BEGIN,
 });
 
-export const fetchFavoritesSuccess = (artworks) => ({
+export const fetchFavoritesSuccess = (artworkIds) => ({
   type: FETCH_FAVORITES_SUCCESS,
-  payload: {artworks},
+  payload: {artworkIds},
 });
 
 export const fetchFavoritesFailure = (error) => ({
