@@ -30,6 +30,7 @@ export default function UserUploadForm(props) {
         if (e.target.files.length > 0) {
           // Accessed .name from file
           setName(e.target.files[0].name);
+          setBtnDisabled(false);
         }
         break;
       default:
@@ -55,6 +56,8 @@ export default function UserUploadForm(props) {
   let file = null;
 
   const [actionURL, setURL] = useState('');
+
+  const [btnDisabled, setBtnDisabled] = useState(true);
 
   file = fileName ?
       ( <span>File Selected - {fileName}</span>) :
@@ -173,6 +176,7 @@ export default function UserUploadForm(props) {
               variant="contained"
               color="secondary"
               type="submit"
+              disabled={btnDisabled}
             >
                 Submit Artwork
             </Button>
