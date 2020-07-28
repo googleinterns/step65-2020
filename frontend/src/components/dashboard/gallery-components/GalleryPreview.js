@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
@@ -32,15 +33,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GalleryPreview({name, link, isMuseum, artworksError}) {
+export default function GalleryPreview({name, link, isMuseum}) {
   const classes = useStyles();
+
+  const error = useSelector((state) =>
+    (isMuseum ? state.museumArtworks.error : state.userArtworks.error));
+
 
   return (
     <>
       <Container className={classes.galleryTitle}>
         <Typography variant="h4" component="h2">{name}</Typography>
       </Container>
-      {artworksError && (
+      {error && (
         <Alert
           severity="error"
           className={classes.alert}
@@ -62,5 +67,4 @@ GalleryPreview.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   isMuseum: PropTypes.bool.isRequired,
-  artworksError: PropTypes.bool.isRequired,
 };
