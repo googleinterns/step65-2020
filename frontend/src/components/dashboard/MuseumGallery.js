@@ -137,7 +137,7 @@ export default function MuseumGallery() {
   const numOfPgs = useSelector(
       (state) => (state.museumArtworks.numOfPgs));
   const numOfResults = useSelector(
-    (state) => (state.museumArtworks.numOfResults));
+      (state) => (state.museumArtworks.numOfResults));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const LIMIT = 9;

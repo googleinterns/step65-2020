@@ -65,6 +65,7 @@ export default function museumArtworkReducer(
     case FETCH_RANDOM_ARTWORK_SUCCESS:
       return {
         ...state,
+        loading: false,
         randomArtworkId: action.payload.randomArtworkId,
       };
 

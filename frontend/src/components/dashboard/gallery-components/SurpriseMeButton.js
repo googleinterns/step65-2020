@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import {getRandomArtworkId} from '../../../redux/museumArtworkActions';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   surpriseMe: {
@@ -15,6 +16,8 @@ export default function SurpriseMeButton({numOfResults, searchQuery, sortBy, sea
   const classes = useStyles();
   const ARTWORKS_PER_PAGE = 9;
 
+  const [newRandomArtwork, setNewRandomArtwork] = React.useState(false);
+
   const computeRandomIndex = (numOfResults) => {
     const ranNum = Math.floor(Math.random() * numOfResults);
     const pageNum = Math.floor(ranNum/ARTWORKS_PER_PAGE);
@@ -23,27 +26,33 @@ export default function SurpriseMeButton({numOfResults, searchQuery, sortBy, sea
   };
 
   const dispatch = useDispatch();
-
-  const surpriseMe = () => {
-    // console.log is here to check it
-    // next PR, I will use the pageNum and the index to fetch
-    // the artwork's id
+  const randomArtworkId = useSelector(
+      (state) => (state.museumArtworks.randomArtworkId));
+  useEffect(() => {
     const {pageNum, index} = computeRandomIndex(numOfResults);
     dispatch(getRandomArtworkId(
-        pageNum, ARTWORKS_PER_PAGE, searchQuery, sortBy, searchField, index));
+        pageNum, ARTWORKS_PER_PAGE, searchQuery, sortBy, searchField, index))
+        .then(setNewRandomArtwork(false));
+  }, [dispatch, searchQuery, sortBy, searchField, numOfResults, newRandomArtwork]);
+
+  const surpriseMe = () => {
+    setNewRandomArtwork(true);
+    console.log(randomArtworkId);
   };
 
+
   return (
-    <div>
+    <Link to = "/gallery/museum/28560">
       <Button
         variant="contained"
         color="secondary"
         className={classes.surpriseMe}
         onClick={surpriseMe}
+        // to= {`/gallery/museum/${randomArtworkId}`}
       >
         Surprise me!
       </Button>
-    </div>
+    </Link>
 
   );
 }

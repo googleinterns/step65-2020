@@ -219,11 +219,9 @@ export function fetchMuseumArtworks(
   };
 }
 
-function getArtworkAtIndex(artworks, index){
-  return(artworks.data[index].id);
+function getArtworkAtIndex(artworks, index) {
+  return (artworks.data[index].id);
 }
-
-
 
 export function getRandomArtworkId(
     page, limit, searchQuery, sortBy, searchField, index) {
@@ -237,24 +235,25 @@ export function getRandomArtworkId(
   return (dispatch) => {
     dispatch(fetchRandomArtworkBegin());
     return getMuseumArtworks('artworks/search',
-      new Map()
-        .set('page', page)
-        .set('limit', limit)
-        .set('q', simpleQuery),
-      sortBy,
-      searchFieldArgument,
-      searchQuery,
+        new Map()
+            .set('page', page)
+            .set('limit', limit)
+            .set('q', simpleQuery),
+        sortBy,
+        searchFieldArgument,
+        searchQuery,
     )
-      .then((artworks) => {
-        return getArtworkAtIndex(artworks, index);
-      })
-      .then((id) => {
-        dispatch(fetchRandomArtworkSuccess(id));
-        return id;
-      })
-      .catch((error) =>
-        dispatch(fetchRandomArtworkFailure(error)),
-      );
+        .then((artworks) => {
+          return getArtworkAtIndex(artworks, index);
+        })
+        .then((id) => {
+          dispatch(fetchRandomArtworkSuccess(id));
+          return id;
+        })
+        .catch((error) =>
+          dispatch(fetchRandomArtworkFailure(error)),
+        );
+  };
 }
 
 // Handle HTTP errors since fetch won't.
