@@ -64,8 +64,8 @@ export default function ArtworkCloseUpCard(props) {
   const [error, setError] = useState(false);
   const [audioLoading, setAudioLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
-  const dispatch = useDispatch();
   const [currentArtworkUpdated, setCurrentArtworkUpdated] = useState(false);
+  const dispatch = useDispatch();
 
   const subheaderTypographyProps = {color: 'light'};
 
@@ -79,7 +79,6 @@ export default function ArtworkCloseUpCard(props) {
   const artworks = useSelector((state) => (isMuseum ?
       state.museumArtworks.artworks :
       state.userArtworks.artworks));
-  const dispatch = useDispatch();
   const currentArtwork =
       useSelector((state) => (isMuseum ?
           state.museumArtworks.currentArtwork :
