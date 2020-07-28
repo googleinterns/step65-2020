@@ -8,7 +8,6 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import {makeStyles} from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
@@ -52,26 +51,46 @@ const useStyles = makeStyles((theme) => ({
 export default function MuseumGallery() {
   const classes = useStyles();
 
+  /*
+   only set newQuery to be true when there is a change to the page number,
+   the "sort by" field, or when the search button is pressed
+  */
+  const [newQuery, setNewQuery] = React.useState(false);
+
   const [sortBy, setSortBy] = React.useState('relevance');
   const handleChangeSortBy = (event) => {
+    setNewQuery(true);
     setSortBy(event.target.value);
   };
   const [museumPage, setMuseumPage] = useState(1);
   const handleChangePage = (event, value) => {
+    setNewQuery(true);
     setMuseumPage(value);
   };
   const [searchQuery, setSearchQuery] = React.useState('');
   const handleChangeSearch = () => {
+    setNewQuery(true);
     setSearchQuery(document.getElementById('search-textfield').value);
     setMuseumPage(1);
   };
+
+  const [searchField, setSearchField] = React.useState('all-fields');
+  const handleChangeSearchField = (event) => {
+    setSearchField(event.target.value);
+  };
+
   const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
-  const limit = 9;
+  const LIMIT = 9;
   useEffect(() => {
-    dispatch(fetchMuseumArtworks(museumPage, limit, searchQuery, sortBy));
-  }, [dispatch, museumPage, searchQuery, sortBy]);
+    if (newQuery) {
+      dispatch(fetchMuseumArtworks(
+          museumPage, LIMIT, searchQuery, sortBy, searchField))
+          .then(setNewQuery(false));
+    }
+  }, [dispatch, newQuery]);
+
   let paginationNeeded = true;
   let results;
   if (artworks.length !== 0) {
@@ -107,6 +126,22 @@ export default function MuseumGallery() {
               }
             }}
           />
+          <Container className={classes.selectMenu}>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="search-field-label">Search By</InputLabel>
+              <Select
+                labelId="search-field-label"
+                id="search-field"
+                value={searchField}
+                onChange={handleChangeSearchField}
+              >
+                <MenuItem value="all-fields">All Fields</MenuItem>
+                <MenuItem value="artist_title">Artist</MenuItem>
+                <MenuItem value="description">Description</MenuItem>
+                <MenuItem value="title">Title</MenuItem>
+              </Select>
+            </FormControl>
+          </Container>
           <div className={classes.searchButton}>
             <IconButton
               aria-label="search"
@@ -115,7 +150,8 @@ export default function MuseumGallery() {
             </IconButton>
           </div>
         </Container>
-        <Container className={classes.sortByForm}>
+
+        <Container className={classes.selectMenu}>
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="sort-by-label">Sort By</InputLabel>
             <Select
@@ -129,7 +165,6 @@ export default function MuseumGallery() {
               <MenuItem value="date">Date</MenuItem>
               <MenuItem value="title">Title</MenuItem>
             </Select>
-            <FormHelperText>Sort images by...</FormHelperText>
           </FormControl>
         </Container>
       </Container>

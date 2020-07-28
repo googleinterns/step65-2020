@@ -46,8 +46,17 @@ const sortByQuerySyntax = new Map()
           },
         });
 
+const convertSearchToQuerySyntax = (searchField, search) => {
+  if (searchField !== '' && search !== '') {
+    const json = { };
+    json[searchField] = search;
+    return json;
+  }
+  return null;
+};
+
 // based off of https://github.com/kjschmidt913/AIC/blob/master/script.js
-function getQuery(limit, sortBy) {
+function getQuery(limit, sortBy, searchQuery) {
   return {
     'resources': 'artworks',
     'mappings': {
@@ -83,6 +92,11 @@ function getQuery(limit, sortBy) {
     ],
     'query': {
       'bool': {
+        ...searchQuery && {'filter': [
+          {
+            'match': searchQuery,
+          },
+        ]},
         'must': [
           {
             'term': {
@@ -130,7 +144,7 @@ function getQuery(limit, sortBy) {
   };
 }
 
-function getMuseumArtworks(path, params, sortBy) {
+function getMuseumArtworks(path, params, sortBy, searchField, search) {
   const apiUrl = new URL('https://aggregator-data.artic.edu/api/v1/');
   apiUrl.pathname += path;
   if (params) {
@@ -139,6 +153,7 @@ function getMuseumArtworks(path, params, sortBy) {
     }
   }
   const API = apiUrl.toString();
+
   return fetch(API, {
     method: 'POST',
     headers: {
@@ -147,7 +162,8 @@ function getMuseumArtworks(path, params, sortBy) {
     },
     body: JSON.stringify(getQuery(
         params.get('limit'),
-        sortByQuerySyntax.get(sortBy))),
+        sortByQuerySyntax.get(sortBy),
+        convertSearchToQuerySyntax(searchField, search))),
   })
       .then(handleErrors)
       .then((res) => res.json());
@@ -161,15 +177,30 @@ function artworksJsonToMap(artworks) {
   return artworksMap;
 }
 
-export function fetchMuseumArtworks(page, limit, query, sortBy='relevance') {
+export function fetchMuseumArtworks(
+    page, limit, searchQuery='', sortBy='relevance', searchField='') {
+  /*
+   if user wants to search by all fields, perform a simple query
+   instead of a complex query
+  */
+  let simpleQuery = '';
+  let searchFieldArgument = searchField;
+  if (searchField === 'all-fields') {
+    simpleQuery = searchQuery;
+    searchFieldArgument = '';
+  }
+
+
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
     return getMuseumArtworks('artworks/search',
         new Map()
             .set('page', page)
             .set('limit', limit)
-            .set('q', query),
+            .set('q', simpleQuery),
         sortBy,
+        searchFieldArgument,
+        searchQuery,
     )
         .then((artworks) => artworks.data)
         .then((artworks) => {
@@ -181,6 +212,26 @@ export function fetchMuseumArtworks(page, limit, query, sortBy='relevance') {
         })
         .catch((error) =>
           dispatch(fetchMuseumArtworksFailure(error)),
+        );
+  };
+}
+
+export function fetchSingleMuseumArtwork(id) {
+  return (dispatch) => {
+    dispatch(fetchSingleMuseumArtworkBegin());
+    return getMuseumArtworks(`artworks/${id}`, new Map()
+        .set('limit', 1),
+    )
+        .then((artwork) => artwork.data)
+        .then((artwork) => {
+          return convertToArtworkInfo(artwork);
+        })
+        .then((artwork) => {
+          dispatch(fetchSingleMuseumArtworkSuccess(artwork));
+          return artwork;
+        })
+        .catch((error) =>
+          dispatch(fetchSingleMuseumArtworkFailure(error)),
         );
   };
 }
@@ -199,6 +250,14 @@ export const FETCH_MUSEUM_ARTWORKS_SUCCESS =
   'FETCH_MUSEUM_ARTWORKS_SUCCESS';
 export const FETCH_MUSEUM_ARTWORKS_FAILURE =
   'FETCH_MUSEUM_ARTWORKS_FAILURE';
+export const FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN =
+  'FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN';
+export const FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS =
+    'FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS';
+export const FETCH_SINGLE_MUSEUM_ARTWORK_FAILURE =
+    'FETCH_SINGLE_MUSEUM_ARTWORK_FAILURE';
+export const SET_CURRENT_MUSEUM_ARTWORK =
+    'SET_CURRENT_MUSEUM_ARTWORK';
 
 export const fetchMuseumArtworksBegin = () => ({
   type: FETCH_MUSEUM_ARTWORKS_BEGIN,
@@ -212,4 +271,23 @@ export const fetchMuseumArtworksSuccess = (artworks) => ({
 export const fetchMuseumArtworksFailure = (error) => ({
   type: FETCH_MUSEUM_ARTWORKS_FAILURE,
   payload: {error},
+});
+
+export const fetchSingleMuseumArtworkBegin = () => ({
+  type: FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN,
+});
+
+export const fetchSingleMuseumArtworkSuccess = (artwork) => ({
+  type: FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS,
+  payload: {artwork},
+});
+
+export const fetchSingleMuseumArtworkFailure = (error) => ({
+  type: FETCH_SINGLE_MUSEUM_ARTWORK_FAILURE,
+  payload: {error},
+});
+
+export const setCurrentMuseumArtwork = (id) => ({
+  type: SET_CURRENT_MUSEUM_ARTWORK,
+  payload: {id},
 });
