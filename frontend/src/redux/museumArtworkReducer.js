@@ -6,6 +6,7 @@ import {
 
 const initialState = {
   artworks: new Map(),
+  numOfResults: 0,
   numOfPgs: 0,
   loading: false,
   error: null,
@@ -33,6 +34,7 @@ export default function museumArtworkReducer(
         loading: false,
         artworks: action.payload.artworks,
         numOfPgs: action.payload.numOfPgs,
+        numOfResults: action.payload.numOfResults,
       };
 
     case FETCH_MUSEUM_ARTWORKS_FAILURE:
@@ -46,6 +48,7 @@ export default function museumArtworkReducer(
         error: action.payload.error,
         artworks: new Map(),
         numOfPgs: 0,
+        numOfResults: 0,
       };
 
     default:

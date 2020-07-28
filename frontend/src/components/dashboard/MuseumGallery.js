@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Gallery from './gallery-components/Gallery';
+import SurpriseMeButton from "./gallery-components/SurpriseMeButton";
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
@@ -72,9 +73,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
     margin: theme.spacing(2),
   },
-  surpriseMe: {
-    padding: theme.spacing(2)*.75,
-  },
   pagination: {
     display: 'flex',
     justifyContent: 'center',
@@ -138,6 +136,8 @@ export default function MuseumGallery() {
       (state) => (state.museumArtworks.loading));
   const numOfPgs = useSelector(
       (state) => (state.museumArtworks.numOfPgs));
+  const numOfResults = useSelector(
+    (state) => (state.museumArtworks.numOfResults));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const LIMIT = 9;
@@ -212,13 +212,7 @@ export default function MuseumGallery() {
             </IconButton>
           </div>
         </Container>
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.surpriseMe}
-        >
-          Surprise me!
-        </Button>
+        <SurpriseMeButton numOfResults={numOfResults}/>
       </Container>
       <Container id="filter-drawer" className={classes.filterDrawer}>
         <Button
@@ -254,7 +248,7 @@ export default function MuseumGallery() {
           className={classes.filters}
           onClick={clearSearchQuery}
         >
-          <Typography className={classes.hoverLineThrough} variant="label">
+          <Typography className={classes.hoverLineThrough} variant="button">
             Search for: {searchQuery} &#10006;
           </Typography>
         </Button>
