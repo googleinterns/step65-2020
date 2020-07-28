@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Endpoint to get single image given id
  */
-@WebServlet("/getImage")
+@WebServlet("/api/v1/get-image")
 public class ServeImage extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -30,7 +30,6 @@ public class ServeImage extends HttpServlet {
 
     Key imageEntityKey = KeyFactory.createKey("ImageInformation", id);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    
     Entity imageEntity = null;
     try{
       imageEntity = datastore.get(imageEntityKey);
