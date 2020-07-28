@@ -84,10 +84,6 @@ export default function ArtworkCloseUpCard(props) {
     setIsFavorite(true);
   };
 
-  const handleAddToFavorites = () => {
-    setIsFavorite(true);
-  };
-
   useEffect(() => {
     if (!loading && artworks && !currentArtworkUpdated) {
       if (artworks.has(id)) {
