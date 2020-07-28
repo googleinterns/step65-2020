@@ -8,7 +8,6 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import {makeStyles} from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
@@ -16,7 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
-  searchAndFilterBar: {
+  searchAndSortByBar: {
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     display: 'flex',
   },
-  filterForm: {
+  sortByForm: {
     alignItems: 'center',
     display: 'flex',
     width: 'auto',
@@ -52,9 +51,9 @@ const useStyles = makeStyles((theme) => ({
 export default function MuseumGallery() {
   const classes = useStyles();
 
-  const [filter, setFilter] = React.useState('');
-  const handleChangeFilter = (event) => {
-    setFilter(event.target.value);
+  const [sortBy, setSortBy] = React.useState('relevance');
+  const handleChangeSortBy = (event) => {
+    setSortBy(event.target.value);
   };
   const [museumPage, setMuseumPage] = useState(1);
   const handleChangePage = (event, value) => {
@@ -65,13 +64,18 @@ export default function MuseumGallery() {
     setSearchQuery(document.getElementById('search-textfield').value);
     setMuseumPage(1);
   };
+  const [searchField, setSearchField] = React.useState('title');
+  const handleChangeSearchField = (event) => {
+    setSearchField(event.target.value);
+  };
   const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const limit = 9;
   useEffect(() => {
-    dispatch(fetchMuseumArtworks(museumPage, limit, searchQuery));
-  }, [dispatch, museumPage, searchQuery]);
+    dispatch(fetchMuseumArtworks(
+        museumPage, limit, searchQuery, sortBy, searchField));
+  }, [dispatch, museumPage, searchQuery, sortBy, searchField]);
   let paginationNeeded = true;
   let results;
   if (artworks.length !== 0) {
@@ -94,7 +98,7 @@ export default function MuseumGallery() {
 
   return (
     <Container>
-      <Container className={classes.searchAndFilterBar}>
+      <Container className={classes.searchAndSortByBar}>
         <Container className={classes.searchForm}>
           <TextField
             className={classes.searchTextField}
@@ -107,6 +111,20 @@ export default function MuseumGallery() {
               }
             }}
           />
+          <Container className={classes.selectMenu}>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink id="search-field-label">Search By</InputLabel>
+              <Select
+                labelId="search-field-label"
+                id="search-field"
+                value={searchField}
+                onChange={handleChangeSearchField}
+              >
+                <MenuItem value="title">Title</MenuItem>
+                <MenuItem value="artist_title">Artist</MenuItem>
+              </Select>
+            </FormControl>
+          </Container>
           <div className={classes.searchButton}>
             <IconButton
               aria-label="search"
@@ -115,23 +133,21 @@ export default function MuseumGallery() {
             </IconButton>
           </div>
         </Container>
-        <Container className={classes.filterForm}>
+
+        <Container className={classes.selectMenu}>
           <FormControl className={classes.formControl}>
-            <InputLabel id="search-filter-label">Filter</InputLabel>
+            <InputLabel shrink id="sort-by-label">Sort By</InputLabel>
             <Select
-              labelId="search-filter-label"
-              id="search-filter"
-              value={filter}
-              onChange={handleChangeFilter}
+              labelId="sort-by-label"
+              id="sort-by"
+              value={sortBy}
+              onChange={handleChangeSortBy}
             >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="artist">By Artist</MenuItem>
-              <MenuItem value="date">By Date</MenuItem>
-              <MenuItem value="title">By Title</MenuItem>
+              <MenuItem value="relevance">Relevance</MenuItem>
+              <MenuItem value="artist">Artist</MenuItem>
+              <MenuItem value="date">Date</MenuItem>
+              <MenuItem value="title">Title</MenuItem>
             </Select>
-            <FormHelperText>Sort images by...</FormHelperText>
           </FormControl>
         </Container>
       </Container>

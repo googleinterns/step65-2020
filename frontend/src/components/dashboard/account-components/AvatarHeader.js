@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(7),
     transition: '0.3s',
   },
-  div: {
+  padding: {
     paddingBottom: theme.spacing(2),
   },
 }));
@@ -31,7 +31,7 @@ export default function AvatarHeader() {
           className={classes.avatar}
           src={auth.photoURL}
         />
-        <div className={classes.div} />
+        <div className={classes.padding} />
         <Typography variant={'h6'} noWrap>
           {auth.displayName}
         </Typography>
