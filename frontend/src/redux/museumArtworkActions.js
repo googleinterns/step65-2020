@@ -153,6 +153,7 @@ function getMuseumArtworks(path, params, sortBy, searchField, search) {
     }
   }
   const API = apiUrl.toString();
+
   return fetch(API, {
     method: 'POST',
     headers: {
@@ -178,14 +179,26 @@ function artworksJsonToMap(artworks) {
 
 export function fetchMuseumArtworks(
     page, limit, searchQuery='', sortBy='relevance', searchField='') {
+  /*
+   if user wants to search by all fields, perform a simple query
+   instead of a complex query
+  */
+  let simpleQuery = '';
+  let searchFieldArgument = searchField;
+  if (searchField === 'all-fields') {
+    simpleQuery = searchQuery;
+    searchFieldArgument = '';
+  }
+
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
     return getMuseumArtworks('artworks/search',
         new Map()
             .set('page', page)
-            .set('limit', limit),
+            .set('limit', limit)
+            .set('q', simpleQuery),
         sortBy,
-        searchField,
+        searchFieldArgument,
         searchQuery,
     )
         .then((artworks) => artworks.data)
