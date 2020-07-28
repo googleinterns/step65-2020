@@ -117,6 +117,7 @@ export default function MuseumGallery() {
     setNewQuery(true);
     setSearchQuery('');
     setMuseumPage(1);
+    setSortBy('relevance');
   };
 
   const [searchField, setSearchField] = React.useState('all-fields');
@@ -237,24 +238,16 @@ export default function MuseumGallery() {
         >
           <MenuItem
             onClick={(event) => handleChangeSortBy(event, 'relevance')}
-          >
-            Relevance
-          </MenuItem>
+          >Relevance</MenuItem>
           <MenuItem
             onClick={(event) => handleChangeSortBy(event, 'artist')}
-          >
-            Artist
-          </MenuItem>
+          >Artist</MenuItem>
           <MenuItem
             onClick={(event) => handleChangeSortBy(event, 'date')}
-          >
-            Date
-          </MenuItem>
+          >Date</MenuItem>
           <MenuItem
             onClick={(event) => handleChangeSortBy(event, 'title')}
-          >
-            Title
-          </MenuItem>
+          >Title</MenuItem>
         </Menu>
         <Button
           id="search-filter"
@@ -262,7 +255,7 @@ export default function MuseumGallery() {
           onClick={clearSearchQuery}
         >
           <Typography className={classes.hoverLineThrough} variant="label">
-            Search for : {searchQuery} &#10006;
+            Search for: {searchQuery} &#10006;
           </Typography>
         </Button>
         <FormControl
