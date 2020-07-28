@@ -15,17 +15,17 @@ const useStyles = makeStyles((theme) =>({
     textAlign: 'right',
   },
   link: {
-    textDecoration: 'none',
     color: theme.palette.text.primary,
+    textDecoration: 'none',
   },
   name: {
-    textAlign: 'left',
     paddingBottom: 0,
+    textAlign: 'left',
   },
   truncate: {
-    whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
   button: {
     display: 'flex',
