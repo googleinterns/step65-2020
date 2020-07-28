@@ -15,7 +15,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import InputBase from '@material-ui/core/InputBase';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
@@ -23,12 +22,11 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     flexDirection: 'row',
   },
-  searchAndSortByBar: {
+  searchBar: {
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'space-around',
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    margin: theme.spacing(2),
     padding: '0px',
     width: 'auto',
   },
@@ -45,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   searchTextField: {
     border: 'solid 1px #c3c3c3',
     borderRadius: '15px',
-    marginTop: theme.spacing(2),
+    margin: theme.spacing(2),
     padding: theme.spacing(2),
     width: '60ch',
   },
@@ -66,6 +64,9 @@ const useStyles = makeStyles((theme) => ({
     'margin': theme.spacing(1),
     'width': 'auto',
     '&:hover': {border: 'solid 1px black'},
+  },
+  hoverLineThrough: {
+    '&:hover': {textDecorationLine: 'line-through'},
   },
   sortByMenu: {
     display: 'none',
@@ -106,10 +107,13 @@ export default function MuseumGallery() {
     setNewQuery(true);
     setSearchQuery(document.getElementById('search-textfield').value);
     setMuseumPage(1);
+    document.getElementById('search-bar').style.marginBottom = '0px';
     document.getElementById('filter-drawer').style.display = 'block';
   };
   const clearSearchQuery = () => {
     document.getElementById('filter-drawer').style.display = 'none';
+    document.getElementById('search-bar').style.margin = '8px';
+    document.getElementById('search-textfield').value = '';
     setNewQuery(true);
     setSearchQuery('');
     setMuseumPage(1);
@@ -171,7 +175,7 @@ export default function MuseumGallery() {
           <LinearProgress />
         </div>
       )}
-      <Container className={classes.searchAndSortByBar}>
+      <Container id="search-bar" className={classes.searchBar}>
         <Container className={classes.searchByContainer}>
           <FormControl variant="outlined" className={classes.formControl}>
             <Select
@@ -257,7 +261,9 @@ export default function MuseumGallery() {
           className={classes.filters}
           onClick={clearSearchQuery}
         >
-          Search by: {searchQuery} &#10006;
+          <Typography className={classes.hoverLineThrough} variant="label">
+            Search for : {searchQuery} &#10006;
+          </Typography>
         </Button>
         <FormControl
           variant="filled"
