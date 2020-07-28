@@ -30,7 +30,7 @@ export default function MyArtworksGallery() {
 
   useEffect(() => {
     dispatch(fetchMyArtworks(auth.uid));
-  }, [dispatch]);
+  }, [dispatch, auth.uid]);
 
   return (
     <>
