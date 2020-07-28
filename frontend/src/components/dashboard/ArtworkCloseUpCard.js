@@ -137,8 +137,8 @@ export default function ArtworkCloseUpCard(props) {
           });
     }
   }, [artworks, dispatch, id, isMuseum,
-      favorites, collection, currentArtwork,
-      loading, currentArtworkUpdated]);
+    favorites, collection, currentArtwork,
+    loading, currentArtworkUpdated]);
 
   if (loading || !currentArtwork) {
     return (
