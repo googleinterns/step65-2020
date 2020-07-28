@@ -212,7 +212,12 @@ export default function MuseumGallery() {
             </IconButton>
           </div>
         </Container>
-        <SurpriseMeButton numOfResults={numOfResults}/>
+        <SurpriseMeButton
+          numOfResults={numOfResults}
+          searchQuery={searchQuery}
+          sortBy={sortBy}
+          searchField={searchField}
+        />
       </Container>
       <Container id="filter-drawer" className={classes.filterDrawer}>
         <Button

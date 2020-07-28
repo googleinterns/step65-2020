@@ -219,6 +219,44 @@ export function fetchMuseumArtworks(
   };
 }
 
+function getArtworkAtIndex(artworks, index){
+  return(artworks.data[index].id);
+}
+
+
+
+export function getRandomArtworkId(
+    page, limit, searchQuery, sortBy, searchField, index) {
+  let simpleQuery = '';
+  let searchFieldArgument = searchField;
+  if (searchField === 'all-fields') {
+    simpleQuery = searchQuery;
+    searchFieldArgument = '';
+  }
+
+  return (dispatch) => {
+    dispatch(fetchRandomArtworkBegin());
+    return getMuseumArtworks('artworks/search',
+      new Map()
+        .set('page', page)
+        .set('limit', limit)
+        .set('q', simpleQuery),
+      sortBy,
+      searchFieldArgument,
+      searchQuery,
+    )
+      .then((artworks) => {
+        return getArtworkAtIndex(artworks, index);
+      })
+      .then((id) => {
+        dispatch(fetchRandomArtworkSuccess(id));
+        return id;
+      })
+      .catch((error) =>
+        dispatch(fetchRandomArtworkFailure(error)),
+      );
+}
+
 // Handle HTTP errors since fetch won't.
 function handleErrors(response) {
   if (!response.ok) {
@@ -233,6 +271,12 @@ export const FETCH_MUSEUM_ARTWORKS_SUCCESS =
   'FETCH_MUSEUM_ARTWORKS_SUCCESS';
 export const FETCH_MUSEUM_ARTWORKS_FAILURE =
   'FETCH_MUSEUM_ARTWORKS_FAILURE';
+export const FETCH_RANDOM_ARTWORK_BEGIN =
+  'FETCH_RANDOM_ARTWORK_BEGIN';
+export const FETCH_RANDOM_ARTWORK_SUCCESS =
+  'FETCH_RANDOM_ARTWORK_SUCCESS';
+export const FETCH_RANDOM_ARTWORK_FAILURE =
+  'FETCH_RANDOM_ARTWORK_FAILURE';
 
 export const fetchMuseumArtworksBegin = () => ({
   type: FETCH_MUSEUM_ARTWORKS_BEGIN,
@@ -245,5 +289,19 @@ export const fetchMuseumArtworksSuccess = (artworks, numOfPgs, numOfResults) => 
 
 export const fetchMuseumArtworksFailure = (error) => ({
   type: FETCH_MUSEUM_ARTWORKS_FAILURE,
+  payload: {error},
+});
+
+export const fetchRandomArtworkBegin = () => ({
+  type: FETCH_RANDOM_ARTWORK_BEGIN,
+});
+
+export const fetchRandomArtworkSuccess = (randomArtworkId) => ({
+  type: FETCH_RANDOM_ARTWORK_SUCCESS,
+  payload: {randomArtworkId},
+});
+
+export const fetchRandomArtworkFailure = (error) => ({
+  type: FETCH_RANDOM_ARTWORK_FAILURE,
   payload: {error},
 });

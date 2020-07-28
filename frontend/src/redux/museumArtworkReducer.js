@@ -2,12 +2,16 @@ import {
   FETCH_MUSEUM_ARTWORKS_BEGIN,
   FETCH_MUSEUM_ARTWORKS_SUCCESS,
   FETCH_MUSEUM_ARTWORKS_FAILURE,
+  FETCH_RANDOM_ARTWORK_BEGIN,
+  FETCH_RANDOM_ARTWORK_SUCCESS,
+  FETCH_RANDOM_ARTWORK_FAILURE,
 } from './museumArtworkActions';
 
 const initialState = {
   artworks: new Map(),
   numOfResults: 0,
   numOfPgs: 0,
+  randomArtworkId: null,
   loading: false,
   error: null,
 };
@@ -49,6 +53,27 @@ export default function museumArtworkReducer(
         artworks: new Map(),
         numOfPgs: 0,
         numOfResults: 0,
+      };
+
+    case FETCH_RANDOM_ARTWORK_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+    case FETCH_RANDOM_ARTWORK_SUCCESS:
+      return {
+        ...state,
+        randomArtworkId: action.payload.randomArtworkId,
+      };
+
+    case FETCH_RANDOM_ARTWORK_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+        randomArtworkId: null,
       };
 
     default:
