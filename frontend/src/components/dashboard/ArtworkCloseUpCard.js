@@ -14,6 +14,10 @@ import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
 import {generateTextToSpeech, getMuseumAudioTranscript,
   getUserAudioTranscript} from './textToSpeechHelpers';
+import IconButton from '@material-ui/core/IconButton';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import Box from '@material-ui/core/Box';
 import {fetchSingleMuseumArtwork,
   setCurrentMuseumArtwork} from '../../redux/museumArtworkActions';
 import {fetchSingleUserArtwork,
@@ -44,12 +48,20 @@ const useStyles = makeStyles((theme) => ({
   withPadding: {
     padding: theme.spacing(3),
   },
+  headerActionBox: {
+    display: 'flex',
+    textColor: theme.palette.secondary.contrastText,
+  },
+  favorite: {
+    color: theme.palette.secondary.contrastText,
+  },
 }));
 
 export default function ArtworkCloseUpCard(props) {
   const classes = useStyles();
   const [error, setError] = useState(false);
   const [audioLoading, setAudioLoading] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [currentArtworkUpdated, setCurrentArtworkUpdated] = useState(false);
 
   const subheaderTypographyProps = {color: 'light'};
@@ -67,6 +79,10 @@ export default function ArtworkCloseUpCard(props) {
   const loading = useSelector((state) => (isMuseum ?
       state.museumArtworks.loading :
       state.userArtworks.loading));
+
+  const handleAddToFavorites = () => {
+    setIsFavorite(true);
+  };
 
   useEffect(() => {
     if (!loading && artworks && !currentArtworkUpdated) {
@@ -130,14 +146,22 @@ export default function ArtworkCloseUpCard(props) {
             subheaderTypographyProps={subheaderTypographyProps}
             className={classes.header}
             action={
-              <>
-                <br/>
+              <Box className={classes.headerActionBox}>
                 <AudioPlayer
                   controls
                   id="audio"
                   className={classes.audioPlayer}
                 />
-              </>
+                <IconButton
+                  aria-label="add to favorites"
+                  onClick={handleAddToFavorites}
+                  className={classes.favorite}
+                >
+                  {isFavorite ?
+                      <FavoriteIcon fontSize="large"/> :
+                      <FavoriteBorderIcon fontSize="large"/>}
+                </IconButton>
+              </Box>
             }
           />
           {audioLoading && (
