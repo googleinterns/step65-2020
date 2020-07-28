@@ -11,9 +11,13 @@ import AudioPlayer from 'react-audio-player';
 import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import PropTypes from 'prop-types';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {generateTextToSpeech, getMuseumAudioTranscript,
   getUserAudioTranscript} from './textToSpeechHelpers';
+import {fetchSingleMuseumArtwork,
+  setCurrentMuseumArtwork} from '../../redux/museumArtworkActions';
+import {fetchSingleUserArtwork,
+  setCurrentUserArtwork} from '../../redux/userArtworkActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,21 +50,37 @@ export default function ArtworkCloseUpCard(props) {
   const classes = useStyles();
   const [error, setError] = useState(false);
   const [audioLoading, setAudioLoading] = useState(true);
+  const [currentArtworkUpdated, setCurrentArtworkUpdated] = useState(false);
 
   const subheaderTypographyProps = {color: 'light'};
 
   const id = props.match.params.id;
-
   const isMuseum = props.match.params.collection === 'museum';
-
   const artworks = useSelector((state) => (isMuseum ?
       state.museumArtworks.artworks :
       state.userArtworks.artworks));
+  const dispatch = useDispatch();
+  const currentArtwork =
+      useSelector((state) => (isMuseum ?
+          state.museumArtworks.currentArtwork :
+          state.userArtworks.currentArtwork));
+  const loading = useSelector((state) => (isMuseum ?
+      state.museumArtworks.loading :
+      state.userArtworks.loading));
 
   useEffect(() => {
-    if (artworks && artworks.has(id)) {
-      const artwork = artworks.get(id);
-      const description = artwork.get('description');
+    if (!loading && artworks && !currentArtworkUpdated) {
+      if (artworks.has(id)) {
+        isMuseum ? dispatch(setCurrentMuseumArtwork(id)) :
+            dispatch(setCurrentUserArtwork(id));
+      } else {
+        isMuseum ? dispatch(fetchSingleMuseumArtwork(id)) :
+            dispatch(fetchSingleUserArtwork(id));
+      }
+      setCurrentArtworkUpdated(true);
+    }
+    if (!loading && currentArtwork && currentArtworkUpdated) {
+      const description = currentArtwork.get('description');
       const descriptionElement = document.getElementById('description');
       descriptionElement.innerHTML = description;
 
@@ -72,8 +92,8 @@ export default function ArtworkCloseUpCard(props) {
       }
 
       generateTextToSpeech(isMuseum ?
-          getMuseumAudioTranscript(artwork) :
-          getUserAudioTranscript(artwork), id)
+          getMuseumAudioTranscript(currentArtwork) :
+          getUserAudioTranscript(currentArtwork), id)
           .then(handleErrors)
           .then((response) => response.text())
           .then((blobKey) => {
@@ -86,20 +106,20 @@ export default function ArtworkCloseUpCard(props) {
             setAudioLoading(false);
           });
     }
-  }, [artworks, id, isMuseum]);
+  }, [artworks, dispatch, id, isMuseum,
+    currentArtwork, loading, currentArtworkUpdated]);
 
-  if (!artworks || !artworks.has(id)) {
+  if (loading || !currentArtwork) {
     return (
       <div className={classes.root}>
         <LinearProgress color="secondary" />
       </div>
     );
   } else {
-    const artwork = artworks.get(id);
-    const title = artwork.get('title');
-    const artist = artwork.get('artist');
-    const alt = artwork.get('alt');
-    const date = artwork.get('date');
+    const title = currentArtwork.get('title');
+    const artist = currentArtwork.get('artist');
+    const alt = currentArtwork.get('alt');
+    const date = currentArtwork.get('date');
 
     return (
       <Container className={classes.withPadding}>
@@ -143,7 +163,7 @@ export default function ArtworkCloseUpCard(props) {
             <Grid item xs={12} md={8}>
               <CardMedia
                 className={classes.media}
-                image={artwork.get('url')}
+                image={currentArtwork.get('url')}
                 title={artist}
               />
               <CardContent>

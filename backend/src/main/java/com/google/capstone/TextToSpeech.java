@@ -74,8 +74,7 @@ public class TextToSpeech extends HttpServlet {
   private boolean inStorage(String objectIdString, String textString) {
     Blob blob = storage.get(BlobId.of(BUCKET_NAME, objectIdString));
     if (blob != null) {
-      String transcript = blob.getMetadata().get("audioTranscript");
-
+      String transcript = blob.getMetadata().get("audioTranscript")
       return transcript.equals(getHashString(textString));
     } else {
       return false;
