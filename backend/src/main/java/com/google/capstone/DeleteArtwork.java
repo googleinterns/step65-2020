@@ -1,9 +1,12 @@
 package com.google.capstone;
 
+import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
@@ -19,29 +22,25 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/api/v1/delete-artwork")
 public class DeleteArtwork extends HttpServlet {
+
+  private static final BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
+
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     long id = Long.parseLong(request.getParameter("id"));
-
-    /*FilterPredicate fp = new FilterPredicate("id", FilterOperator.EQUAL, id);
-    
-    Query query = new Query("ImageInformation").setFilter(fp).addSort("timestamp", SortDirection.DESCENDING);
-   
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
-    
-    List<UploadedImage> images = new ArrayList<>();
-    for (Entity entity : results.asIterable()) {
-      UploadedImage image = UploadedImage.convertToObject(entity);
-      images.add(image);
-    }*/
-
     Key artEntityKey = KeyFactory.createKey("ImageInformation", id);
 
-    //BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity artwork = null;
+    try{
+      artwork = datastore.get(artEntityKey);
+    } catch(EntityNotFoundException e) {}
+    
+    String bkString = (String) artwork.getProperty("blobKey");
+    BlobKey blobKey = new BlobKey(bkString);
 
-    //blobstore.delete(artEntityKey);
+    blobstore.delete(blobKey);
     datastore.delete(artEntityKey);
   }
 }
