@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet responsible for counting number of comments. */
+
+/** Servlet responsible for counting number of images */
 @WebServlet("/api/v1/uploadsCount")
 public class UploadsCount extends HttpServlet {
 
