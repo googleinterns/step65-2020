@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) =>({
   },
 }));
 
-export default function ImgMediaCard({name, link, alt, url, id}) {
+export default function MyArtImgMediaCard({name, link, alt, url, id}) {
   const classes = useStyles();
 
   return (
