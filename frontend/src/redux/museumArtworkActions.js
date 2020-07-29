@@ -233,7 +233,7 @@ export function getRandomArtworkId(
   }
 
   return (dispatch) => {
-    dispatch(fetchRandomArtworkBegin());
+    dispatch(fetchRandomArtworkIdBegin());
     return getMuseumArtworks('artworks/search',
         new Map()
             .set('page', page)
@@ -247,11 +247,11 @@ export function getRandomArtworkId(
           return getArtworkAtIndex(artworks, index);
         })
         .then((id) => {
-          dispatch(fetchRandomArtworkSuccess(id));
+          dispatch(fetchRandomArtworkIdSuccess(id));
           return id;
         })
         .catch((error) =>
-          dispatch(fetchRandomArtworkFailure(error)),
+          dispatch(fetchRandomArtworkIdFailure(error)),
         );
   };
 }
@@ -290,12 +290,12 @@ export const FETCH_MUSEUM_ARTWORKS_SUCCESS =
   'FETCH_MUSEUM_ARTWORKS_SUCCESS';
 export const FETCH_MUSEUM_ARTWORKS_FAILURE =
   'FETCH_MUSEUM_ARTWORKS_FAILURE';
-export const FETCH_RANDOM_ARTWORK_BEGIN =
-  'FETCH_RANDOM_ARTWORK_BEGIN';
-export const FETCH_RANDOM_ARTWORK_SUCCESS =
-  'FETCH_RANDOM_ARTWORK_SUCCESS';
-export const FETCH_RANDOM_ARTWORK_FAILURE =
-  'FETCH_RANDOM_ARTWORK_FAILURE';
+export const FETCH_RANDOM_ARTWORK_ID_BEGIN =
+  'FETCH_RANDOM_ARTWORK_ID_BEGIN';
+export const FETCH_RANDOM_ARTWORK_ID_SUCCESS =
+  'FETCH_RANDOM_ARTWORK_ID_SUCCESS';
+export const FETCH_RANDOM_ARTWORK_ID_FAILURE =
+  'FETCH_RANDOM_ARTWORK_ID_FAILURE';
 export const FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN =
   'FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN';
 export const FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS =
@@ -320,17 +320,17 @@ export const fetchMuseumArtworksFailure = (error) => ({
   payload: {error},
 });
 
-export const fetchRandomArtworkBegin = () => ({
-  type: FETCH_RANDOM_ARTWORK_BEGIN,
+export const fetchRandomArtworkIdBegin = () => ({
+  type: FETCH_RANDOM_ARTWORK_ID_BEGIN,
 });
 
-export const fetchRandomArtworkSuccess = (randomArtworkId) => ({
-  type: FETCH_RANDOM_ARTWORK_SUCCESS,
+export const fetchRandomArtworkIdSuccess = (randomArtworkId) => ({
+  type: FETCH_RANDOM_ARTWORK_ID_SUCCESS,
   payload: {randomArtworkId},
 });
 
-export const fetchRandomArtworkFailure = (error) => ({
-  type: FETCH_RANDOM_ARTWORK_FAILURE,
+export const fetchRandomArtworkIdFailure = (error) => ({
+  type: FETCH_RANDOM_ARTWORK_ID_FAILURE,
   payload: {error},
 });
 

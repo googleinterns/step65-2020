@@ -64,7 +64,6 @@ export default function SurpriseMeButton(
         color="secondary"
         className={classes.surpriseMe}
         onClick={surpriseMe}
-        // to= {`/gallery/museum/${randomArtworkId}`}
       >
         Surprise me!
       </Button>
