@@ -13,18 +13,18 @@ public final class UploadedImage {
   private final String artTitle;
   private final String altText;
   private final String description;
-  private final String blobkey;
+  private final String blobKey;
   private final long timestamp;
  
   public UploadedImage(long id, String uniqueUserID, String artistName, String artTitle, String altText, 
-      String description, String blobkey, long timestamp) {
+      String description, String blobKey, long timestamp) {
     this.id = id; 
     this.uniqueUserID = uniqueUserID;
     this.artistName = artistName;
     this.artTitle = artTitle;
     this.altText = altText;
     this.description = description;
-    this.blobkey = blobkey;
+    this.blobKey = blobKey;
     this.timestamp = timestamp;
   }
  

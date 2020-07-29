@@ -59,9 +59,10 @@ export default function ImgMediaCard({name, link, alt, url, id}) {
           </CardContent>
         </CardActionArea>
       </Link>
-      <CardMenuBttn 
+      <CardMenuBttn
         className={classes.button}
-        id={id}/>
+        id={id}
+      />
     </Card>
   );
 }

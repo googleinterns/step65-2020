@@ -1,12 +1,19 @@
 import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
+import {deleteArtwork} from '../../redux/myArtworksActions';
 
 export default function CardMenuBttn({id}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const dispatch = useDispatch();
+
+  const auth = useSelector(
+      (state) => state.firebase.auth);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -16,10 +23,13 @@ export default function CardMenuBttn({id}) {
     setAnchorEl(null);
   };
 
+  const handleDelete = () => {
+    dispatch(deleteArtwork(id, auth.uid));
+  };
 
   return (
     <div>
-      <IconButton 
+      <IconButton
         aria-label="image options menu"
         aria-controls="simple-menu"
         aria-haspopup="true"
@@ -35,7 +45,7 @@ export default function CardMenuBttn({id}) {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>Modify</MenuItem>
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
     </div>
   );
@@ -43,4 +53,4 @@ export default function CardMenuBttn({id}) {
 
 CardMenuBttn.propTypes = {
   id: PropTypes.string.isRequired,
-}
+};
