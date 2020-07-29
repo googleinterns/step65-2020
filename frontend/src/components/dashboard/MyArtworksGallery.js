@@ -9,7 +9,7 @@ import {fetchMyArtworks} from '../../redux/myArtworksActions';
 
 const useStyles = makeStyles((theme) => ({
   loading: {
-    flex: 1,
+    flexGrow: 1,
     flexDirection: 'row',
   },
   gallery: {
