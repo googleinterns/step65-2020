@@ -204,22 +204,6 @@ export default function MuseumGallery() {
             }}
             autoComplete = "off"
           />
-          <Container className={classes.selectMenu}>
-            <FormControl className={classes.formControl}>
-              <InputLabel shrink id="search-field-label">Search By</InputLabel>
-              <Select
-                labelId="search-field-label"
-                id="search-field"
-                value={searchField}
-                onChange={handleChangeSearchField}
-              >
-                <MenuItem value="all-fields">All Fields</MenuItem>
-                <MenuItem value="artist_title">Artist</MenuItem>
-                <MenuItem value="description">Description</MenuItem>
-                <MenuItem value="title">Title</MenuItem>
-              </Select>
-            </FormControl>
-          </Container>
           <div className={classes.searchButton}>
             <IconButton
               aria-label="search"
