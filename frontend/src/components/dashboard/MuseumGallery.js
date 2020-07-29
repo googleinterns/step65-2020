@@ -147,7 +147,8 @@ export default function MuseumGallery() {
           museumPage, LIMIT, searchQuery, sortBy, searchField))
           .then(setNewQuery(false));
     }
-  }, [dispatch, newQuery, museumPage, searchQuery, sortBy, searchField, newQuery]);
+  }, [dispatch, newQuery, museumPage, searchQuery,
+    sortBy, searchField, newQuery]);
 
   let paginationNeeded = true;
   let results;
