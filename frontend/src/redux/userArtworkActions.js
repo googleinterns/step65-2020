@@ -17,10 +17,10 @@ function artworksJsonToMap(artworks) {
   return artworksMap;
 }
 
-export function fetchUserArtworks() {
+export function fetchUserArtworks(uploadsPageNum) {
   return (dispatch) => {
     dispatch(fetchUserArtworksBegin());
-    fetch('api/v1/serveUploads')
+    fetch(`api/v1/serveUploads?uploadsPageNum=${uploadsPageNum}`)
         .then((response) => response.json())
         .then((artworks) => artworksJsonToMap(artworks))
         .then((artworksMap) => {
