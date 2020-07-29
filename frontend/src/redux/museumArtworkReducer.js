@@ -2,12 +2,17 @@ import {
   FETCH_MUSEUM_ARTWORKS_BEGIN,
   FETCH_MUSEUM_ARTWORKS_SUCCESS,
   FETCH_MUSEUM_ARTWORKS_FAILURE,
+  FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN,
+  FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS,
+  FETCH_SINGLE_MUSEUM_ARTWORK_FAILURE,
+  SET_CURRENT_MUSEUM_ARTWORK,
 } from './museumArtworkActions';
 
 const initialState = {
   artworks: new Map(),
   loading: false,
   error: false,
+  currentArtwork: null,
 };
 
 export default function museumArtworkReducer(
@@ -16,8 +21,6 @@ export default function museumArtworkReducer(
 ) {
   switch (action.type) {
     case FETCH_MUSEUM_ARTWORKS_BEGIN:
-      // Mark the state as "loading" so we can show a spinner or something
-      // Also, reset any errors. We're starting fresh.
       return {
         ...state,
         loading: true,
@@ -25,8 +28,6 @@ export default function museumArtworkReducer(
       };
 
     case FETCH_MUSEUM_ARTWORKS_SUCCESS:
-      // All done: set loading "false".
-      // Also, replace the items with the ones from the server
       return {
         ...state,
         loading: false,
@@ -34,19 +35,41 @@ export default function museumArtworkReducer(
       };
 
     case FETCH_MUSEUM_ARTWORKS_FAILURE:
-      // The request failed, but it did stop, so set loading to "false".
-      // Save the error, and we can display it somewhere
-      // eslint-disable-next-line max-len
-      // Since it failed, we don't have items to display anymore, so set it empty.
       return {
         ...state,
         loading: false,
         error: true,
         artworks: new Map(),
       };
+    case FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+    case FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        currentArtwork: action.payload.artwork,
+      };
+
+    case FETCH_SINGLE_MUSEUM_ARTWORK_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+        artwork: new Map(),
+      };
+
+    case SET_CURRENT_MUSEUM_ARTWORK:
+      return {
+        ...state,
+        currentArtwork: state.artworks.get(action.payload.id),
+      };
 
     default:
-      // ALWAYS have a default case in a reducer
       return state;
   }
 }
