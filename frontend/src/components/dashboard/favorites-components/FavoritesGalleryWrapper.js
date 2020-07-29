@@ -4,7 +4,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import {fetchFavorites} from '../../redux/favorites/favoritesActions';
+import {fetchFavorites} from '../../../redux/favorites/favoritesActions';
 import FavoritesGallery from './FavoritesGallery';
 
 const useStyles = makeStyles((theme) => ({
