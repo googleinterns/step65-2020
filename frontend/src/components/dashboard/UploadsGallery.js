@@ -29,7 +29,7 @@ export default function UploadsGallery() {
 
   const [uploadsPageNum, setUploadsPageNum] = useState(1);
   const [pageNums, setPageNums] = useState(1);
-  
+
   const artworksLoading = useSelector(
       (state) => (state.userArtworks.loading));
 
