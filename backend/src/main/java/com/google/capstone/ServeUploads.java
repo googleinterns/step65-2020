@@ -42,7 +42,7 @@ public class ServeUploads extends HttpServlet {
     int pageNum = getParameter(request, "uploadsPageNum", DEFAULT_PAGE_NUM);
 
     List<Entity> results = prepdQuery.asList(FetchOptions.Builder
-      .withOffset((pageNum-1) * MAX_NUM_IMAGES)
+      .withOffset((pageNum - 1) * MAX_NUM_IMAGES)
       .limit(MAX_NUM_IMAGES));
     
     List<UploadedImage> images = new ArrayList<>();
