@@ -14,9 +14,9 @@ export function dispatchFavorites(dispatch, uid) {
   dispatch(fetchFavoritesBegin());
   return getFavorites(uid)
       .then((response) => response.json())
-      .then((artworksMetadata) => {
-        dispatch(fetchFavoritesSuccess(artworksMetadata));
-        return artworksMetadata;
+      .then((artworks) => {
+        dispatch(fetchFavoritesSuccess(artworks));
+        return artworks;
       })
       .catch((error) =>
         dispatch(fetchFavoritesFailure(error)),
