@@ -13,7 +13,7 @@ const initialState = {
   numOfResults: 0,
   numOfPgs: 0,
   loading: false,
-  error: null,
+  error: false,
   currentArtwork: null,
 };
 
@@ -26,7 +26,7 @@ export default function museumArtworkReducer(
       return {
         ...state,
         loading: true,
-        error: null,
+        error: false,
       };
 
     case FETCH_MUSEUM_ARTWORKS_SUCCESS:
@@ -42,7 +42,7 @@ export default function museumArtworkReducer(
       return {
         ...state,
         loading: false,
-        error: action.payload.error,
+        error: true,
         artworks: new Map(),
         numOfPgs: 0,
         numOfResults: 0,
