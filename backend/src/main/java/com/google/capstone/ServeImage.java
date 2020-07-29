@@ -31,7 +31,6 @@ public class ServeImage extends HttpServlet {
     Key imageEntityKey = KeyFactory.createKey("ImageInformation", id);
     
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    
     Entity imageEntity = null;
     try{
       imageEntity = datastore.get(imageEntityKey);

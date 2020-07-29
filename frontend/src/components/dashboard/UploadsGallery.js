@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {makeStyles} from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
 import Container from '@material-ui/core/Container';
 import Gallery from './gallery-components/Gallery';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -29,9 +30,10 @@ export default function UploadsGallery() {
 
   const [uploadsPageNum, setUploadsPageNum] = useState(1);
   const [pageNums, setPageNums] = useState(1);
-
   const artworksLoading = useSelector(
       (state) => (state.userArtworks.loading));
+  const artworksError = useSelector(
+      (state) => (state.userArtworks.error));
 
   const handleChangePage = (event, value) => {
     setUploadsPageNum(value);
@@ -56,10 +58,17 @@ export default function UploadsGallery() {
           <LinearProgress />
         </div>
       )}
+      {artworksError && (
+        <Alert
+          severity="error"
+        >
+                The images could not be loaded at this time.
+        </Alert>
+      )}
       <Container className={classes.gallery}>
         <Gallery isMuseum={false}/>
       </Container>
-      {!artworksLoading && (
+      {!artworksLoading && !artworksError && (
         <Container className={classes.pagination}>
           <Pagination
             count={pageNums}
