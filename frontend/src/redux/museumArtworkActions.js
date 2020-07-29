@@ -256,6 +256,26 @@ export function getRandomArtworkId(
   };
 }
 
+export function fetchSingleMuseumArtwork(id) {
+  return (dispatch) => {
+    dispatch(fetchSingleMuseumArtworkBegin());
+    return getMuseumArtworks(`artworks/${id}`, new Map()
+        .set('limit', 1),
+    )
+        .then((artwork) => artwork.data)
+        .then((artwork) => {
+          return convertToArtworkInfo(artwork);
+        })
+        .then((artwork) => {
+          dispatch(fetchSingleMuseumArtworkSuccess(artwork));
+          return artwork;
+        })
+        .catch((error) =>
+          dispatch(fetchSingleMuseumArtworkFailure(error)),
+        );
+  };
+}
+
 // Handle HTTP errors since fetch won't.
 function handleErrors(response) {
   if (!response.ok) {
@@ -276,6 +296,14 @@ export const FETCH_RANDOM_ARTWORK_SUCCESS =
   'FETCH_RANDOM_ARTWORK_SUCCESS';
 export const FETCH_RANDOM_ARTWORK_FAILURE =
   'FETCH_RANDOM_ARTWORK_FAILURE';
+export const FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN =
+  'FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN';
+export const FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS =
+    'FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS';
+export const FETCH_SINGLE_MUSEUM_ARTWORK_FAILURE =
+    'FETCH_SINGLE_MUSEUM_ARTWORK_FAILURE';
+export const SET_CURRENT_MUSEUM_ARTWORK =
+    'SET_CURRENT_MUSEUM_ARTWORK';
 
 export const fetchMuseumArtworksBegin = () => ({
   type: FETCH_MUSEUM_ARTWORKS_BEGIN,
@@ -304,3 +332,23 @@ export const fetchRandomArtworkFailure = (error) => ({
   type: FETCH_RANDOM_ARTWORK_FAILURE,
   payload: {error},
 });
+
+export const fetchSingleMuseumArtworkBegin = () => ({
+  type: FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN,
+});
+
+export const fetchSingleMuseumArtworkSuccess = (artwork) => ({
+  type: FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS,
+  payload: {artwork},
+});
+
+export const fetchSingleMuseumArtworkFailure = (error) => ({
+  type: FETCH_SINGLE_MUSEUM_ARTWORK_FAILURE,
+  payload: {error},
+});
+
+export const setCurrentMuseumArtwork = (id) => ({
+  type: SET_CURRENT_MUSEUM_ARTWORK,
+  payload: {id},
+});
+
