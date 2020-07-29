@@ -40,14 +40,16 @@ export default function SurpriseMeButton(
   },
   [dispatch, searchQuery, sortBy, searchField, numOfResults, newRandomArtwork]);
 
-  const LIMIT = 9;
+  const [firstPgLoad, setFirstPgLoad] = React.useState(true);
   const FIRST_PAGE = 1;
   const EMPTY_QUERY = '';
   useEffect(() => {
-    if (newRandomArtwork) {
-      dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
+    console.log(firstPgLoad);
+    if (firstPgLoad) {
+      dispatch(fetchMuseumArtworks(FIRST_PAGE, ARTWORKS_PER_PAGE, EMPTY_QUERY));
+      setFirstPgLoad(false);
     }
-  }, [dispatch, newRandomArtwork]);
+  }, [dispatch, firstPgLoad]);
 
   const surpriseMe = () => {
     setNewRandomArtwork(true);
