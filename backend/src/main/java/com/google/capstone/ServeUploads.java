@@ -29,15 +29,24 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/api/v1/serveUploads")
 public class ServeUploads extends HttpServlet {
  
+  private static final int MAX_NUM_IMAGES = 9;
+  private static final int DEFAULT_PAGE_NUM = 1;
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("ImageInformation").addSort("timestamp", SortDirection.DESCENDING);
    
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
+    PreparedQuery prepdQuery = datastore.prepare(query);
+    
+    int pageNum = getParameter(request, "uploadsPageNum", DEFAULT_PAGE_NUM);
+
+    List<Entity> results = prepdQuery.asList(FetchOptions.Builder
+      .withOffset((pageNum - 1) * MAX_NUM_IMAGES)
+      .limit(MAX_NUM_IMAGES));
     
     List<UploadedImage> images = new ArrayList<>();
-    for (Entity entity : results.asIterable()) {
+    for (Entity entity : results) {
       UploadedImage image = UploadedImage.convertToObject(entity);
       images.add(image);
     }
@@ -46,6 +55,17 @@ public class ServeUploads extends HttpServlet {
     
     response.setContentType("text/json");
     response.getWriter().println(json);
+  }
+
+  private int getParameter(HttpServletRequest request, String parameterName, int defaultValue) {
+    String parameterString = request.getParameter(parameterName);
+    int parameter;
+    try {
+      parameter = Integer.parseInt(parameterString);
+    } catch (NumberFormatException e) {
+      return defaultValue;
+    }
+    return parameter;
   }
  
   public static String convertToJson(List<UploadedImage> arr) {
