@@ -11,7 +11,7 @@ import {
 const initialState = {
   artworks: new Map(),
   loading: false,
-  error: null,
+  error: false,
   currentArtwork: null,
 };
 
@@ -24,7 +24,7 @@ export default function museumArtworkReducer(
       return {
         ...state,
         loading: true,
-        error: null,
+        error: false,
       };
 
     case FETCH_MUSEUM_ARTWORKS_SUCCESS:
@@ -38,7 +38,7 @@ export default function museumArtworkReducer(
       return {
         ...state,
         loading: false,
-        error: action.payload.error,
+        error: true,
         artworks: new Map(),
       };
     case FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN:
