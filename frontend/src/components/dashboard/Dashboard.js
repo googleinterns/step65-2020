@@ -31,10 +31,15 @@ import Banner from './gallery-components/Banner';
 import LandingPage from './LandingPage';
 import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import {fetchUserArtworks} from '../../redux/userArtworkActions';
 import AICimg from './images/aic-inside.jpg';
+import SignIn from './account-components/SignIn';
+import AvatarHeader from './account-components/AvatarHeader';
+import {isLoaded, isEmpty} from 'react-redux-firebase';
+import SignOutNavigationItem from './account-components/SignOutNavigationItem';
+import SignInButton from './account-components/SignInButton';
 
 const drawerWidth = 240;
 
@@ -81,6 +86,9 @@ const useStyles = makeStyles(() => ({
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
+  },
+  grow: {
+    flexGrow: 1,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -144,6 +152,8 @@ export default function Dashboard() {
     setOpen(false);
   };
 
+  const auth = useSelector((state) => state.firebase.auth);
+
   // fetches artworks for GalleryPreview and MuseumGallery
   const dispatch = useDispatch();
   const LIMIT = 9;
@@ -179,6 +189,8 @@ export default function Dashboard() {
               <Typography variant="h6" noWrap>
                 Luminart
               </Typography>
+              <div className={classes.grow} />
+              {(!isLoaded(auth) || isEmpty(auth)) && (<SignInButton/>)}
             </Toolbar>
           </AppBar>
           <Drawer
@@ -196,9 +208,11 @@ export default function Dashboard() {
                     <ChevronLeftIcon /> : <ChevronRightIcon />}
               </IconButton>
             </div>
+            {isLoaded(auth) && !isEmpty(auth) && (<AvatarHeader/>)}
             <Divider />
             <NavigationItems />
             <Divider />
+            {isLoaded(auth) && !isEmpty(auth) && (<SignOutNavigationItem/>)}
           </Drawer>
           <main
             className={clsx(classes.content, {
@@ -265,6 +279,9 @@ export default function Dashboard() {
                 exact path="/gallery/:collection/:id"
                 component={ArtworkCloseUpCard}
               />
+              <Route path="/sign-in">
+                <SignIn/>
+              </Route>
             </Switch>
           </main>
         </div>
