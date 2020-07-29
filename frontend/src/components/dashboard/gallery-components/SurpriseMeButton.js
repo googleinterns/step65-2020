@@ -42,7 +42,6 @@ export default function SurpriseMeButton(
 
   const surpriseMe = () => {
     setNewRandomArtwork(true);
-    console.log(randomArtworkId);
   };
 
 
