@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Gallery from './gallery-components/Gallery';
-import SurpriseMeButton from "./gallery-components/SurpriseMeButton";
+import SurpriseMeButton from './gallery-components/SurpriseMeButton';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
