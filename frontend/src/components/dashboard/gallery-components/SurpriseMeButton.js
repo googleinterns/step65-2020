@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SurpriseMeButton({numOfResults, searchQuery, sortBy, searchField}) {
+export default function SurpriseMeButton(
+    {numOfResults, searchQuery, sortBy, searchField}) {
   const classes = useStyles();
   const ARTWORKS_PER_PAGE = 9;
 
@@ -36,7 +37,8 @@ export default function SurpriseMeButton({numOfResults, searchQuery, sortBy, sea
     dispatch(getRandomArtworkId(
         pageNum, ARTWORKS_PER_PAGE, searchQuery, sortBy, searchField, index))
         .then(setNewRandomArtwork(false));
-  }, [dispatch, searchQuery, sortBy, searchField, numOfResults, newRandomArtwork]);
+  },
+  [dispatch, searchQuery, sortBy, searchField, numOfResults, newRandomArtwork]);
 
   const surpriseMe = () => {
     setNewRandomArtwork(true);
@@ -45,7 +47,10 @@ export default function SurpriseMeButton({numOfResults, searchQuery, sortBy, sea
 
 
   return (
-    <Link to = {`/gallery/museum/${randomArtworkId}`} className={classes.linkToRandom}>
+    <Link
+      to = {`/gallery/museum/${randomArtworkId}`}
+      className={classes.linkToRandom}
+    >
       <Button
         variant="contained"
         color="secondary"

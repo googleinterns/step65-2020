@@ -309,10 +309,11 @@ export const fetchMuseumArtworksBegin = () => ({
   type: FETCH_MUSEUM_ARTWORKS_BEGIN,
 });
 
-export const fetchMuseumArtworksSuccess = (artworks, numOfPgs, numOfResults) => ({
-  type: FETCH_MUSEUM_ARTWORKS_SUCCESS,
-  payload: {artworks, numOfPgs, numOfResults},
-});
+export const fetchMuseumArtworksSuccess =
+  (artworks, numOfPgs, numOfResults) => ({
+    type: FETCH_MUSEUM_ARTWORKS_SUCCESS,
+    payload: {artworks, numOfPgs, numOfResults},
+  });
 
 export const fetchMuseumArtworksFailure = (error) => ({
   type: FETCH_MUSEUM_ARTWORKS_FAILURE,
