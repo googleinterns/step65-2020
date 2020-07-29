@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
   surpriseMe: {
     padding: theme.spacing(2)*.75,
   },
+  linkToRandom: {
+    textDecoration: 'none',
+  },
 }));
 
 export default function SurpriseMeButton({numOfResults, searchQuery, sortBy, searchField}) {
@@ -42,7 +45,7 @@ export default function SurpriseMeButton({numOfResults, searchQuery, sortBy, sea
 
 
   return (
-    <Link to = "/gallery/museum/28560">
+    <Link to = {`/gallery/museum/${randomArtworkId}`} className={classes.linkToRandom}>
       <Button
         variant="contained"
         color="secondary"
