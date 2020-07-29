@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SurpriseMeButton(
-    {numOfResults, searchQuery, sortBy, searchField}) {
+    {numOfResults, searchQuery, sortBy, searchField, newQuery}) {
   const classes = useStyles();
   const ARTWORKS_PER_PAGE = 9;
 
@@ -32,44 +32,48 @@ export default function SurpriseMeButton(
   const dispatch = useDispatch();
   const randomArtworkId = useSelector(
       (state) => (state.museumArtworks.randomArtworkId));
-  useEffect(() => {
-    const {pageNum, index} = computeRandomIndex(numOfResults);
-    dispatch(getRandomArtworkId(
-        pageNum, ARTWORKS_PER_PAGE, searchQuery, sortBy, searchField, index))
-        .then(setNewRandomArtwork(false));
-  },
-  [dispatch, searchQuery, sortBy, searchField, numOfResults, newRandomArtwork]);
-
   const [firstPgLoad, setFirstPgLoad] = React.useState(true);
   const FIRST_PAGE = 1;
   const EMPTY_QUERY = '';
   useEffect(() => {
-    console.log(firstPgLoad);
     if (firstPgLoad) {
+      // resets artworks when users hit back button
       dispatch(fetchMuseumArtworks(FIRST_PAGE, ARTWORKS_PER_PAGE, EMPTY_QUERY));
       setFirstPgLoad(false);
     }
-  }, [dispatch, firstPgLoad]);
+    if (newQuery || firstPgLoad) {
+      // newQuery makes sure that we aren't dispatching unnecessarily
+      const {pageNum, index} = computeRandomIndex(numOfResults);
+      dispatch(getRandomArtworkId(
+          pageNum, ARTWORKS_PER_PAGE, searchQuery, sortBy, searchField, index))
+          .then(setNewRandomArtwork(false));
+    }
+  },
+  [dispatch, searchQuery, sortBy, searchField,
+    numOfResults, newRandomArtwork, newQuery, firstPgLoad]);
 
   const surpriseMe = () => {
     setNewRandomArtwork(true);
   };
 
-
   return (
-    <Link
-      to = {`/gallery/museum/${randomArtworkId}`}
-      className={classes.linkToRandom}
-    >
-      <Button
-        variant="contained"
-        color="secondary"
-        className={classes.surpriseMe}
-        onClick={surpriseMe}
-      >
-        Surprise me!
-      </Button>
-    </Link>
+    <div>
+      {(randomArtworkId !== null) &&
+        <Link
+          to = {`/gallery/museum/${randomArtworkId}`}
+          className={classes.linkToRandom}
+        >
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.surpriseMe}
+            onClick={surpriseMe}
+          >
+            Surprise me!
+          </Button>
+        </Link>
+      }
+    </div>
 
   );
 }
@@ -79,4 +83,5 @@ SurpriseMeButton.propTypes = {
   searchQuery: PropTypes.string.isRequired,
   sortBy: PropTypes.string.isRequired,
   searchField: PropTypes.string.isRequired,
+  newQuery: PropTypes.string.isRequired,
 };
