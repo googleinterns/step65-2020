@@ -8,7 +8,6 @@ const useStyles = makeStyles((theme) => ({
     height: '40vh',
     position: 'relative',
     width: '100%',
-    marginBottom: theme.spacing(2),
   },
   bannerText: {
     color: 'white',
