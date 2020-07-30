@@ -1,3 +1,6 @@
+import {fetchUserArtworks} from './userArtworkActions';
+
+
 function convertToArtworkInfo(artwork) {
   const artworkInfo = new Map();
   artworkInfo.set('id', artwork.id);
@@ -40,6 +43,19 @@ export function deleteArtwork(id, uid) {
     fetch('/api/v1/delete-artwork', {method: 'POST', body: params})
         .then(() => dispatch(fetchMyArtworks(uid)));
   };
+}
+
+export function editInformation(id, uid, selection, newInfo, redirectUrl) {
+  return (dispatch) => {
+    const params = new URLSearchParams();
+    params.append('id', id);
+    params.append('selection', selection);
+    params.append('image-info', newInfo);
+    params.append('redirectUrl', redirectUrl);
+    fetch('/api/v1/edit-info', {method: 'POST', body: params})
+        .then(() => dispatch(fetchMyArtworks(uid)));
+    dispatch(fetchUserArtworks());
+  }
 }
 
 export const FETCH_MY_ARTWORKS_BEGIN = 'FETCH_MY_ARTWORKS_BEGIN';

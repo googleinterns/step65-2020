@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** 
- * Updates either alt text or description of the image in Datastore.
+ * Updates chosen property of the image in Datastore.
  */
 @WebServlet("/api/v1/edit-info")
 public class EditImageInfo extends HttpServlet {
@@ -25,20 +25,18 @@ public class EditImageInfo extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String param = request.getParameter("selection");
+    String newContent = request.getParameter("image-info");
     long id = Long.parseLong(request.getParameter("id"));
     Key artEntityKey = KeyFactory.createKey("ImageInformation", id);
-    String newContent = request.getParameter("image-info");
 
     try{
       Entity artwork = datastore.get(artEntityKey);
       artwork.setProperty(param, newContent);
-
+      
       datastore.put(artwork);
     } catch(EntityNotFoundException e) {
       String errorMsg = "Unable to retrieve image";
       response.sendError(500, errorMsg);
     }
-
-    response.sendRedirect(request.getParameter("redirectUrl"));
   }
 }
