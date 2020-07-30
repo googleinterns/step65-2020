@@ -38,7 +38,7 @@ export default function CardMenuBttn({id}) {
   const actionUrl = `api/v1/edit-image?id=${id}`;
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
-  const [age, setAge] = useState('');
+  const [toEdit, setToEdit] = useState('');
   const auth = useSelector(
       (state) => state.firebase.auth);
 
@@ -55,7 +55,7 @@ export default function CardMenuBttn({id}) {
 
   // PopUp functions
   const handleChange = (event) => {
-    setAge((event.target.value) || '');
+    setToEdit((event.target.value) || '');
   };
   const handlePopUp = () => {
     setOpen(true);
@@ -104,13 +104,11 @@ export default function CardMenuBttn({id}) {
             <DialogContent>
               <div className={classes.container}>
                 <FormControl required className={classes.formControl}>
-                  <InputLabel id="demo-dialog-select-label">Choice</InputLabel>
+                  <InputLabel htmlFor="select-to-edit">Choice</InputLabel>
                   <Select
-                    labelId="demo-dialog-select-label"
-                    id="demo-dialog-select"
-                    value={age}
+                    value={toEdit}
                     onChange={handleChange}
-                    input={<Input />}
+                    input={<Input id="select-to-edit" />}
                   >
                     <MenuItem value={'description'}>Description</MenuItem>
                     <MenuItem value={'altText'}>Alt Text</MenuItem>
