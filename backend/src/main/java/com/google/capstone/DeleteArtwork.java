@@ -35,10 +35,10 @@ public class DeleteArtwork extends HttpServlet {
     Entity artwork = null;
     try{
       artwork = datastore.get(artEntityKey);
-    } catch(EntityNotFoundException e) {}
-    
-    String bkString = (String) artwork.getProperty("blobKey");
-    BlobKey blobKey = new BlobKey(bkString);
+    } catch(EntityNotFoundException e) {
+      String errorMsg = "Unable to retrieve image";
+      response.sendError(500, errorMsg);
+    }
 
     blobstore.delete(blobKey);
     datastore.delete(artEntityKey);
