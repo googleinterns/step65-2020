@@ -78,7 +78,7 @@ export default function CardMenuBttn({id}) {
       (setEditDone(false));
       dispatch(fetchUserArtworks());
     }
-  }, [dispatch, id, auth.uid, selection, newInfo]);
+  }, [dispatch, editDone, id, auth.uid, selection, newInfo]);
 
   return (
     <>
