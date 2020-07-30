@@ -214,6 +214,9 @@ export function fetchMuseumArtworks(
               artworks.numOfResults));
           return artworks;
         })
+        .then(()=>{
+          dispatch(getRandomArtworkId(limit, searchQuery, sortBy, searchField));
+        })
         .catch((error) =>
           dispatch(fetchMuseumArtworksFailure(error)),
         );
@@ -225,7 +228,6 @@ function computeRandomIndex(numOfResults) {
   const ranNum = Math.floor(Math.random() * numOfResults);
   const pageNum = Math.floor(ranNum/ARTWORKS_PER_GALLERY_PAGE);
   const index = ranNum % ARTWORKS_PER_GALLERY_PAGE;
-  console.log(pageNum, index);
   return {pageNum, index};
 };
 
@@ -245,12 +247,11 @@ export function getRandomArtworkId(
   return (dispatch, getState) => {
     const state = getState();
     const numOfResults = state.museumArtworks.numOfResults;
-    console.log("numOfResults: " + numOfResults);
-    const {page, index} = computeRandomIndex(numOfResults);
+    const {pageNum, index} = computeRandomIndex(numOfResults);
     dispatch(fetchRandomArtworkIdBegin());
     return getMuseumArtworks('artworks/search',
         new Map()
-            .set('page', page)
+            .set('page', pageNum)
             .set('limit', limit)
             .set('q', simpleQuery),
         sortBy,

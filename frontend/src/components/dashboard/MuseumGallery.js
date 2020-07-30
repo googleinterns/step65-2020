@@ -11,7 +11,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import {makeStyles} from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
-import {fetchMuseumArtworks, getRandomArtworkId} from '../../redux/museumArtworkActions';
+import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import {useDispatch, useSelector} from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -136,8 +136,6 @@ export default function MuseumGallery() {
       (state) => (state.museumArtworks.loading));
   const numOfPgs = useSelector(
       (state) => (state.museumArtworks.numOfPgs));
-  const numOfResults = useSelector(
-      (state) => (state.museumArtworks.numOfResults));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const LIMIT = 9;
@@ -148,15 +146,11 @@ export default function MuseumGallery() {
     if (firstPgLoad) {
       // resets artworks when users hit back button
       dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY))
-          .then(dispatch(getRandomArtworkId(
-              LIMIT, searchQuery, sortBy, searchField, numOfResults)))
           .then(setFirstPgLoad(false));
     }
     if (newQuery) {
       dispatch(fetchMuseumArtworks(
           museumPage, LIMIT, searchQuery, sortBy, searchField))
-          .then(dispatch(getRandomArtworkId(
-              LIMIT, searchQuery, sortBy, searchField, numOfResults)))
           .then(setNewQuery(false));
     }
   }, [dispatch, newQuery, museumPage, searchQuery,
