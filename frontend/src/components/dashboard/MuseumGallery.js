@@ -185,9 +185,9 @@ export default function MuseumGallery() {
               onChange={handleChangeSearchField}
             >
               <MenuItem value="all-fields">Search by: All fields</MenuItem>
-              <MenuItem value="artist_title">Artist</MenuItem>
-              <MenuItem value="description">Description</MenuItem>
-              <MenuItem value="title">Title</MenuItem>
+              <MenuItem value="artist_title" aria-label="Search by: Artist">Artist</MenuItem>
+              <MenuItem value="description" aria-label="Search by: Description">Description</MenuItem>
+              <MenuItem value="title" aria-label="Search by: Title">Title</MenuItem>
             </Select>
           </FormControl>
         </Container>
@@ -206,7 +206,7 @@ export default function MuseumGallery() {
           />
           <div className={classes.searchButton}>
             <IconButton
-              aria-label="search"
+              aria-label="search button"
               onClick={handleChangeSearch}>
               <SearchIcon fontSize="large" />
             </IconButton>
@@ -214,11 +214,12 @@ export default function MuseumGallery() {
         </Container>
         <SurpriseMeButton/>
       </Container>
-      <Container id="filter-drawer" className={classes.filterDrawer}>
+      <div id="filter-drawer" className={classes.filterDrawer} role="status" tabindex="0">
         {!noResults &&
           <Button
             aria-controls="sort-by-menu"
             aria-haspopup="true"
+            aria-label="Sort by menu"
             className={classes.filters}
             onClick={handleClickSortByMenu}
           >
@@ -251,12 +252,13 @@ export default function MuseumGallery() {
           id="search-filter"
           className={classes.filters}
           onClick={clearSearchQuery}
+          aria-label="clear search query"
         >
           <Typography className={classes.hoverLineThrough} variant="button">
             Search for: {searchQuery} &#10006;
           </Typography>
         </Button>
-      </Container>
+      </div>
       {results}
       {(!noResults && !artworksLoading) &&
         <Container className={classes.pagination}>
