@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import ImgMediaCard from '../gallery-components/ImgMediaCard';
 import {useSelector} from 'react-redux';

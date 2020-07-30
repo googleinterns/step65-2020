@@ -12,8 +12,8 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const useStyles = makeStyles((theme) => ({
   link: {
-    textDecoration: 'none',
     color: theme.palette.text.primary,
+    textDecoration: 'none',
   },
 }));
 

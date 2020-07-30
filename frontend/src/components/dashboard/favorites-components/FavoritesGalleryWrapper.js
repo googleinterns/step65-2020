@@ -9,8 +9,8 @@ import FavoritesGallery from './FavoritesGallery';
 
 const useStyles = makeStyles((theme) => ({
   loading: {
-    flexGrow: 1,
     flexDirection: 'row',
+    flexGrow: 1,
   },
   gallery: {
     marginTop: theme.spacing(2),
