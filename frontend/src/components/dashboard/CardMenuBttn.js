@@ -35,10 +35,11 @@ const useStyles = makeStyles((theme) => ({
 export default function CardMenuBttn({id}) {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const actionUrl = `api/v1/edit-image?id=${id}`;
+  const actionUrl = `api/v1/edit-info?id=${id}`;
+  const redirectUrl = document.location.origin + '/my-art';
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
-  const [age, setAge] = useState('');
+  const [toEdit, setToEdit] = useState('');
   const auth = useSelector(
       (state) => state.firebase.auth);
 
@@ -55,7 +56,7 @@ export default function CardMenuBttn({id}) {
 
   // PopUp functions
   const handleChange = (event) => {
-    setAge((event.target.value) || '');
+    setToEdit((event.target.value));
   };
   const handlePopUp = () => {
     setOpen(true);
@@ -100,28 +101,35 @@ export default function CardMenuBttn({id}) {
             action={actionUrl}
             method="POST"
           >
+            <input
+              type="hidden"
+              name="redirectUrl"
+              value={redirectUrl}
+            />
             <DialogTitle>Edit art information</DialogTitle>
             <DialogContent>
               <div className={classes.container}>
-                <FormControl required className={classes.formControl}>
-                  <InputLabel id="demo-dialog-select-label">Choice</InputLabel>
+                <FormControl className={classes.formControl}>
+                  <InputLabel id="selection-label">Selection</InputLabel>
                   <Select
-                    labelId="demo-dialog-select-label"
-                    id="demo-dialog-select"
-                    value={age}
+                    name="selection"
+                    value={toEdit}
                     onChange={handleChange}
-                    input={<Input />}
+                    labelId="selection-label"
+                    input={<Input id="selection" />}
                   >
-                    <MenuItem value={'description'}>Description</MenuItem>
-                    <MenuItem value={'altText'}>Alt Text</MenuItem>
+                    <MenuItem value="description">Description</MenuItem>
+                    <MenuItem value="altText">Alt Text</MenuItem>
                   </Select>
+                </FormControl>
+                <FormControl className={classes.formControl}>
                   <TextField
                     required
                     id="image-info"
                     className={classes.padding}
                     label="New Content"
                     multiline
-                    name="description"
+                    name="image-info"
                     placeholder="In this image..."
                     rows = {4}
                     variant="outlined"
