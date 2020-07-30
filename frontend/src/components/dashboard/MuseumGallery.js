@@ -156,24 +156,17 @@ export default function MuseumGallery() {
   }, [dispatch, newQuery, museumPage, searchQuery,
     sortBy, searchField, firstPgLoad]);
 
-  let paginationNeeded = true;
+  let noResults = false;
   let results;
   if (artworks.length !== 0) {
     results =
       <Gallery isMuseum={true}/>;
   } else if (searchQuery !== '') {
-    if (museumPage > 1) {
-      results =
-        <Typography align="center" variant="h5" component="h3">
-          No more results found for {searchQuery}
-        </Typography>;
-    } else {
-      paginationNeeded = false;
-      results =
+    noResults = true;
+    results =
         <Typography align="center" variant="h5" component="h3">
           No results found for {searchQuery}
         </Typography>;
-    }
   }
 
   return (
@@ -222,14 +215,15 @@ export default function MuseumGallery() {
         <SurpriseMeButton/>
       </Container>
       <Container id="filter-drawer" className={classes.filterDrawer}>
-        <Button
-          aria-controls="sort-by-menu"
-          aria-haspopup="true"
-          className={classes.filters}
-          onClick={handleClickSortByMenu}
-        >
+        {!noResults &&
+          <Button
+            aria-controls="sort-by-menu"
+            aria-haspopup="true"
+            className={classes.filters}
+            onClick={handleClickSortByMenu}
+          >
           Sort By: {sortBy} &#x25BC;
-        </Button>
+          </Button>}
         <Menu
           id="sort-by-menu"
           anchorEl={anchorEl}
@@ -244,8 +238,11 @@ export default function MuseumGallery() {
             onClick={(event) => handleChangeSortBy(event, 'artist')}
           >Artist</MenuItem>
           <MenuItem
-            onClick={(event) => handleChangeSortBy(event, 'date')}
-          >Date</MenuItem>
+            onClick={(event) => handleChangeSortBy(event, 'date (asc)')}
+          >Date (oldest&#8594;newest)</MenuItem>
+          <MenuItem
+            onClick={(event) => handleChangeSortBy(event, 'date (desc)')}
+          >Date (newest&#8594;oldest)</MenuItem>
           <MenuItem
             onClick={(event) => handleChangeSortBy(event, 'title')}
           >Title</MenuItem>
@@ -259,27 +256,9 @@ export default function MuseumGallery() {
             Search for: {searchQuery} &#10006;
           </Typography>
         </Button>
-        <FormControl
-          variant="filled"
-          className={[classes.sortByMenu, classes.formControl].join(' ')}
-        >
-          <InputLabel shrink id="sort-by-label">Sort By</InputLabel>
-          <Select
-            labelId="sort-by-label"
-            id="sort-by"
-            value={sortBy}
-            onChange={handleChangeSortBy}
-            label="Sort By"
-          >
-            <MenuItem value="relevance">Relevance</MenuItem>
-            <MenuItem value="artist">Artist</MenuItem>
-            <MenuItem value="date">Date</MenuItem>
-            <MenuItem value="title">Title</MenuItem>
-          </Select>
-        </FormControl>
       </Container>
       {results}
-      {(paginationNeeded && !artworksLoading) &&
+      {(!noResults && !artworksLoading) &&
         <Container className={classes.pagination}>
           <Pagination
             count={numOfPgs}
