@@ -5,7 +5,6 @@ import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import Menu from '@material-ui/core/Menu';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -185,9 +184,18 @@ export default function MuseumGallery() {
               onChange={handleChangeSearchField}
             >
               <MenuItem value="all-fields">Search by: All fields</MenuItem>
-              <MenuItem value="artist_title" aria-label="Search by: Artist">Artist</MenuItem>
-              <MenuItem value="description" aria-label="Search by: Description">Description</MenuItem>
-              <MenuItem value="title" aria-label="Search by: Title">Title</MenuItem>
+              <MenuItem
+                value="artist_title"
+                aria-label="Search by: Artist"
+              >Artist</MenuItem>
+              <MenuItem
+                value="description"
+                aria-label="Search by: Description"
+              >Description</MenuItem>
+              <MenuItem
+                value="title"
+                aria-label="Search by: Title"
+              >Title</MenuItem>
             </Select>
           </FormControl>
         </Container>
@@ -214,7 +222,7 @@ export default function MuseumGallery() {
         </Container>
         <SurpriseMeButton/>
       </Container>
-      <div id="filter-drawer" className={classes.filterDrawer} role="status" tabindex="0">
+      <div id="filter-drawer" className={classes.filterDrawer} role="status">
         {!noResults &&
           <Button
             aria-controls="sort-by-menu"
@@ -234,18 +242,23 @@ export default function MuseumGallery() {
         >
           <MenuItem
             onClick={(event) => handleChangeSortBy(event, 'relevance')}
+            aria-label="Sort by: Relevance"
           >Relevance</MenuItem>
           <MenuItem
             onClick={(event) => handleChangeSortBy(event, 'artist')}
+            aria-label="Sort by: Artist"
           >Artist</MenuItem>
           <MenuItem
             onClick={(event) => handleChangeSortBy(event, 'date (asc)')}
+            aria-label="Sort by: Date (oldest to newest)"
           >Date (oldest&#8594;newest)</MenuItem>
           <MenuItem
             onClick={(event) => handleChangeSortBy(event, 'date (desc)')}
+            aria-label="Sort by: Date (newest to oldest)"
           >Date (newest&#8594;oldest)</MenuItem>
           <MenuItem
             onClick={(event) => handleChangeSortBy(event, 'title')}
+            aria-label="Sort by: Title"
           >Title</MenuItem>
         </Menu>
         <Button
