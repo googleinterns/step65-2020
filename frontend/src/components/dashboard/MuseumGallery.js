@@ -148,15 +148,15 @@ export default function MuseumGallery() {
     if (firstPgLoad) {
       // resets artworks when users hit back button
       dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY))
-          // .then(dispatch(getRandomArtworkId(
-          //     LIMIT, searchQuery, sortBy, searchField, numOfResults)))
+          .then(dispatch(getRandomArtworkId(
+              LIMIT, searchQuery, sortBy, searchField, numOfResults)))
           .then(setFirstPgLoad(false));
     }
     if (newQuery) {
       dispatch(fetchMuseumArtworks(
           museumPage, LIMIT, searchQuery, sortBy, searchField))
-          // .then(dispatch(getRandomArtworkId(
-          //     LIMIT, searchQuery, sortBy, searchField, numOfResults)))
+          .then(dispatch(getRandomArtworkId(
+              LIMIT, searchQuery, sortBy, searchField, numOfResults)))
           .then(setNewQuery(false));
     }
   }, [dispatch, newQuery, museumPage, searchQuery,

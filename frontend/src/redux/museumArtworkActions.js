@@ -214,7 +214,6 @@ export function fetchMuseumArtworks(
               artworks.numOfResults));
           return artworks;
         })
-        .then(dispatch(getRandomArtworkId(limit, searchQuery, sortBy, searchField)))
         .catch((error) =>
           dispatch(fetchMuseumArtworksFailure(error)),
         );
