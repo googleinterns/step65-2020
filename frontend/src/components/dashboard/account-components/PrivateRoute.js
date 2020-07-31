@@ -1,11 +1,9 @@
 import React from 'react';
-import {
-  Route,
-  Redirect,
-} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import {isLoaded, isEmpty} from 'react-redux-firebase';
 import PropTypes from 'prop-types';
+import Alert from '@material-ui/lab/Alert';
 
 // A wrapper for <Route> that redirects to the login
 // screen if you're not yet authenticated or if auth is not
@@ -15,16 +13,15 @@ export default function PrivateRoute({children, ...rest}) {
   return (
     <Route
       {...rest}
-      render={({location}) =>
+      render={() =>
               isLoaded(auth) && !isEmpty(auth) ? (
                   children
               ) : (
-                  <Redirect
-                    to={{
-                      pathname: '/sign-in',
-                      state: {from: location},
-                    }}
-                  />
+                  <Alert
+                    severity="error"
+                  >
+                    You do not have access to this page, please sign in.
+                  </Alert>
               )
       }
     />
