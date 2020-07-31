@@ -29,12 +29,15 @@ export function fetchFavorites(uid) {
   };
 }
 
-export function updateFavorites(uid, collection, artworkId) {
+export function updateFavorites(uid, collection, artworkId, name, alt, url) {
   return (dispatch) => {
     const params = new URLSearchParams();
     params.append('uid', uid);
     params.append('collection', collection);
     params.append('artwork-id', artworkId);
+    params.append('name', name);
+    params.append('alt', alt);
+    params.append('url', url);
     fetch('/api/v1/add-to-favorites', {method: 'POST', body: params})
         .then(() => dispatch(addFavorite()))
         .then(() => dispatchFavorites(dispatch, uid));
@@ -68,3 +71,4 @@ export const fetchFavoritesFailure = (error) => ({
 export const addFavorite = () => ({
   type: ADD_FAVORITE,
 });
+

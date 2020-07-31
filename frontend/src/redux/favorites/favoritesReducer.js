@@ -7,7 +7,7 @@ import {
 const initialState = {
   artworks: [],
   loading: false,
-  error: null,
+  error: false,
 };
 
 export default function favoritesReducer(
@@ -33,7 +33,7 @@ export default function favoritesReducer(
       return {
         ...state,
         loading: false,
-        error: action.payload.error,
+        error: true,
         artworks: [],
       };
 
