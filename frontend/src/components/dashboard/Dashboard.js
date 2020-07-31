@@ -24,9 +24,9 @@ import NavigationItems from './NavigationItems';
 import MuseumGallery from './MuseumGallery';
 import GalleryPreview from './gallery-components/GalleryPreview';
 import ArtworkCloseUpCard from './ArtworkCloseUpCard';
+import UploadsGallery from './UploadsGallery';
 import UserUploadForm from './UserUploadForm';
 import DescLinks from './DescLinks';
-import Gallery from './gallery-components/Gallery';
 import Banner from './gallery-components/Banner';
 import LandingPage from './LandingPage';
 import OurMission from './OurMission';
@@ -283,9 +283,7 @@ export default function Dashboard() {
                     description="Explore artwork from other users!"
                     imgURL={ColorImg}
                   />
-                  <Container>
-                    <Gallery isMuseum={false}/>
-                  </Container>
+                  <UploadsGallery />
                 </Container>
               </Route>
               <PrivateRoute exact path="/my-favorites">
