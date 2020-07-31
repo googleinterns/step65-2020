@@ -40,7 +40,7 @@ export default function Gallery({size, isMuseum, isPreview}) {
     if (isPreview) {
       dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
     }
-  }, [dispatch]);
+  }, [dispatch, isPreview]);
 
   // generate audio before users view artwork to reduce audio wait time
   useEffect(() => {
