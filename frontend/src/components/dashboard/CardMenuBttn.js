@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {useDispatch, useSelector} from 'react-redux';
-import {deleteArtwork} from '../../redux/myArtworksActions';
+import {deleteArtwork, editInformation} from '../../redux/myArtworksActions';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -17,6 +17,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
+import {fetchUserArtworks} from '../../redux/userArtworkActions';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -35,10 +36,11 @@ const useStyles = makeStyles((theme) => ({
 export default function CardMenuBttn({id}) {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const actionUrl = `api/v1/edit-image?id=${id}`;
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
-  const [toEdit, setToEdit] = useState('');
+  const [newInfo, setNewInfo] = useState('test');
+  const [selection, setSelection] = useState('');
+  const [editDone, setEditDone] = useState(false);
   const auth = useSelector(
       (state) => state.firebase.auth);
 
@@ -55,7 +57,7 @@ export default function CardMenuBttn({id}) {
 
   // PopUp functions
   const handleChange = (event) => {
-    setToEdit((event.target.value) || '');
+    setSelection((event.target.value));
   };
   const handlePopUp = () => {
     setOpen(true);
@@ -64,6 +66,19 @@ export default function CardMenuBttn({id}) {
   const handlePopUpClose = () => {
     setOpen(false);
   };
+  const handleSubmit = () => {
+    setNewInfo(document.getElementById('image-info').value);
+    setEditDone(true);
+  };
+
+  useEffect(() => {
+    if (editDone) {
+      dispatch(editInformation(
+          id, auth.uid, selection, newInfo));
+      (setEditDone(false));
+      dispatch(fetchUserArtworks());
+    }
+  }, [dispatch, editDone, id, auth.uid, selection, newInfo]);
 
   return (
     <>
@@ -95,47 +110,47 @@ export default function CardMenuBttn({id}) {
           open={open}
           onClose={handleClose}
         >
-          <form
-            name="image-uploads"
-            action={actionUrl}
-            method="POST"
-          >
-            <DialogTitle>Edit art information</DialogTitle>
-            <DialogContent>
-              <div className={classes.container}>
-                <FormControl required className={classes.formControl}>
-                  <InputLabel htmlFor="select-to-edit">Choice</InputLabel>
-                  <Select
-                    value={toEdit}
-                    onChange={handleChange}
-                    input={<Input id="select-to-edit" />}
-                  >
-                    <MenuItem value={'description'}>Description</MenuItem>
-                    <MenuItem value={'altText'}>Alt Text</MenuItem>
-                  </Select>
-                  <TextField
-                    required
-                    id="image-info"
-                    className={classes.padding}
-                    label="New Content"
-                    multiline
-                    name="description"
-                    placeholder="In this image..."
-                    rows = {4}
-                    variant="outlined"
-                  />
-                </FormControl>
-              </div>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handlePopUpClose} color="primary">
+          <DialogTitle>Edit art information</DialogTitle>
+          <DialogContent>
+            <div className={classes.container}>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="selection-label">Selection</InputLabel>
+                <Select
+                  name="selection"
+                  value={selection}
+                  onChange={handleChange}
+                  labelId="selection-label"
+                  input={<Input id="selection" />}
+                >
+                  <MenuItem value="artTitle">Title</MenuItem>
+                  <MenuItem value="artistName">Artist Name</MenuItem>
+                  <MenuItem value="description">Description</MenuItem>
+                  <MenuItem value="altText">Alt Text</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl className={classes.formControl}>
+                <TextField
+                  required
+                  id="image-info"
+                  className={classes.padding}
+                  label="New Content"
+                  multiline
+                  name="image-info"
+                  placeholder="In this image..."
+                  rows = {4}
+                  variant="outlined"
+                />
+              </FormControl>
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handlePopUpClose} color="primary">
               Cancel
-              </Button>
-              <Button type="submit" color="primary">
+            </Button>
+            <Button onClick={handleSubmit} color="primary">
               Submit
-              </Button>
-            </DialogActions>
-          </form>
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     </>
