@@ -28,9 +28,6 @@ public class GetFavoritesCount extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     int count = results.countEntities(FetchOptions.Builder.withDefaults());
 
-    System.out.println(count);
-    System.out.println(uid);
-
     response.setContentType("text/html");
     response.getWriter().println(count);
   }
