@@ -19,7 +19,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import javax.servlet.ServletException;
  
 /**
@@ -56,16 +55,7 @@ public class UserUploadHandler extends HttpServlet{
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       Map<String, List<BlobKey>> blobs = blobstore.getUploads(request);
       List<BlobKey> blobKeys = blobs.get("selectedFile"); 
- 
-      //checks to make sure image was added to create blobkey
-      if (blobKeys == null || blobKeys.isEmpty()) {
-        //NOTE: add error page here, no file selected!!
-        //Will create better error handling in future update :) 
-        //Currently redirect to museumGallery for testing reasons
-        response.sendRedirect("https://3001-ba659410-163c-49e0-b45f-c22c5b2dc8b5.us-central1.cloudshell.dev/museum-gallery");
-        return;
-      }
- 
+
       //gets info from form, entered by user
       String artistName = request.getParameter("artistName");
       String artTitle = request.getParameter("artTitle");
@@ -83,8 +73,7 @@ public class UserUploadHandler extends HttpServlet{
       mssgEntity.setProperty("uniqueUserID", uniqueUserID);
       mssgEntity.setProperty("timestamp", timestamp);
  
-      String blobKey = blobKeys.get(0).getKeyString();
-      mssgEntity.setProperty("blobKey", blobKey);
+      mssgEntity.setProperty("blobKey", blobKeys.get(0).getKeyString());
       
       datastore.put(mssgEntity);  
       

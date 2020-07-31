@@ -24,9 +24,9 @@ import NavigationItems from './NavigationItems';
 import MuseumGallery from './MuseumGallery';
 import GalleryPreview from './gallery-components/GalleryPreview';
 import ArtworkCloseUpCard from './ArtworkCloseUpCard';
+import UploadsGallery from './UploadsGallery';
 import UserUploadForm from './UserUploadForm';
 import DescLinks from './DescLinks';
-import Gallery from './gallery-components/Gallery';
 import Banner from './gallery-components/Banner';
 import LandingPage from './LandingPage';
 import OurMission from './OurMission';
@@ -45,6 +45,7 @@ import SignInButton from './account-components/SignInButton';
 import SignInNav from './account-components/SignInNav';
 import PrivateRoute from './account-components/PrivateRoute';
 import MyArtworksGallery from './MyArtworksGallery';
+import {fetchFavorites} from '../../redux/favorites/favoritesActions';
 
 const drawerWidth = 240;
 
@@ -167,7 +168,10 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
     dispatch(fetchUserArtworks());
-  }, [dispatch]);
+    if (isLoaded(auth) && !isEmpty(auth)) {
+      dispatch(fetchFavorites(auth.uid));
+    }
+  }, [dispatch, auth]);
 
 
   return (
@@ -292,9 +296,7 @@ export default function Dashboard() {
                     description="Explore artwork from other users!"
                     imgURL={ColorImg}
                   />
-                  <Container>
-                    <Gallery isMuseum={false}/>
-                  </Container>
+                  <UploadsGallery />
                 </Container>
               </Route>
               <Route
