@@ -33,10 +33,21 @@ export default function Banner({title, description, imgURL}) {
       }}
     >
       <div className={classes.bannerText}>
-        <Typography variant="h2" component="h1" gutterBottom>
+        <Typography
+          tabIndex={0}
+          variant="h2"
+          component="h1"
+          gutterBottom
+        >
           {title}
         </Typography>
-        <Typography variant="h5" component="h2">{description}</Typography>
+        <Typography
+          tabIndex={0}
+          variant="h5"
+          component="h2"
+        >
+          {description}
+        </Typography>
       </div>
     </div>
 
