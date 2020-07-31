@@ -57,10 +57,11 @@ public class UserUploadHandler extends HttpServlet{
       List<BlobKey> blobKeys = blobs.get("selectedFile"); 
 
       //gets info from form, entered by user
-      String artistName = getParameter(request, "artistName", "");
-      String artTitle = getParameter(request, "artTitle", "");
-      String altText = getParameter(request, "altText", "");
-      String description = getParameter(request, "description", "");
+      String artistName = request.getParameter("artistName");
+      String artTitle = request.getParameter("artTitle");
+      String altText = request.getParameter("altText");
+      String description = request.getParameter("description");
+      String uniqueUserID = request.getParameter("uniqueUserID");
       long timestamp = System.currentTimeMillis();
  
       //ImageInformation entity to be added into datastore
@@ -69,6 +70,7 @@ public class UserUploadHandler extends HttpServlet{
       mssgEntity.setProperty("artTitle", artTitle);
       mssgEntity.setProperty("altText", altText);
       mssgEntity.setProperty("description", description);
+      mssgEntity.setProperty("uniqueUserID", uniqueUserID);
       mssgEntity.setProperty("timestamp", timestamp);
  
       mssgEntity.setProperty("blobKey", blobKeys.get(0).getKeyString());
@@ -76,13 +78,5 @@ public class UserUploadHandler extends HttpServlet{
       datastore.put(mssgEntity);  
       
       response.sendRedirect(request.getParameter("redirectUrl"));
-  }
-  
-  private static String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-    if (value == null) {
-      return defaultValue;
-    }
-    return value;
   }
 }
