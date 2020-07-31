@@ -35,7 +35,7 @@ export default function MyArtworksGallery() {
   return (
     <>
       {artworksLoading && (
-        <div className={classes.root}>
+        <div className={classes.loading}>
           <LinearProgress />
         </div>
       )}
@@ -46,7 +46,7 @@ export default function MyArtworksGallery() {
                 The images could not be loaded at this time.
         </Alert>
       )}
-      <Container>
+      <Container className={classes.gallery}>
         <MyArtsGallery />
       </Container>
     </>

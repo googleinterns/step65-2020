@@ -33,6 +33,15 @@ export function fetchMyArtworks(uid) {
   };
 }
 
+export function deleteArtwork(id, uid) {
+  return (dispatch) => {
+    const params = new URLSearchParams();
+    params.append('id', id);
+    fetch('/api/v1/delete-artwork', {method: 'POST', body: params})
+        .then(() => dispatch(fetchMyArtworks(uid)));
+  };
+}
+
 export const FETCH_MY_ARTWORKS_BEGIN = 'FETCH_MY_ARTWORKS_BEGIN';
 export const FETCH_MY_ARTWORKS_SUCCESS =
     'FETCH_MY_ARTWORKS_SUCCESS';

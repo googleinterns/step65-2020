@@ -280,9 +280,7 @@ export default function Dashboard() {
                     description="Art you've uploaded!"
                     imgURL={UnsplashImg}
                   />
-                  <Container>
-                    <MyArtworksGallery/>
-                  </Container>
+                  <MyArtworksGallery/>
                 </Container>
               </PrivateRoute>
               <Route exact path="/user-uploads-gallery">

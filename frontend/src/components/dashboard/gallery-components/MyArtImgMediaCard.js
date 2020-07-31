@@ -59,14 +59,15 @@ export default function MyArtImgMediaCard({name, link, alt, url, id}) {
           </CardContent>
         </CardActionArea>
       </Link>
-      <CardMenuBttn 
+      <CardMenuBttn
         className={classes.button}
-        id={id}/>
+        id={id}
+      />
     </Card>
   );
 }
 
-ImgMediaCard.propTypes = {
+MyArtImgMediaCard.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
