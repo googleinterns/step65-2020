@@ -109,9 +109,12 @@ export default function MuseumGallery() {
     setSearchField(event.target.value);
   };
 
-  const artworksMap = useSelector((state) => (state.museumArtworks.artworks));
+  const artworksMap = useSelector(
+      (state) => (state.museumArtworks.artworks));
   const artworksLoading = useSelector(
       (state) => (state.museumArtworks.loading));
+  const numOfPgs = useSelector(
+      (state) => (state.museumArtworks.numOfPgs));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const LIMIT = 9;
@@ -240,6 +243,7 @@ export default function MuseumGallery() {
             labelId="placeholder-label"
             id="placeholder"
             label="Placeholder"
+            value=""
           >
             <MenuItem value="relevance">Placeholder</MenuItem>
             <MenuItem value="artist">Placeholder</MenuItem>
@@ -256,6 +260,7 @@ export default function MuseumGallery() {
             labelId="placeholder-label"
             id="placeholder"
             label="Placeholder"
+            value=""
           >
             <MenuItem value="relevance">Placeholder</MenuItem>
             <MenuItem value="artist">Placeholder</MenuItem>
@@ -268,7 +273,7 @@ export default function MuseumGallery() {
       {(paginationNeeded && !artworksLoading) &&
         <Container className={classes.pagination}>
           <Pagination
-            count={10}
+            count={numOfPgs}
             size="large"
             page={museumPage}
             onChange={handleChangePage}
