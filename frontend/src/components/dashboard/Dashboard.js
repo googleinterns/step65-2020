@@ -43,12 +43,10 @@ import SignOutNavigationItem from './account-components/SignOutNavigationItem';
 import SignedInNavItems from './account-components/SignedInNavItems';
 import SignInButton from './account-components/SignInButton';
 import SignInNav from './account-components/SignInNav';
-import PrivateRoute from './account-components/PrivateRoute';
 import MyArtworksGallery from './MyArtworksGallery';
 import {fetchFavorites} from '../../redux/favorites/favoritesActions';
 import PrivateRoute from './account-components/PrivateRoute';
 import PaintImage from './images/paint.jpg';
-import SignedInNavItems from './account-components/SignedInNavItems';
 import FavoritesGalleryWrapper
   from './favorites-components/FavoritesGalleryWrapper';
 

@@ -30,6 +30,7 @@ export default function SignedInNavItems() {
           </ListItemIcon>
           <ListItemText primary={'My Favorites'} />
         </ListItem>
+      </Link>
       <Link to="/my-art" className={classes.link}>
         <ListItem button>
           <ListItemIcon>
@@ -37,13 +38,13 @@ export default function SignedInNavItems() {
           </ListItemIcon>
           <ListItemText primary={'My Art'} />
         </ListItem>
-        </Link>
-        <Link to="/upload-artwork" className={classes.link}>
-          <ListItem button>
-            <ListItemIcon>
-              <UploadPhotoIcon />
-            </ListItemIcon>
-            <ListItemText primary={'Upload Artwork'} />
+      </Link>
+      <Link to="/upload-artwork" className={classes.link}>
+        <ListItem button>
+          <ListItemIcon>
+            <UploadPhotoIcon />
+          </ListItemIcon>
+          <ListItemText primary={'Upload Artwork'} />
         </ListItem>
       </Link>
     </List>
