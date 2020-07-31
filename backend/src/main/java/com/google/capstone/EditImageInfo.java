@@ -8,6 +8,8 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +26,19 @@ public class EditImageInfo extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String param = request.getParameter("selection");
+    ArrayList<String> properties = new ArrayList<String>( 
+      Arrays.asList("artTitle", 
+                    "artistName",
+                    "altText", 
+                    "description")); 
+
+    String param = request.getParameter("selection");    
+
+    if (!properties.contains(param)) {
+      String errorMsg = "Property not found";
+      response.sendError(500, errorMsg);
+    }
+    
     String newContent = request.getParameter("image-info");
     long id = Long.parseLong(request.getParameter("id"));
     Key artEntityKey = KeyFactory.createKey("ImageInformation", id);
