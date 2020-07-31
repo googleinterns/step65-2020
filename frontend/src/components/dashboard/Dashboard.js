@@ -46,6 +46,11 @@ import SignInNav from './account-components/SignInNav';
 import PrivateRoute from './account-components/PrivateRoute';
 import MyArtworksGallery from './MyArtworksGallery';
 import {fetchFavorites} from '../../redux/favorites/favoritesActions';
+import PrivateRoute from './account-components/PrivateRoute';
+import PaintImage from './images/paint.jpg';
+import SignedInNavItems from './account-components/SignedInNavItems';
+import FavoritesGalleryWrapper
+  from './favorites-components/FavoritesGalleryWrapper';
 
 const drawerWidth = 240;
 
@@ -299,6 +304,16 @@ export default function Dashboard() {
                   <UploadsGallery />
                 </Container>
               </Route>
+              <PrivateRoute exact path="/my-favorites">
+                <Container className={classes.galleryPageWrapper}>
+                  <Banner
+                    title="My Favorites"
+                    description="Art you've saved!"
+                    imgURL={PaintImage}
+                  />
+                  <FavoritesGalleryWrapper/>
+                </Container>
+              </PrivateRoute>
               <Route
                 exact path="/gallery/:collection/:id"
                 component={ArtworkCloseUpCard}

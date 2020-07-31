@@ -10,6 +10,7 @@ import {
 
 import UploadPhotoIcon from '@material-ui/icons/AddPhotoAlternate';
 import MyArtIcon from '@material-ui/icons/Brush';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -18,10 +19,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NavigationItems() {
+export default function SignedInNavItems() {
   const classes = useStyles();
   return (
     <List>
+      <Link to="/my-favorites" className={classes.link}>
+        <ListItem button>
+          <ListItemIcon>
+            <FavoriteIcon />
+          </ListItemIcon>
+          <ListItemText primary={'My Favorites'} />
+        </ListItem>
       <Link to="/my-art" className={classes.link}>
         <ListItem button>
           <ListItemIcon>
@@ -29,13 +37,13 @@ export default function NavigationItems() {
           </ListItemIcon>
           <ListItemText primary={'My Art'} />
         </ListItem>
-      </Link>
-      <Link to="/upload-artwork" className={classes.link}>
-        <ListItem button>
-          <ListItemIcon>
-            <UploadPhotoIcon />
-          </ListItemIcon>
-          <ListItemText primary={'Upload Artwork'} />
+        </Link>
+        <Link to="/upload-artwork" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <UploadPhotoIcon />
+            </ListItemIcon>
+            <ListItemText primary={'Upload Artwork'} />
         </ListItem>
       </Link>
     </List>
