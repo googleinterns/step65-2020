@@ -19,7 +19,11 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Box from '@material-ui/core/Box';
 import {isLoaded, isEmpty} from 'react-redux-firebase';
-import {updateFavorites} from '../../redux/favorites/favoritesActions';
+import {
+  findFavorite,
+  setCurrentFavorite,
+  updateFavorites,
+} from '../../redux/favorites/favoritesActions';
 import {fetchSingleMuseumArtwork,
   setCurrentMuseumArtwork} from '../../redux/museumArtworkActions';
 import {fetchSingleUserArtwork,
@@ -65,6 +69,7 @@ export default function ArtworkCloseUpCard(props) {
   const [audioLoading, setAudioLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentArtworkUpdated, setCurrentArtworkUpdated] = useState(false);
+  const [currentFavoriteUpdated, setCurrentFavoriteUpdated] = useState(false);
   const dispatch = useDispatch();
 
   const subheaderTypographyProps = {color: 'light'};
@@ -88,6 +93,8 @@ export default function ArtworkCloseUpCard(props) {
       state.userArtworks.loading));
 
   const favorites = useSelector((state) => state.favorites.artworks);
+  const currentFavorite =
+      useSelector((state) => state.favorites.currentFavorite);
 
   const handleAddToFavorites = () => {
     setIsFavorite(true);
@@ -97,10 +104,20 @@ export default function ArtworkCloseUpCard(props) {
   };
 
   useEffect(() => {
-    if (favorites.some((favorite) =>
-      favorite.artworkId === id && favorite.collection === collection)) {
+    if (currentFavoriteUpdated && currentFavorite) {
       setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+      const favorite = favorites.find((favorite) =>
+        favorite.artworkId === id && favorite.collection === collection);
+      if (favorite) {
+        dispatch(setCurrentFavorite(favorite));
+      } else {
+        dispatch(findFavorite(auth.uid, id, collection));
+      }
+      setCurrentFavoriteUpdated(true);
     }
+
     if (!loading && artworks && !currentArtworkUpdated) {
       if (artworks.has(id)) {
         isMuseum ? dispatch(setCurrentMuseumArtwork(id)) :
@@ -140,7 +157,8 @@ export default function ArtworkCloseUpCard(props) {
     }
   }, [artworks, dispatch, id, isMuseum,
     favorites, collection, currentArtwork,
-    loading, currentArtworkUpdated]);
+    loading, currentArtworkUpdated, currentFavorite, auth.uid,
+    currentFavoriteUpdated]);
 
   if (loading || !currentArtwork) {
     return (

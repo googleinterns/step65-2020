@@ -5,14 +5,23 @@ function handleErrors(response) {
   return response;
 }
 
-function getFavorites(uid) {
-  return fetch(`/api/v1/get-favorites?uid=${uid}`)
+export function getFavoritesCount(uid) {
+  return (dispatch) => {
+    fetch(`/api/v1/get-favorites-count?uid=${uid}`)
+        .then((response) => response.text())
+        .then((countString) => parseInt(countString))
+        .then((count) => dispatch(fetchFavoritesCount(count)));
+  };
+}
+
+function getFavorites(uid, page) {
+  return fetch(`/api/v1/get-favorites?uid=${uid}&page=${page}`)
       .then(handleErrors);
 }
 
-export function dispatchFavorites(dispatch, uid) {
+export function dispatchFavorites(dispatch, uid, page) {
   dispatch(fetchFavoritesBegin());
-  return getFavorites(uid)
+  return getFavorites(uid, page)
       .then((response) => response.json())
       .then((artworks) => {
         dispatch(fetchFavoritesSuccess(artworks));
@@ -23,9 +32,9 @@ export function dispatchFavorites(dispatch, uid) {
       );
 }
 
-export function fetchFavorites(uid) {
+export function fetchFavorites(uid, page = 1) {
   return (dispatch) => {
-    dispatchFavorites(dispatch, uid);
+    dispatchFavorites(dispatch, uid, page);
   };
 }
 
@@ -44,6 +53,20 @@ export function updateFavorites(uid, collection, artworkId, name, alt, url) {
   };
 }
 
+function getFindFavorite(uid, artworkId, collection) {
+  return fetch(`/api/v1/find-favorite?` +
+      `uid=${uid}&artwork-id=${artworkId}&collection=${collection}`)
+      .then((response) => response.json());
+}
+
+export function findFavorite(uid, artworkId, collection) {
+  return (dispatch) => {
+    return getFindFavorite(uid, artworkId, collection)
+        .then((currentFavorite) =>
+          dispatch(setCurrentFavorite(currentFavorite)));
+  };
+}
+
 
 export const FETCH_FAVORITES_BEGIN =
     'FETCH_FAVORITES_BEGIN';
@@ -53,6 +76,10 @@ export const FETCH_FAVORITES_FAILURE =
     'FETCH_FAVORITES_FAILURE';
 export const ADD_FAVORITE =
     'ADD_FAVORITE';
+export const FETCH_FAVORITES_COUNT =
+    'FETCH_FAVORITES_COUNT';
+export const SET_CURRENT_FAVORITE =
+    'SET_CURRENT_FAVORITE';
 
 export const fetchFavoritesBegin = () => ({
   type: FETCH_FAVORITES_BEGIN,
@@ -70,5 +97,15 @@ export const fetchFavoritesFailure = (error) => ({
 
 export const addFavorite = () => ({
   type: ADD_FAVORITE,
+});
+
+export const fetchFavoritesCount = (count) => ({
+  type: FETCH_FAVORITES_COUNT,
+  payload: {count},
+});
+
+export const setCurrentFavorite = (currentFavorite) => ({
+  type: SET_CURRENT_FAVORITE,
+  payload: {currentFavorite},
 });
 
