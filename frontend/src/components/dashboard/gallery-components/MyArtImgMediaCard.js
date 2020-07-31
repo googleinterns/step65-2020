@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) =>({
   },
 }));
 
-export default function ImgMediaCard({name, link, alt, url, id}) {
+export default function MyArtImgMediaCard({name, link, alt, url, id}) {
   const classes = useStyles();
 
   return (
@@ -67,7 +67,7 @@ export default function ImgMediaCard({name, link, alt, url, id}) {
   );
 }
 
-ImgMediaCard.propTypes = {
+MyArtImgMediaCard.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
