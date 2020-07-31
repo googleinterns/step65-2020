@@ -40,6 +40,7 @@ import AvatarHeader from './account-components/AvatarHeader';
 import {isLoaded, isEmpty} from 'react-redux-firebase';
 import SignOutNavigationItem from './account-components/SignOutNavigationItem';
 import SignInButton from './account-components/SignInButton';
+import {fetchFavorites} from '../../redux/favorites/favoritesActions';
 
 const drawerWidth = 240;
 
@@ -162,7 +163,10 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
     dispatch(fetchUserArtworks());
-  }, [dispatch]);
+    if (isLoaded(auth) && !isEmpty(auth)) {
+      dispatch(fetchFavorites(auth.uid));
+    }
+  }, [dispatch, auth]);
 
 
   return (
