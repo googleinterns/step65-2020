@@ -113,7 +113,6 @@ export default function ArtworkCloseUpCard(props) {
       if (favorite) {
         dispatch(setCurrentFavorite(favorite));
       } else {
-        console.log(id);
         dispatch(findFavorite(auth.uid, id, collection));
       }
       setCurrentFavoriteUpdated(true);
