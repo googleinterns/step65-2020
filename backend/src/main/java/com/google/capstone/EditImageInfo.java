@@ -1,8 +1,5 @@
 package com.google.capstone;
 
-import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -11,6 +8,8 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,29 +17,40 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** 
- * Deletes artwork from datastore when requested by artwork id
+ * Updates chosen property of the image in Datastore.
  */
-@WebServlet("/api/v1/delete-artwork")
-public class DeleteArtwork extends HttpServlet {
-
-  private static final BlobstoreService blobstore = BlobstoreServiceFactory.getBlobstoreService();
+@WebServlet("/api/v1/edit-info")
+public class EditImageInfo extends HttpServlet {
 
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    ArrayList<String> properties = new ArrayList<String>( 
+      Arrays.asList("artTitle", 
+                    "artistName",
+                    "altText", 
+                    "description")); 
+
+    String param = request.getParameter("selection");    
+
+    if (!properties.contains(param)) {
+      String errorMsg = "Property not found";
+      response.sendError(500, errorMsg);
+    }
+    
+    String newContent = request.getParameter("image-info");
     long id = Long.parseLong(request.getParameter("id"));
     Key artEntityKey = KeyFactory.createKey("ImageInformation", id);
 
-    Entity artwork = null;
     try{
-      artwork = datastore.get(artEntityKey);
-    } catch(EntityNotFoundException e) {}
-    
-    String bkString = (String) artwork.getProperty("blobKey");
-    BlobKey blobKey = new BlobKey(bkString);
-
-    blobstore.delete(blobKey);
-    datastore.delete(artEntityKey);
+      Entity artwork = datastore.get(artEntityKey);
+      artwork.setProperty(param, newContent);
+      
+      datastore.put(artwork);
+    } catch(EntityNotFoundException e) {
+      String errorMsg = "Unable to retrieve image";
+      response.sendError(500, errorMsg);
+    }
   }
 }
