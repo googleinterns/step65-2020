@@ -38,7 +38,8 @@ export function fetchFavorites(uid, page = 1) {
   };
 }
 
-export function updateFavorites(uid, collection, artworkId, name, alt, url) {
+export function addAndUpdateFavorites(uid, collection,
+    artworkId, name, alt, url) {
   return (dispatch) => {
     const params = new URLSearchParams();
     params.append('uid', uid);
@@ -52,6 +53,18 @@ export function updateFavorites(uid, collection, artworkId, name, alt, url) {
         .then(() => dispatchFavorites(dispatch, uid));
   };
 }
+
+export function deleteAndUpdateFavorites(uid, favoriteId) {
+  return (dispatch) => {
+    const params = new URLSearchParams();
+    params.append('uid', uid);
+    params.append('id', favoriteId);
+    fetch('/api/v1/delete-favorite', {method: 'POST', body: params})
+        .then(() => dispatch(deleteFavorite()))
+        .then(() => dispatchFavorites(dispatch, uid));
+  };
+}
+
 
 function getFindFavorite(uid, artworkId, collection) {
   return fetch(`/api/v1/find-favorite?` +
@@ -76,6 +89,8 @@ export const FETCH_FAVORITES_FAILURE =
     'FETCH_FAVORITES_FAILURE';
 export const ADD_FAVORITE =
     'ADD_FAVORITE';
+export const DELETE_FAVORITE =
+    'DELETE_FAVORITE';
 export const FETCH_FAVORITES_COUNT =
     'FETCH_FAVORITES_COUNT';
 export const SET_CURRENT_FAVORITE =
@@ -97,6 +112,10 @@ export const fetchFavoritesFailure = (error) => ({
 
 export const addFavorite = () => ({
   type: ADD_FAVORITE,
+});
+
+export const deleteFavorite = () => ({
+  type: DELETE_FAVORITE,
 });
 
 export const fetchFavoritesCount = (count) => ({

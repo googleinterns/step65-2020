@@ -6,6 +6,7 @@ import com.google.appengine.api.datastore.Entity;
  * Datatype to represent a favorite object.
  */
 public class Favorite {
+  private final long id;
   private final String uid;
   private final String collection;
   private final String artworkId;
@@ -14,8 +15,9 @@ public class Favorite {
   private final String url;
   private final long timestamp;
 
-  public Favorite(String uid, String collection, String artworkId,
+  public Favorite(long id, String uid, String collection, String artworkId,
                   String name, String alt, String url, long timestamp) {
+    this.id = id;
     this.uid = uid;
     this.collection = collection;
     this.artworkId = artworkId;
@@ -26,6 +28,7 @@ public class Favorite {
   }
 
   public static Favorite entityToFavoriteConverter(Entity entity) {
+    long id = entity.getKey().getId();
     String uid = (String) entity.getProperty("uid");
     String collection = (String) entity.getProperty("collection");
     String artworkId = (String) entity.getProperty("artworkId");
@@ -33,6 +36,6 @@ public class Favorite {
     String alt = (String) entity.getProperty("alt");
     String url = (String) entity.getProperty("url");
     long timestamp = (long) entity.getProperty("timestamp");
-    return new Favorite(uid, collection, artworkId, name, alt, url, timestamp);
+    return new Favorite(id, uid, collection, artworkId, name, alt, url, timestamp);
   }
 }

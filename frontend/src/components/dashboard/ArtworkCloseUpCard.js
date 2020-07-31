@@ -20,9 +20,10 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import Box from '@material-ui/core/Box';
 import {isLoaded, isEmpty} from 'react-redux-firebase';
 import {
+  addAndUpdateFavorites,
+  deleteAndUpdateFavorites,
   findFavorite,
   setCurrentFavorite,
-  updateFavorites,
 } from '../../redux/favorites/favoritesActions';
 import {fetchSingleMuseumArtwork,
   setCurrentMuseumArtwork} from '../../redux/museumArtworkActions';
@@ -96,17 +97,28 @@ export default function ArtworkCloseUpCard(props) {
   const currentFavorite =
       useSelector((state) => state.favorites.currentFavorite);
 
+  const handleToggleFavorite = () => {
+    isFavorite ? handleDeleteFavorite() : handleAddToFavorites();
+  };
+
   const handleAddToFavorites = () => {
     setIsFavorite(true);
-    dispatch(updateFavorites(auth.uid, collection, id,
+    dispatch(addAndUpdateFavorites(auth.uid, collection, id,
         currentArtwork.get('title'), currentArtwork.get('alt'),
         currentArtwork.get('url')));
+    setCurrentFavoriteUpdated(false);
+  };
+
+  const handleDeleteFavorite = () => {
+    setIsFavorite(false);
+    dispatch(deleteAndUpdateFavorites(auth.uid, currentFavorite.id));
+    dispatch(setCurrentFavorite(null));
   };
 
   useEffect(() => {
     if (currentFavoriteUpdated && currentFavorite) {
       setIsFavorite(true);
-    } else {
+    } else if (!currentFavoriteUpdated) {
       setIsFavorite(false);
       const favorite = favorites.find((favorite) =>
         favorite.artworkId === id && favorite.collection === collection);
@@ -188,8 +200,10 @@ export default function ArtworkCloseUpCard(props) {
                   className={classes.audioPlayer}
                 />
                 {isLoaded(auth) && !isEmpty(auth) && (<IconButton
-                  aria-label="add to favorites"
-                  onClick={handleAddToFavorites}
+                  id="favorite-button"
+                  aria-label={isFavorite ?
+                      'remove from favorites' : 'add to favorites'}
+                  onClick={handleToggleFavorite}
                   className={classes.favorite}
                 >
                   {isFavorite ?
