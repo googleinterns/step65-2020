@@ -11,13 +11,23 @@ import AudioPlayer from 'react-audio-player';
 import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import PropTypes from 'prop-types';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {generateTextToSpeech, getMuseumAudioTranscript,
   getUserAudioTranscript} from './textToSpeechHelpers';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Box from '@material-ui/core/Box';
+import {isLoaded, isEmpty} from 'react-redux-firebase';
+import {
+  findFavorite,
+  setCurrentFavorite,
+  updateFavorites,
+} from '../../redux/favorites/favoritesActions';
+import {fetchSingleMuseumArtwork,
+  setCurrentMuseumArtwork} from '../../redux/museumArtworkActions';
+import {fetchSingleUserArtwork,
+  setCurrentUserArtwork} from '../../redux/userArtworkActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   withPadding: {
     padding: theme.spacing(3),
   },
-  box: {
+  headerActionBox: {
     display: 'flex',
     textColor: theme.palette.secondary.contrastText,
   },
@@ -58,25 +68,72 @@ export default function ArtworkCloseUpCard(props) {
   const [error, setError] = useState(false);
   const [audioLoading, setAudioLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [currentArtworkUpdated, setCurrentArtworkUpdated] = useState(false);
+  const [currentFavoriteUpdated, setCurrentFavoriteUpdated] = useState(false);
+  const dispatch = useDispatch();
 
   const subheaderTypographyProps = {color: 'light'};
 
   const id = props.match.params.id;
 
-  const isMuseum = props.match.params.collection === 'museum';
+  const collection = props.match.params.collection;
+  const isMuseum = collection === 'museum';
+
+  const auth = useSelector((state) => state.firebase.auth);
 
   const artworks = useSelector((state) => (isMuseum ?
       state.museumArtworks.artworks :
       state.userArtworks.artworks));
+  const currentArtwork =
+      useSelector((state) => (isMuseum ?
+          state.museumArtworks.currentArtwork :
+          state.userArtworks.currentArtwork));
+  const loading = useSelector((state) => (isMuseum ?
+      state.museumArtworks.loading :
+      state.userArtworks.loading));
+
+  const favorites = useSelector((state) => state.favorites.artworks);
+  const currentFavorite =
+      useSelector((state) => state.favorites.currentFavorite);
+
+  const handleAddToFavorites = () => {
+    setIsFavorite(true);
+    dispatch(updateFavorites(auth.uid, collection, id,
+        currentArtwork.get('title'), currentArtwork.get('alt'),
+        currentArtwork.get('url')));
+  };
 
   const handleAddToFavorites = () => {
     setIsFavorite(true);
   };
 
   useEffect(() => {
-    if (artworks && artworks.has(id)) {
-      const artwork = artworks.get(id);
-      const description = artwork.get('description');
+    if (currentFavoriteUpdated && currentFavorite) {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+      const favorite = favorites.find((favorite) =>
+        favorite.artworkId === id && favorite.collection === collection);
+      if (favorite) {
+        dispatch(setCurrentFavorite(favorite));
+      } else {
+        dispatch(findFavorite(auth.uid, id, collection));
+      }
+      setCurrentFavoriteUpdated(true);
+    }
+
+    if (!loading && artworks && !currentArtworkUpdated) {
+      if (artworks.has(id)) {
+        isMuseum ? dispatch(setCurrentMuseumArtwork(id)) :
+            dispatch(setCurrentUserArtwork(id));
+      } else {
+        isMuseum ? dispatch(fetchSingleMuseumArtwork(id)) :
+            dispatch(fetchSingleUserArtwork(id));
+      }
+      setCurrentArtworkUpdated(true);
+    }
+    if (!loading && currentArtwork && currentArtworkUpdated) {
+      const description = currentArtwork.get('description');
       const descriptionElement = document.getElementById('description');
       descriptionElement.innerHTML = description;
 
@@ -88,8 +145,8 @@ export default function ArtworkCloseUpCard(props) {
       }
 
       generateTextToSpeech(isMuseum ?
-          getMuseumAudioTranscript(artwork) :
-          getUserAudioTranscript(artwork), id)
+          getMuseumAudioTranscript(currentArtwork) :
+          getUserAudioTranscript(currentArtwork), id)
           .then(handleErrors)
           .then((response) => response.text())
           .then((blobKey) => {
@@ -102,37 +159,40 @@ export default function ArtworkCloseUpCard(props) {
             setAudioLoading(false);
           });
     }
-  }, [artworks, id, isMuseum]);
+  }, [artworks, dispatch, id, isMuseum,
+    favorites, collection, currentArtwork,
+    loading, currentArtworkUpdated, currentFavorite, auth.uid,
+    currentFavoriteUpdated]);
 
-  if (!artworks || !artworks.has(id)) {
+  if (loading || !currentArtwork) {
     return (
       <div className={classes.root}>
         <LinearProgress color="secondary" />
       </div>
     );
   } else {
-    const artwork = artworks.get(id);
-    const title = artwork.get('title');
-    const artist = artwork.get('artist');
-    const alt = artwork.get('alt');
-    const date = artwork.get('date');
+    const title = currentArtwork.get('title');
+    const artist = currentArtwork.get('artist');
+    const alt = currentArtwork.get('alt');
+    const date = currentArtwork.get('date');
 
     return (
       <Container className={classes.withPadding}>
         <Card className={classes.root}>
           <CardHeader
+            tabIndex={0}
             title={title}
             subheader={artist}
             subheaderTypographyProps={subheaderTypographyProps}
             className={classes.header}
             action={
-              <Box className={classes.box}>
+              <Box className={classes.headerActionBox}>
                 <AudioPlayer
                   controls
                   id="audio"
                   className={classes.audioPlayer}
                 />
-                <IconButton
+                {isLoaded(auth) && !isEmpty(auth) && (<IconButton
                   aria-label="add to favorites"
                   onClick={handleAddToFavorites}
                   className={classes.favorite}
@@ -140,7 +200,7 @@ export default function ArtworkCloseUpCard(props) {
                   {isFavorite ?
                       <FavoriteIcon fontSize="large"/> :
                       <FavoriteBorderIcon fontSize="large"/>}
-                </IconButton>
+                </IconButton>)}
               </Box>
             }
           />
@@ -167,7 +227,7 @@ export default function ArtworkCloseUpCard(props) {
             <Grid item xs={12} md={8}>
               <CardMedia
                 className={classes.media}
-                image={artwork.get('url')}
+                image={currentArtwork.get('url')}
                 title={artist}
               />
               <CardContent>
@@ -183,6 +243,7 @@ export default function ArtworkCloseUpCard(props) {
                   </Typography>
                 )}
                 <Typography
+                  tabIndex={0}
                   variant="body2"
                   color="primary"
                   align="center"
@@ -193,7 +254,7 @@ export default function ArtworkCloseUpCard(props) {
               </CardContent>
             </Grid>
             <Grid item xs={12} md={4}>
-              <CardContent className={classes.content}>
+              <CardContent className={classes.content} tabIndex={0}>
                 <Typography
                   variant="h4"
                   color="primary"
