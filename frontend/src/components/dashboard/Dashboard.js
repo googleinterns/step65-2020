@@ -259,10 +259,10 @@ export default function Dashboard() {
               </Route>
               <PrivateRoute exact path="/upload-artwork">
                 <Container className={classes.withPadding}>
-                  <Typography variant="h3" gutterBottom>
+                  <Typography tabIndex={0} variant="h3" gutterBottom>
                         Upload Artwork
                   </Typography>
-                  <Typography variant="body1" gutterBottom>
+                  <Typography tabIndex={0} variant="body1" gutterBottom>
                     Here you can upload artwork of your own! Please be sure to
                     include your name and a very detailed description of your
                     artwork. If you are unsure of what qualifies as a good

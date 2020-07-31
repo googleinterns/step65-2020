@@ -25,11 +25,11 @@ export default function DescLinks() {
   return (
     <>
       <Box m={4} />
-      <Typography variant="h4" component="h1" noWrap>
+      <Typography tabIndex={0} variant="h4" component="h1" noWrap>
         Alt Text Links
       </Typography>
       <Box m={1} />
-      <Typography variant="body1" noWrap>
+      <Typography tabIndex={0} variant="body1" noWrap>
         Here are some links to resources to help with
         creating effective alternative text for your image.
         This is different than your image description,
@@ -52,11 +52,11 @@ export default function DescLinks() {
         </ListItemLink>
       </List>
       <Box m={1} />
-      <Typography variant="h4" component="h1" noWrap>
+      <Typography tabIndex={0} variant="h4" component="h1" noWrap>
         Description Links
       </Typography>
       <Box m={1} />
-      <Typography variant="body1" noWrap>
+      <Typography tabIndex={0} variant="body1" noWrap>
         Here are some links to resources to help with creating useful
         and vivid descriptions that are effective.
       </Typography>

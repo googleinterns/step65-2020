@@ -116,6 +116,7 @@ export default function CardMenuBttn({id}) {
               <FormControl className={classes.formControl}>
                 <InputLabel id="selection-label">Selection</InputLabel>
                 <Select
+                  aria-label="Select what to edit"
                   name="selection"
                   value={selection}
                   onChange={handleChange}

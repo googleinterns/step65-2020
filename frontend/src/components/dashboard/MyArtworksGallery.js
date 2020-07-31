@@ -41,6 +41,7 @@ export default function MyArtworksGallery() {
       )}
       {artworksError && (
         <Alert
+          tabIndex={0}
           severity="error"
         >
                 The images could not be loaded at this time.
