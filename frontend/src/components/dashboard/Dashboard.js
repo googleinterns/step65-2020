@@ -44,6 +44,7 @@ import SignedInNavItems from './account-components/SignedInNavItems';
 import SignInButton from './account-components/SignInButton';
 import SignInNav from './account-components/SignInNav';
 import PrivateRoute from './account-components/PrivateRoute';
+import MyArtworksGallery from './MyArtworksGallery';
 
 const drawerWidth = 240;
 
@@ -279,6 +280,9 @@ export default function Dashboard() {
                     description="Art you've uploaded!"
                     imgURL={UnsplashImg}
                   />
+                  <Container>
+                    <MyArtworksGallery/>
+                  </Container>
                 </Container>
               </PrivateRoute>
               <Route exact path="/user-uploads-gallery">
