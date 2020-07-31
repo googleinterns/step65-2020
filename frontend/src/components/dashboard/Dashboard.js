@@ -31,6 +31,7 @@ import Banner from './gallery-components/Banner';
 import LandingPage from './LandingPage';
 import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
+import UnsplashImg from './images/alexander-unsplash.jpg';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import {fetchUserArtworks} from '../../redux/userArtworkActions';
@@ -39,7 +40,15 @@ import SignIn from './account-components/SignIn';
 import AvatarHeader from './account-components/AvatarHeader';
 import {isLoaded, isEmpty} from 'react-redux-firebase';
 import SignOutNavigationItem from './account-components/SignOutNavigationItem';
+import SignedInNavItems from './account-components/SignedInNavItems';
 import SignInButton from './account-components/SignInButton';
+import SignInNav from './account-components/SignInNav';
+import MyArtworksGallery from './MyArtworksGallery';
+import {fetchFavorites} from '../../redux/favorites/favoritesActions';
+import PrivateRoute from './account-components/PrivateRoute';
+import PaintImage from './images/paint.jpg';
+import FavoritesGalleryWrapper
+  from './favorites-components/FavoritesGalleryWrapper';
 
 const drawerWidth = 240;
 
@@ -162,7 +171,10 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
     dispatch(fetchUserArtworks());
-  }, [dispatch]);
+    if (isLoaded(auth) && !isEmpty(auth)) {
+      dispatch(fetchFavorites(auth.uid));
+    }
+  }, [dispatch, auth]);
 
 
   return (
@@ -209,8 +221,11 @@ export default function Dashboard() {
               </IconButton>
             </div>
             {isLoaded(auth) && !isEmpty(auth) && (<AvatarHeader/>)}
+            {(!isLoaded(auth) || isEmpty(auth)) && (<SignInNav/>)}
             <Divider />
             <NavigationItems />
+            <Divider />
+            {isLoaded(auth) && !isEmpty(auth) && (<SignedInNavItems/>)}
             <Divider />
             {isLoaded(auth) && !isEmpty(auth) && (<SignOutNavigationItem/>)}
           </Drawer>
@@ -249,7 +264,7 @@ export default function Dashboard() {
                   <MuseumGallery />
                 </Container>
               </Route>
-              <Route exact path="/upload-artwork">
+              <PrivateRoute exact path="/upload-artwork">
                 <Container className={classes.withPadding}>
                   <Typography variant="h3" gutterBottom>
                         Upload Artwork
@@ -264,7 +279,19 @@ export default function Dashboard() {
                   <UserUploadForm name="User Information"/>
                   <DescLinks name="Description Links"/>
                 </Container>
-              </Route>
+              </PrivateRoute>
+              <PrivateRoute exact path="/my-art">
+                <Container className={classes.galleryPageWrapper}>
+                  <Banner
+                    title="My Art"
+                    description="Art you've uploaded!"
+                    imgURL={UnsplashImg}
+                  />
+                  <Container>
+                    <MyArtworksGallery/>
+                  </Container>
+                </Container>
+              </PrivateRoute>
               <Route exact path="/user-uploads-gallery">
                 <Container className={classes.galleryPageWrapper}>
                   <Banner
@@ -275,6 +302,16 @@ export default function Dashboard() {
                   <UploadsGallery />
                 </Container>
               </Route>
+              <PrivateRoute exact path="/my-favorites">
+                <Container className={classes.galleryPageWrapper}>
+                  <Banner
+                    title="My Favorites"
+                    description="Art you've saved!"
+                    imgURL={PaintImage}
+                  />
+                  <FavoritesGalleryWrapper/>
+                </Container>
+              </PrivateRoute>
               <Route
                 exact path="/gallery/:collection/:id"
                 component={ArtworkCloseUpCard}

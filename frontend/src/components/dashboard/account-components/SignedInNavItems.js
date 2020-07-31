@@ -8,46 +8,45 @@ import {
   ListItemIcon, ListItemText,
 } from '@material-ui/core';
 
-import HomeIcon from '@material-ui/icons/Home';
-import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
-import UserUploadsIcon from '@material-ui/icons/SupervisedUserCircle';
+import UploadPhotoIcon from '@material-ui/icons/AddPhotoAlternate';
+import MyArtIcon from '@material-ui/icons/Brush';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const useStyles = makeStyles((theme) => ({
   link: {
-    textDecoration: 'none',
     color: theme.palette.text.primary,
+    textDecoration: 'none',
   },
 }));
 
-export default function NavigationItems() {
+export default function SignedInNavItems() {
   const classes = useStyles();
   return (
     <List>
-      <Link to="/" className={classes.link}>
+      <Link to="/my-favorites" className={classes.link}>
         <ListItem button>
           <ListItemIcon>
-            <HomeIcon />
+            <FavoriteIcon />
           </ListItemIcon>
-          <ListItemText primary={'Home'} />
+          <ListItemText primary={'My Favorites'} />
         </ListItem>
       </Link>
-      <Link to="/museum-gallery" className={classes.link}>
+      <Link to="/my-art" className={classes.link}>
         <ListItem button>
           <ListItemIcon>
-            <PhotoLibraryIcon />
+            <MyArtIcon />
           </ListItemIcon>
-          <ListItemText primary={'Museum Gallery'} />
+          <ListItemText primary={'My Art'} />
         </ListItem>
       </Link>
-      <Link to="/user-uploads-gallery" className={classes.link}>
+      <Link to="/upload-artwork" className={classes.link}>
         <ListItem button>
           <ListItemIcon>
-            <UserUploadsIcon />
+            <UploadPhotoIcon />
           </ListItemIcon>
-          <ListItemText primary={'User Uploads Gallery'} />
+          <ListItemText primary={'Upload Artwork'} />
         </ListItem>
       </Link>
     </List>
   );
 }
-
