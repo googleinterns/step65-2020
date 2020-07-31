@@ -103,10 +103,6 @@ export default function ArtworkCloseUpCard(props) {
         currentArtwork.get('url')));
   };
 
-  const handleAddToFavorites = () => {
-    setIsFavorite(true);
-  };
-
   useEffect(() => {
     if (currentFavoriteUpdated && currentFavorite) {
       setIsFavorite(true);
