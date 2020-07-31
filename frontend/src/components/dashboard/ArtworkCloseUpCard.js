@@ -94,11 +94,6 @@ export default function ArtworkCloseUpCard(props) {
     dispatch(updateFavorites(auth.uid, collection, id));
   };
 
-  const handleAddToFavorites = () => {
-    setIsFavorite(true);
-    dispatch(updateFavorites(auth.uid, collection, id));
-  };
-
   useEffect(() => {
     if (favorites.some((favorite) =>
       favorite.artworkId === id && favorite.collection === collection)) {
