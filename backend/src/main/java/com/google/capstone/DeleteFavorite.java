@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Servlet used to add a favorited artwork to the user's list of favorites in Datatstore.
+ * Servlet used to delete a favorited artwork to the user's list of favorites in Datastore.
  */
 @WebServlet("/api/v1/delete-favorite")
 public class DeleteFavorite extends HttpServlet {
