@@ -20,6 +20,10 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import Box from '@material-ui/core/Box';
 import {isLoaded, isEmpty} from 'react-redux-firebase';
 import {updateFavorites} from '../../redux/favorites/favoritesActions';
+import {fetchSingleMuseumArtwork,
+  setCurrentMuseumArtwork} from '../../redux/museumArtworkActions';
+import {fetchSingleUserArtwork,
+  setCurrentUserArtwork} from '../../redux/userArtworkActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   withPadding: {
     padding: theme.spacing(3),
   },
-  box: {
+  headerActionBox: {
     display: 'flex',
     textColor: theme.palette.secondary.contrastText,
   },
@@ -60,6 +64,7 @@ export default function ArtworkCloseUpCard(props) {
   const [error, setError] = useState(false);
   const [audioLoading, setAudioLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [currentArtworkUpdated, setCurrentArtworkUpdated] = useState(false);
   const dispatch = useDispatch();
 
   const subheaderTypographyProps = {color: 'light'};
@@ -74,6 +79,20 @@ export default function ArtworkCloseUpCard(props) {
   const artworks = useSelector((state) => (isMuseum ?
       state.museumArtworks.artworks :
       state.userArtworks.artworks));
+  const currentArtwork =
+      useSelector((state) => (isMuseum ?
+          state.museumArtworks.currentArtwork :
+          state.userArtworks.currentArtwork));
+  const loading = useSelector((state) => (isMuseum ?
+      state.museumArtworks.loading :
+      state.userArtworks.loading));
+
+  const favorites = useSelector((state) => state.favorites.artworks);
+
+  const handleAddToFavorites = () => {
+    setIsFavorite(true);
+    dispatch(updateFavorites(auth.uid, collection, id));
+  };
 
   const favorites = useSelector((state) => state.favorites.artworks);
 
@@ -87,9 +106,18 @@ export default function ArtworkCloseUpCard(props) {
       favorite.artworkId === id && favorite.collection === collection)) {
       setIsFavorite(true);
     }
-    if (artworks && artworks.has(id)) {
-      const artwork = artworks.get(id);
-      const description = artwork.get('description');
+    if (!loading && artworks && !currentArtworkUpdated) {
+      if (artworks.has(id)) {
+        isMuseum ? dispatch(setCurrentMuseumArtwork(id)) :
+            dispatch(setCurrentUserArtwork(id));
+      } else {
+        isMuseum ? dispatch(fetchSingleMuseumArtwork(id)) :
+            dispatch(fetchSingleUserArtwork(id));
+      }
+      setCurrentArtworkUpdated(true);
+    }
+    if (!loading && currentArtwork && currentArtworkUpdated) {
+      const description = currentArtwork.get('description');
       const descriptionElement = document.getElementById('description');
       descriptionElement.innerHTML = description;
 
@@ -101,8 +129,8 @@ export default function ArtworkCloseUpCard(props) {
       }
 
       generateTextToSpeech(isMuseum ?
-          getMuseumAudioTranscript(artwork) :
-          getUserAudioTranscript(artwork), id)
+          getMuseumAudioTranscript(currentArtwork) :
+          getUserAudioTranscript(currentArtwork), id)
           .then(handleErrors)
           .then((response) => response.text())
           .then((blobKey) => {
@@ -115,20 +143,21 @@ export default function ArtworkCloseUpCard(props) {
             setAudioLoading(false);
           });
     }
-  }, [artworks, id, isMuseum, favorites, collection]);
+  }, [artworks, dispatch, id, isMuseum,
+    favorites, collection, currentArtwork,
+    loading, currentArtworkUpdated]);
 
-  if (!artworks || !artworks.has(id)) {
+  if (loading || !currentArtwork) {
     return (
       <div className={classes.root}>
         <LinearProgress color="secondary" />
       </div>
     );
   } else {
-    const artwork = artworks.get(id);
-    const title = artwork.get('title');
-    const artist = artwork.get('artist');
-    const alt = artwork.get('alt');
-    const date = artwork.get('date');
+    const title = currentArtwork.get('title');
+    const artist = currentArtwork.get('artist');
+    const alt = currentArtwork.get('alt');
+    const date = currentArtwork.get('date');
 
     return (
       <Container className={classes.withPadding}>
@@ -140,7 +169,7 @@ export default function ArtworkCloseUpCard(props) {
             subheaderTypographyProps={subheaderTypographyProps}
             className={classes.header}
             action={
-              <Box className={classes.box}>
+              <Box className={classes.headerActionBox}>
                 <AudioPlayer
                   controls
                   id="audio"
@@ -181,7 +210,7 @@ export default function ArtworkCloseUpCard(props) {
             <Grid item xs={12} md={8}>
               <CardMedia
                 className={classes.media}
-                image={artwork.get('url')}
+                image={currentArtwork.get('url')}
                 title={artist}
               />
               <CardContent>
