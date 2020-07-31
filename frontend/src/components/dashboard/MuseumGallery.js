@@ -5,6 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import Menu from '@material-ui/core/Menu';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import {makeStyles} from '@material-ui/core/styles';
@@ -14,19 +15,18 @@ import {useDispatch, useSelector} from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import InputBase from '@material-ui/core/InputBase';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   loading: {
     flexGrow: 1,
     flexDirection: 'row',
   },
-  searchAndSortByBar: {
+  searchBar: {
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'space-around',
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    margin: theme.spacing(2),
     padding: '0px',
     width: 'auto',
   },
@@ -53,14 +53,27 @@ const useStyles = makeStyles((theme) => ({
   },
   filterDrawer: {
     display: 'none',
-    justifyContent: 'center',
-    paddingBottom: theme.spacing(5),
+    paddingBottom: theme.spacing(2),
   },
-  drawerButton: {
-    width: 'auto',
+  filters: {
+    'backgroundColor': theme.palette.primary,
+    'border': 'solid 1px #c3c3c3',
+    'borderRadius': '15px',
+    'display': 'inline-block',
+    'padding': theme.spacing(1),
+    'margin': theme.spacing(1),
+    'width': 'auto',
+    '&:hover': {border: 'solid 1px black'},
   },
-  filterSelects: {
+  hoverLineThrough: {
+    '&:hover': {textDecorationLine: 'line-through'},
+  },
+  sortByMenu: {
+    display: 'none',
     margin: theme.spacing(2),
+  },
+  surpriseMe: {
+    padding: theme.spacing(2)*.75,
   },
   pagination: {
     display: 'flex',
@@ -72,16 +85,6 @@ const useStyles = makeStyles((theme) => ({
 export default function MuseumGallery() {
   const classes = useStyles();
 
-  const handleDrawerChange = (event) => {
-    const content = document.getElementById('filter-drawer');
-    if (content.style.display === 'flex') {
-      content.style.display = 'none';
-    } else {
-      content.style.display = 'flex';
-    }
-  };
-
-
   /*
    only set newQuery to be true when there is a change to the page number,
    the "sort by" field, or when the search button is pressed
@@ -89,9 +92,10 @@ export default function MuseumGallery() {
   const [newQuery, setNewQuery] = React.useState(false);
 
   const [sortBy, setSortBy] = React.useState('relevance');
-  const handleChangeSortBy = (event) => {
+  const handleChangeSortBy = (event, value) => {
     setNewQuery(true);
-    setSortBy(event.target.value);
+    setSortBy(value);
+    handleCloseSortByMenu();
   };
   const [museumPage, setMuseumPage] = useState(1);
   const handleChangePage = (event, value) => {
@@ -103,10 +107,29 @@ export default function MuseumGallery() {
     setNewQuery(true);
     setSearchQuery(document.getElementById('search-textfield').value);
     setMuseumPage(1);
+    document.getElementById('search-bar').style.marginBottom = '0px';
+    document.getElementById('filter-drawer').style.display = 'block';
   };
+  const clearSearchQuery = () => {
+    document.getElementById('filter-drawer').style.display = 'none';
+    document.getElementById('search-bar').style.margin = '8px';
+    document.getElementById('search-textfield').value = '';
+    setNewQuery(true);
+    setSearchQuery('');
+    setMuseumPage(1);
+    setSortBy('relevance');
+  };
+
   const [searchField, setSearchField] = React.useState('all-fields');
   const handleChangeSearchField = (event) => {
     setSearchField(event.target.value);
+  };
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClickSortByMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseSortByMenu = () => {
+    setAnchorEl(null);
   };
 
   const artworksMap = useSelector(
@@ -153,7 +176,7 @@ export default function MuseumGallery() {
           <LinearProgress />
         </div>
       )}
-      <Container className={classes.searchAndSortByBar}>
+      <Container id="search-bar" className={classes.searchBar}>
         <Container className={classes.searchByContainer}>
           <FormControl variant="outlined" className={classes.formControl}>
             <Select
@@ -181,22 +204,6 @@ export default function MuseumGallery() {
             }}
             autoComplete = "off"
           />
-          <Container className={classes.selectMenu}>
-            <FormControl className={classes.formControl}>
-              <InputLabel shrink id="search-field-label">Search By</InputLabel>
-              <Select
-                labelId="search-field-label"
-                id="search-field"
-                value={searchField}
-                onChange={handleChangeSearchField}
-              >
-                <MenuItem value="all-fields">All Fields</MenuItem>
-                <MenuItem value="artist_title">Artist</MenuItem>
-                <MenuItem value="description">Description</MenuItem>
-                <MenuItem value="title">Title</MenuItem>
-              </Select>
-            </FormControl>
-          </Container>
           <div className={classes.searchButton}>
             <IconButton
               aria-label="search"
@@ -205,20 +212,55 @@ export default function MuseumGallery() {
             </IconButton>
           </div>
         </Container>
-        <Container className={classes.drawerButton}>
-          <IconButton
-            aria-label="filtering options"
-            onClick={handleDrawerChange}
-          >
-            <Typography>Filtering</Typography>
-            <ExpandMoreIcon/>
-          </IconButton>
-        </Container>
+        <Button
+          variant="contained"
+          color="secondary"
+          className={classes.surpriseMe}
+        >
+          Surprise me!
+        </Button>
       </Container>
       <Container id="filter-drawer" className={classes.filterDrawer}>
+        <Button
+          aria-controls="sort-by-menu"
+          aria-haspopup="true"
+          className={classes.filters}
+          onClick={handleClickSortByMenu}
+        >
+          Sort By: {sortBy} &#x25BC;
+        </Button>
+        <Menu
+          id="sort-by-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleCloseSortByMenu}
+        >
+          <MenuItem
+            onClick={(event) => handleChangeSortBy(event, 'relevance')}
+          >Relevance</MenuItem>
+          <MenuItem
+            onClick={(event) => handleChangeSortBy(event, 'artist')}
+          >Artist</MenuItem>
+          <MenuItem
+            onClick={(event) => handleChangeSortBy(event, 'date')}
+          >Date</MenuItem>
+          <MenuItem
+            onClick={(event) => handleChangeSortBy(event, 'title')}
+          >Title</MenuItem>
+        </Menu>
+        <Button
+          id="search-filter"
+          className={classes.filters}
+          onClick={clearSearchQuery}
+        >
+          <Typography className={classes.hoverLineThrough} variant="label">
+            Search for: {searchQuery} &#10006;
+          </Typography>
+        </Button>
         <FormControl
           variant="filled"
-          className={[classes.filterSelects, classes.formControl].join(' ')}
+          className={[classes.sortByMenu, classes.formControl].join(' ')}
         >
           <InputLabel shrink id="sort-by-label">Sort By</InputLabel>
           <Select
@@ -232,40 +274,6 @@ export default function MuseumGallery() {
             <MenuItem value="artist">Artist</MenuItem>
             <MenuItem value="date">Date</MenuItem>
             <MenuItem value="title">Title</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl
-          variant="filled"
-          className={[classes.filterSelects, classes.formControl].join(' ')}
-        >
-          <InputLabel shrink id="placeholder-label">Placeholder</InputLabel>
-          <Select
-            labelId="placeholder-label"
-            id="placeholder"
-            label="Placeholder"
-            value=""
-          >
-            <MenuItem value="relevance">Placeholder</MenuItem>
-            <MenuItem value="artist">Placeholder</MenuItem>
-            <MenuItem value="date">Placeholder</MenuItem>
-            <MenuItem value="title">Placeholder</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl
-          variant="filled"
-          className={[classes.filterSelects, classes.formControl].join(' ')}
-        >
-          <InputLabel shrink id="placeholder-label">Placeholder</InputLabel>
-          <Select
-            labelId="placeholder-label"
-            id="placeholder"
-            label="Placeholder"
-            value=""
-          >
-            <MenuItem value="relevance">Placeholder</MenuItem>
-            <MenuItem value="artist">Placeholder</MenuItem>
-            <MenuItem value="date">Placeholder</MenuItem>
-            <MenuItem value="title">Placeholder</MenuItem>
           </Select>
         </FormControl>
       </Container>

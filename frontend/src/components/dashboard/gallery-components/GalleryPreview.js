@@ -53,7 +53,7 @@ export default function GalleryPreview({name, link, isMuseum}) {
             The images could not be loaded at this time.
         </Alert>
       )}
-      <Gallery size={PREVIEW_SIZE} isMuseum={isMuseum}/>
+      <Gallery size={PREVIEW_SIZE} isMuseum={isMuseum} isPreview={true}/>
       <Container className={classes.viewMoreButton}>
         <Link to={link} className={classes.link}>
           <Button variant="contained" color="primary">View More</Button>
