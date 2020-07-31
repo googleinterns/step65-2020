@@ -4,7 +4,6 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
 
 /** Servlet responsible for finding if their is a favorite matching the parameters.
  *  A Favorite is returned if found, otherwise null.
- * */
+ */
 @WebServlet(name = "findFavorite", value = "/api/v1/find-favorite")
 public class FindFavorite extends HttpServlet {
 
