@@ -18,6 +18,12 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Box from '@material-ui/core/Box';
+import {isLoaded, isEmpty} from 'react-redux-firebase';
+import {
+  findFavorite,
+  setCurrentFavorite,
+  updateFavorites,
+} from '../../redux/favorites/favoritesActions';
 import {fetchSingleMuseumArtwork,
   setCurrentMuseumArtwork} from '../../redux/museumArtworkActions';
 import {fetchSingleUserArtwork,
@@ -63,15 +69,21 @@ export default function ArtworkCloseUpCard(props) {
   const [audioLoading, setAudioLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentArtworkUpdated, setCurrentArtworkUpdated] = useState(false);
+  const [currentFavoriteUpdated, setCurrentFavoriteUpdated] = useState(false);
+  const dispatch = useDispatch();
 
   const subheaderTypographyProps = {color: 'light'};
 
   const id = props.match.params.id;
-  const isMuseum = props.match.params.collection === 'museum';
+
+  const collection = props.match.params.collection;
+  const isMuseum = collection === 'museum';
+
+  const auth = useSelector((state) => state.firebase.auth);
+
   const artworks = useSelector((state) => (isMuseum ?
       state.museumArtworks.artworks :
       state.userArtworks.artworks));
-  const dispatch = useDispatch();
   const currentArtwork =
       useSelector((state) => (isMuseum ?
           state.museumArtworks.currentArtwork :
@@ -80,11 +92,32 @@ export default function ArtworkCloseUpCard(props) {
       state.museumArtworks.loading :
       state.userArtworks.loading));
 
+  const favorites = useSelector((state) => state.favorites.artworks);
+  const currentFavorite =
+      useSelector((state) => state.favorites.currentFavorite);
+
   const handleAddToFavorites = () => {
     setIsFavorite(true);
+    dispatch(updateFavorites(auth.uid, collection, id,
+        currentArtwork.get('title'), currentArtwork.get('alt'),
+        currentArtwork.get('url')));
   };
 
   useEffect(() => {
+    if (currentFavoriteUpdated && currentFavorite) {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+      const favorite = favorites.find((favorite) =>
+        favorite.artworkId === id && favorite.collection === collection);
+      if (favorite) {
+        dispatch(setCurrentFavorite(favorite));
+      } else {
+        dispatch(findFavorite(auth.uid, id, collection));
+      }
+      setCurrentFavoriteUpdated(true);
+    }
+
     if (!loading && artworks && !currentArtworkUpdated) {
       if (artworks.has(id)) {
         isMuseum ? dispatch(setCurrentMuseumArtwork(id)) :
@@ -123,7 +156,9 @@ export default function ArtworkCloseUpCard(props) {
           });
     }
   }, [artworks, dispatch, id, isMuseum,
-    currentArtwork, loading, currentArtworkUpdated]);
+    favorites, collection, currentArtwork,
+    loading, currentArtworkUpdated, currentFavorite, auth.uid,
+    currentFavoriteUpdated]);
 
   if (loading || !currentArtwork) {
     return (
@@ -141,6 +176,7 @@ export default function ArtworkCloseUpCard(props) {
       <Container className={classes.withPadding}>
         <Card className={classes.root}>
           <CardHeader
+            tabIndex={0}
             title={title}
             subheader={artist}
             subheaderTypographyProps={subheaderTypographyProps}
@@ -152,7 +188,7 @@ export default function ArtworkCloseUpCard(props) {
                   id="audio"
                   className={classes.audioPlayer}
                 />
-                <IconButton
+                {isLoaded(auth) && !isEmpty(auth) && (<IconButton
                   aria-label="add to favorites"
                   onClick={handleAddToFavorites}
                   className={classes.favorite}
@@ -160,7 +196,7 @@ export default function ArtworkCloseUpCard(props) {
                   {isFavorite ?
                       <FavoriteIcon fontSize="large"/> :
                       <FavoriteBorderIcon fontSize="large"/>}
-                </IconButton>
+                </IconButton>)}
               </Box>
             }
           />
@@ -203,6 +239,7 @@ export default function ArtworkCloseUpCard(props) {
                   </Typography>
                 )}
                 <Typography
+                  tabIndex={0}
                   variant="body2"
                   color="primary"
                   align="center"
@@ -213,7 +250,7 @@ export default function ArtworkCloseUpCard(props) {
               </CardContent>
             </Grid>
             <Grid item xs={12} md={4}>
-              <CardContent className={classes.content}>
+              <CardContent className={classes.content} tabIndex={0}>
                 <Typography
                   variant="h4"
                   color="primary"

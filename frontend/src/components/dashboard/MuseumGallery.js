@@ -72,6 +72,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
     margin: theme.spacing(2),
   },
+  surpriseMe: {
+    padding: theme.spacing(2)*.75,
+  },
   pagination: {
     display: 'flex',
     justifyContent: 'center',
