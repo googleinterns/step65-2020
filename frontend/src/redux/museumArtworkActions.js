@@ -34,10 +34,16 @@ const sortByQuerySyntax = new Map()
             'order': 'asc',
           },
         })
-    .set('date',
+    .set('date (desc)',
         {
           'date_end': {
             'order': 'desc',
+          },
+        })
+    .set('date (asc)',
+        {
+          'date_end': {
+            'order': 'asc',
           },
         })
     .set('title',

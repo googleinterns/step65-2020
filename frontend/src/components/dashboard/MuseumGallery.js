@@ -65,10 +65,17 @@ const useStyles = makeStyles((theme) => ({
     'margin': theme.spacing(1),
     'width': 'auto',
     '&:hover': {border: 'solid 1px black'},
+<<<<<<< HEAD
   },
   hoverLineThrough: {
     '&:hover': {textDecorationLine: 'line-through'},
   },
+=======
+  },
+  hoverLineThrough: {
+    '&:hover': {textDecorationLine: 'line-through'},
+  },
+>>>>>>> master
   sortByMenu: {
     display: 'none',
     margin: theme.spacing(2),
@@ -110,6 +117,7 @@ export default function MuseumGallery() {
     document.getElementById('search-bar').style.marginBottom = '0px';
     document.getElementById('filter-drawer').style.display = 'block';
     setNewQuery(true);
+<<<<<<< HEAD
   };
   const clearSearchQuery = () => {
     document.getElementById('filter-drawer').style.display = 'none';
@@ -120,6 +128,18 @@ export default function MuseumGallery() {
     setMuseumPage(1);
     setSortBy('relevance');
   };
+=======
+  };
+  const clearSearchQuery = () => {
+    document.getElementById('filter-drawer').style.display = 'none';
+    document.getElementById('search-bar').style.margin = '8px';
+    document.getElementById('search-textfield').value = '';
+    setNewQuery(true);
+    setSearchQuery('');
+    setMuseumPage(1);
+    setSortBy('relevance');
+  };
+>>>>>>> master
 
   const [searchField, setSearchField] = React.useState('all-fields');
   const handleChangeSearchField = (event) => {
@@ -159,24 +179,17 @@ export default function MuseumGallery() {
   }, [dispatch, newQuery, museumPage, searchQuery,
     sortBy, searchField, firstPgLoad]);
 
-  let paginationNeeded = true;
+  let noResults = false;
   let results;
   if (artworks.length !== 0) {
     results =
       <Gallery isMuseum={true}/>;
   } else if (searchQuery !== '') {
-    if (museumPage > 1) {
-      results =
-        <Typography align="center" variant="h5" component="h3">
-          No more results found for {searchQuery}
-        </Typography>;
-    } else {
-      paginationNeeded = false;
-      results =
+    noResults = true;
+    results =
         <Typography align="center" variant="h5" component="h3">
           No results found for {searchQuery}
         </Typography>;
-    }
   }
 
   return (
@@ -195,9 +208,9 @@ export default function MuseumGallery() {
               onChange={handleChangeSearchField}
             >
               <MenuItem value="all-fields">Search by: All fields</MenuItem>
-              <MenuItem value="artist_title">Artist</MenuItem>
-              <MenuItem value="description">Description</MenuItem>
-              <MenuItem value="title">Title</MenuItem>
+              <MenuItem value="artist_title" aria-label="Search by: Artist">Artist</MenuItem>
+              <MenuItem value="description" aria-label="Search by: Description">Description</MenuItem>
+              <MenuItem value="title" aria-label="Search by: Title">Title</MenuItem>
             </Select>
           </FormControl>
         </Container>
@@ -216,7 +229,7 @@ export default function MuseumGallery() {
           />
           <div className={classes.searchButton}>
             <IconButton
-              aria-label="search"
+              aria-label="search button"
               onClick={handleChangeSearch}>
               <SearchIcon fontSize="large" />
             </IconButton>
@@ -224,15 +237,17 @@ export default function MuseumGallery() {
         </Container>
         <SurpriseMeButton/>
       </Container>
-      <Container id="filter-drawer" className={classes.filterDrawer}>
-        <Button
-          aria-controls="sort-by-menu"
-          aria-haspopup="true"
-          className={classes.filters}
-          onClick={handleClickSortByMenu}
-        >
+      <div id="filter-drawer" className={classes.filterDrawer} role="status" tabindex="0">
+        {!noResults &&
+          <Button
+            aria-controls="sort-by-menu"
+            aria-haspopup="true"
+            aria-label="Sort by menu"
+            className={classes.filters}
+            onClick={handleClickSortByMenu}
+          >
           Sort By: {sortBy} &#x25BC;
-        </Button>
+          </Button>}
         <Menu
           id="sort-by-menu"
           anchorEl={anchorEl}
@@ -247,8 +262,11 @@ export default function MuseumGallery() {
             onClick={(event) => handleChangeSortBy(event, 'artist')}
           >Artist</MenuItem>
           <MenuItem
-            onClick={(event) => handleChangeSortBy(event, 'date')}
-          >Date</MenuItem>
+            onClick={(event) => handleChangeSortBy(event, 'date (asc)')}
+          >Date (oldest&#8594;newest)</MenuItem>
+          <MenuItem
+            onClick={(event) => handleChangeSortBy(event, 'date (desc)')}
+          >Date (newest&#8594;oldest)</MenuItem>
           <MenuItem
             onClick={(event) => handleChangeSortBy(event, 'title')}
           >Title</MenuItem>
@@ -257,32 +275,15 @@ export default function MuseumGallery() {
           id="search-filter"
           className={classes.filters}
           onClick={clearSearchQuery}
+          aria-label="clear search query"
         >
           <Typography className={classes.hoverLineThrough} variant="button">
             Search for: {searchQuery} &#10006;
           </Typography>
         </Button>
-        <FormControl
-          variant="filled"
-          className={[classes.sortByMenu, classes.formControl].join(' ')}
-        >
-          <InputLabel shrink id="sort-by-label">Sort By</InputLabel>
-          <Select
-            labelId="sort-by-label"
-            id="sort-by"
-            value={sortBy}
-            onChange={handleChangeSortBy}
-            label="Sort By"
-          >
-            <MenuItem value="relevance">Relevance</MenuItem>
-            <MenuItem value="artist">Artist</MenuItem>
-            <MenuItem value="date">Date</MenuItem>
-            <MenuItem value="title">Title</MenuItem>
-          </Select>
-        </FormControl>
-      </Container>
+      </div>
       {results}
-      {(paginationNeeded && !artworksLoading) &&
+      {(!noResults && !artworksLoading) &&
         <Container className={classes.pagination}>
           <Pagination
             count={numOfPgs}
