@@ -1,3 +1,4 @@
+// import store from '../index';
 const getIIIFLevel = (artwork, displayWidth) => {
   return {
     url: 'https://www.artic.edu/iiif/2/' + artwork.image_id + '/full/' + displayWidth + ',/0/default.jpg',
@@ -213,18 +214,29 @@ export function fetchMuseumArtworks(
               artworks.numOfResults));
           return artworks;
         })
+        .then(()=>{
+          dispatch(getRandomArtworkId(limit, searchQuery, sortBy, searchField));
+        })
         .catch((error) =>
           dispatch(fetchMuseumArtworksFailure(error)),
         );
   };
 }
 
+function computeRandomIndex(numOfResults) {
+  const ARTWORKS_PER_GALLERY_PAGE = 9;
+  const ranNum = Math.floor(Math.random() * numOfResults);
+  const pageNum = Math.floor(ranNum/ARTWORKS_PER_GALLERY_PAGE);
+  const index = ranNum % ARTWORKS_PER_GALLERY_PAGE;
+  return {pageNum, index};
+};
+
 function getArtworkAtIndex(artworks, index) {
   return (artworks.data[index].id);
 }
 
 export function getRandomArtworkId(
-    page, limit, searchQuery, sortBy, searchField, index) {
+    limit, searchQuery, sortBy, searchField) {
   let simpleQuery = '';
   let searchFieldArgument = searchField;
   if (searchField === 'all-fields') {
@@ -232,11 +244,14 @@ export function getRandomArtworkId(
     searchFieldArgument = '';
   }
 
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const numOfResults = state.museumArtworks.numOfResults;
+    const {pageNum, index} = computeRandomIndex(numOfResults);
     dispatch(fetchRandomArtworkIdBegin());
     return getMuseumArtworks('artworks/search',
         new Map()
-            .set('page', page)
+            .set('page', pageNum)
             .set('limit', limit)
             .set('q', simpleQuery),
         sortBy,

@@ -94,22 +94,22 @@ export default function MuseumGallery() {
 
   const [sortBy, setSortBy] = React.useState('relevance');
   const handleChangeSortBy = (event, value) => {
-    setNewQuery(true);
     setSortBy(value);
     handleCloseSortByMenu();
+    setNewQuery(true);
   };
   const [museumPage, setMuseumPage] = useState(1);
   const handleChangePage = (event, value) => {
-    setNewQuery(true);
     setMuseumPage(value);
+    setNewQuery(true);
   };
   const [searchQuery, setSearchQuery] = React.useState('');
   const handleChangeSearch = () => {
-    setNewQuery(true);
     setSearchQuery(document.getElementById('search-textfield').value);
     setMuseumPage(1);
     document.getElementById('search-bar').style.marginBottom = '0px';
     document.getElementById('filter-drawer').style.display = 'block';
+    setNewQuery(true);
   };
   const clearSearchQuery = () => {
     document.getElementById('filter-drawer').style.display = 'none';
@@ -139,19 +139,25 @@ export default function MuseumGallery() {
       (state) => (state.museumArtworks.loading));
   const numOfPgs = useSelector(
       (state) => (state.museumArtworks.numOfPgs));
-  const numOfResults = useSelector(
-      (state) => (state.museumArtworks.numOfResults));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const LIMIT = 9;
+  const [firstPgLoad, setFirstPgLoad] = React.useState(true);
+  const FIRST_PAGE = 1;
+  const EMPTY_QUERY = '';
   useEffect(() => {
+    if (firstPgLoad) {
+      // resets artworks when users hit back button
+      dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY))
+          .then(setFirstPgLoad(false));
+    }
     if (newQuery) {
       dispatch(fetchMuseumArtworks(
           museumPage, LIMIT, searchQuery, sortBy, searchField))
           .then(setNewQuery(false));
     }
   }, [dispatch, newQuery, museumPage, searchQuery,
-    sortBy, searchField, newQuery]);
+    sortBy, searchField, firstPgLoad]);
 
   let paginationNeeded = true;
   let results;
@@ -216,12 +222,7 @@ export default function MuseumGallery() {
             </IconButton>
           </div>
         </Container>
-        <SurpriseMeButton
-          numOfResults={numOfResults}
-          searchQuery={searchQuery}
-          sortBy={sortBy}
-          searchField={searchField}
-        />
+        <SurpriseMeButton/>
       </Container>
       <Container id="filter-drawer" className={classes.filterDrawer}>
         <Button
