@@ -219,6 +219,43 @@ export function fetchMuseumArtworks(
   };
 }
 
+function getArtworkAtIndex(artworks, index) {
+  return (artworks.data[index].id);
+}
+
+export function getRandomArtworkId(
+    page, limit, searchQuery, sortBy, searchField, index) {
+  let simpleQuery = '';
+  let searchFieldArgument = searchField;
+  if (searchField === 'all-fields') {
+    simpleQuery = searchQuery;
+    searchFieldArgument = '';
+  }
+
+  return (dispatch) => {
+    dispatch(fetchRandomArtworkIdBegin());
+    return getMuseumArtworks('artworks/search',
+        new Map()
+            .set('page', page)
+            .set('limit', limit)
+            .set('q', simpleQuery),
+        sortBy,
+        searchFieldArgument,
+        searchQuery,
+    )
+        .then((artworks) => {
+          return getArtworkAtIndex(artworks, index);
+        })
+        .then((id) => {
+          dispatch(fetchRandomArtworkIdSuccess(id));
+          return id;
+        })
+        .catch((error) =>
+          dispatch(fetchRandomArtworkIdFailure(error)),
+        );
+  };
+}
+
 export function fetchSingleMuseumArtwork(id) {
   return (dispatch) => {
     dispatch(fetchSingleMuseumArtworkBegin());
@@ -253,6 +290,12 @@ export const FETCH_MUSEUM_ARTWORKS_SUCCESS =
   'FETCH_MUSEUM_ARTWORKS_SUCCESS';
 export const FETCH_MUSEUM_ARTWORKS_FAILURE =
   'FETCH_MUSEUM_ARTWORKS_FAILURE';
+export const FETCH_RANDOM_ARTWORK_ID_BEGIN =
+  'FETCH_RANDOM_ARTWORK_ID_BEGIN';
+export const FETCH_RANDOM_ARTWORK_ID_SUCCESS =
+  'FETCH_RANDOM_ARTWORK_ID_SUCCESS';
+export const FETCH_RANDOM_ARTWORK_ID_FAILURE =
+  'FETCH_RANDOM_ARTWORK_ID_FAILURE';
 export const FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN =
   'FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN';
 export const FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS =
@@ -266,13 +309,28 @@ export const fetchMuseumArtworksBegin = () => ({
   type: FETCH_MUSEUM_ARTWORKS_BEGIN,
 });
 
-export const fetchMuseumArtworksSuccess = (artworks, numOfPgs, numOfResults) => ({
-  type: FETCH_MUSEUM_ARTWORKS_SUCCESS,
-  payload: {artworks, numOfPgs, numOfResults},
-});
+export const fetchMuseumArtworksSuccess =
+  (artworks, numOfPgs, numOfResults) => ({
+    type: FETCH_MUSEUM_ARTWORKS_SUCCESS,
+    payload: {artworks, numOfPgs, numOfResults},
+  });
 
 export const fetchMuseumArtworksFailure = (error) => ({
   type: FETCH_MUSEUM_ARTWORKS_FAILURE,
+  payload: {error},
+});
+
+export const fetchRandomArtworkIdBegin = () => ({
+  type: FETCH_RANDOM_ARTWORK_ID_BEGIN,
+});
+
+export const fetchRandomArtworkIdSuccess = (randomArtworkId) => ({
+  type: FETCH_RANDOM_ARTWORK_ID_SUCCESS,
+  payload: {randomArtworkId},
+});
+
+export const fetchRandomArtworkIdFailure = (error) => ({
+  type: FETCH_RANDOM_ARTWORK_ID_FAILURE,
   payload: {error},
 });
 
@@ -294,3 +352,4 @@ export const setCurrentMuseumArtwork = (id) => ({
   type: SET_CURRENT_MUSEUM_ARTWORK,
   payload: {id},
 });
+

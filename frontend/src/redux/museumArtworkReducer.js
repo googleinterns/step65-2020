@@ -2,6 +2,9 @@ import {
   FETCH_MUSEUM_ARTWORKS_BEGIN,
   FETCH_MUSEUM_ARTWORKS_SUCCESS,
   FETCH_MUSEUM_ARTWORKS_FAILURE,
+  FETCH_RANDOM_ARTWORK_ID_BEGIN,
+  FETCH_RANDOM_ARTWORK_ID_SUCCESS,
+  FETCH_RANDOM_ARTWORK_ID_FAILURE,
   FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN,
   FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS,
   FETCH_SINGLE_MUSEUM_ARTWORK_FAILURE,
@@ -12,6 +15,7 @@ const initialState = {
   artworks: new Map(),
   numOfResults: 0,
   numOfPgs: 0,
+  randomArtworkId: null,
   loading: false,
   error: false,
   currentArtwork: null,
@@ -73,6 +77,28 @@ export default function museumArtworkReducer(
       return {
         ...state,
         currentArtwork: state.artworks.get(action.payload.id),
+      };
+
+    case FETCH_RANDOM_ARTWORK_ID_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+    case FETCH_RANDOM_ARTWORK_ID_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        randomArtworkId: action.payload.randomArtworkId,
+      };
+
+    case FETCH_RANDOM_ARTWORK_ID_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+        randomArtworkId: null,
       };
 
     default:
