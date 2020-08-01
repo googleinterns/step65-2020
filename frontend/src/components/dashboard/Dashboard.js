@@ -215,7 +215,7 @@ export default function Dashboard() {
             }}
           >
             <div className={classes.drawerHeader}>
-              <IconButton onClick={handleDrawerClose}>
+              <IconButton onClick={handleDrawerClose} aria-label="close drawer">
                 {theme.direction === 'ltr' ?
                     <ChevronLeftIcon /> : <ChevronRightIcon />}
               </IconButton>
