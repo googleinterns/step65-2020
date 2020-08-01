@@ -30,7 +30,7 @@ export default function SurpriseMeButton() {
             variant="contained"
             color="secondary"
             className={classes.surpriseMe}
-            aria-label="Surprise Me button that brings you
+            aria-label="Surprise Me feature that brings you
              to a randomly chosen artwork within your search query results"
           >
             Surprise me!

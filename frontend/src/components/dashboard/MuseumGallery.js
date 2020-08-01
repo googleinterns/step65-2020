@@ -65,13 +65,23 @@ const useStyles = makeStyles((theme) => ({
     'margin': theme.spacing(1),
     'width': 'auto',
     '&:hover': {border: 'solid 1px black'},
+<<<<<<< HEAD
   },
   hoverLineThrough: {
     '&:hover': {textDecorationLine: 'line-through'},
   },
+=======
+  },
+  hoverLineThrough: {
+    '&:hover': {textDecorationLine: 'line-through'},
+  },
+>>>>>>> master
   sortByMenu: {
     display: 'none',
     margin: theme.spacing(2),
+  },
+  surpriseMe: {
+    padding: theme.spacing(2)*.75,
   },
   pagination: {
     display: 'flex',
@@ -107,6 +117,7 @@ export default function MuseumGallery() {
     document.getElementById('search-bar').style.marginBottom = '0px';
     document.getElementById('filter-drawer').style.display = 'block';
     setNewQuery(true);
+<<<<<<< HEAD
   };
   const clearSearchQuery = () => {
     document.getElementById('filter-drawer').style.display = 'none';
@@ -117,6 +128,18 @@ export default function MuseumGallery() {
     setMuseumPage(1);
     setSortBy('relevance');
   };
+=======
+  };
+  const clearSearchQuery = () => {
+    document.getElementById('filter-drawer').style.display = 'none';
+    document.getElementById('search-bar').style.margin = '8px';
+    document.getElementById('search-textfield').value = '';
+    setNewQuery(true);
+    setSearchQuery('');
+    setMuseumPage(1);
+    setSortBy('relevance');
+  };
+>>>>>>> master
 
   const [searchField, setSearchField] = React.useState('all-fields');
   const handleChangeSearchField = (event) => {
