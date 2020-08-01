@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Gallery from './gallery-components/Gallery';
-import SurpriseMeButton from "./gallery-components/SurpriseMeButton";
+import SurpriseMeButton from './gallery-components/SurpriseMeButton';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
@@ -140,7 +140,7 @@ export default function MuseumGallery() {
   const numOfPgs = useSelector(
       (state) => (state.museumArtworks.numOfPgs));
   const numOfResults = useSelector(
-    (state) => (state.museumArtworks.numOfResults));
+      (state) => (state.museumArtworks.numOfResults));
   const artworks = Array.from(artworksMap);
   const dispatch = useDispatch();
   const LIMIT = 9;
@@ -150,7 +150,8 @@ export default function MuseumGallery() {
           museumPage, LIMIT, searchQuery, sortBy, searchField))
           .then(setNewQuery(false));
     }
-  }, [dispatch, newQuery, museumPage, searchQuery, sortBy, searchField]);
+  }, [dispatch, newQuery, museumPage, searchQuery,
+    sortBy, searchField, newQuery]);
 
   let paginationNeeded = true;
   let results;
@@ -215,7 +216,12 @@ export default function MuseumGallery() {
             </IconButton>
           </div>
         </Container>
-        <SurpriseMeButton numOfResults={numOfResults}/>
+        <SurpriseMeButton
+          numOfResults={numOfResults}
+          searchQuery={searchQuery}
+          sortBy={sortBy}
+          searchField={searchField}
+        />
       </Container>
       <Container id="filter-drawer" className={classes.filterDrawer}>
         <Button
