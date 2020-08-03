@@ -7,6 +7,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import {makeStyles} from '@material-ui/core/styles';
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
   const firebase = useFirebase();
+  const history = useHistory();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -45,6 +47,15 @@ export default function SignIn() {
               firebase.auth.FacebookAuthProvider.PROVIDER_ID,
               firebase.auth.EmailAuthProvider.PROVIDER_ID,
             ],
+            callbacks: {
+              signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+                firebase.handleRedirectResult(authResult).then(() => {
+                  history.goBack();
+                });
+                return false;
+              },
+            },
+
           }}
           firebaseAuth={firebase.auth()}
         />

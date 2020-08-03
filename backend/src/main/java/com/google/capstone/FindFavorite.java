@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 
 
 /**
- * Servlet responsible for finding if their is a favorite matching the parameters.
- *  A Favorite is returned if found, otherwise null.
+ * Servlet responsible for finding if there is a favorite matching the parameters.
+ * A Favorite is returned if found, otherwise null.
  */
 @WebServlet(name = "findFavorite", value = "/api/v1/find-favorite")
 public class FindFavorite extends HttpServlet {
