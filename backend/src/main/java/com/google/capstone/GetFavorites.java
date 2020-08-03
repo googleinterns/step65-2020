@@ -31,7 +31,7 @@ public class GetFavorites extends HttpServlet {
     Query query = new Query(uid + "Favorites").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     List<Entity> results = datastore.prepare(query).asList(FetchOptions.Builder
-            .withOffset((page-1) * NUM_FAVORITES)
+            .withOffset((page - 1) * NUM_FAVORITES)
             .limit(NUM_FAVORITES));
 
     List<Favorite> favorites =

@@ -24,13 +24,14 @@ import NavigationItems from './NavigationItems';
 import MuseumGallery from './MuseumGallery';
 import GalleryPreview from './gallery-components/GalleryPreview';
 import ArtworkCloseUpCard from './ArtworkCloseUpCard';
+import UploadsGallery from './UploadsGallery';
 import UserUploadForm from './UserUploadForm';
 import DescLinks from './DescLinks';
-import Gallery from './gallery-components/Gallery';
 import Banner from './gallery-components/Banner';
 import LandingPage from './LandingPage';
 import OurMission from './OurMission';
 import ColorImg from './images/colorful.jpeg';
+import UnsplashImg from './images/alexander-unsplash.jpg';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchMuseumArtworks} from '../../redux/museumArtworkActions';
 import {fetchUserArtworks} from '../../redux/userArtworkActions';
@@ -39,11 +40,13 @@ import SignIn from './account-components/SignIn';
 import AvatarHeader from './account-components/AvatarHeader';
 import {isLoaded, isEmpty} from 'react-redux-firebase';
 import SignOutNavigationItem from './account-components/SignOutNavigationItem';
+import SignedInNavItems from './account-components/SignedInNavItems';
 import SignInButton from './account-components/SignInButton';
+import SignInNav from './account-components/SignInNav';
+import MyArtworksGallery from './MyArtworksGallery';
 import {fetchFavorites} from '../../redux/favorites/favoritesActions';
 import PrivateRoute from './account-components/PrivateRoute';
 import PaintImage from './images/paint.jpg';
-import SignedInNavItems from './account-components/SignedInNavItems';
 import FavoritesGalleryWrapper
   from './favorites-components/FavoritesGalleryWrapper';
 
@@ -212,12 +215,13 @@ export default function Dashboard() {
             }}
           >
             <div className={classes.drawerHeader}>
-              <IconButton onClick={handleDrawerClose}>
+              <IconButton onClick={handleDrawerClose} aria-label="close drawer">
                 {theme.direction === 'ltr' ?
                     <ChevronLeftIcon /> : <ChevronRightIcon />}
               </IconButton>
             </div>
             {isLoaded(auth) && !isEmpty(auth) && (<AvatarHeader/>)}
+            {(!isLoaded(auth) || isEmpty(auth)) && (<SignInNav/>)}
             <Divider />
             <NavigationItems />
             <Divider />
@@ -260,7 +264,7 @@ export default function Dashboard() {
                   <MuseumGallery />
                 </Container>
               </Route>
-              <Route exact path="/upload-artwork">
+              <PrivateRoute exact path="/upload-artwork">
                 <Container className={classes.withPadding}>
                   <Typography variant="h3" gutterBottom>
                         Upload Artwork
@@ -275,7 +279,19 @@ export default function Dashboard() {
                   <UserUploadForm name="User Information"/>
                   <DescLinks name="Description Links"/>
                 </Container>
-              </Route>
+              </PrivateRoute>
+              <PrivateRoute exact path="/my-art">
+                <Container className={classes.galleryPageWrapper}>
+                  <Banner
+                    title="My Art"
+                    description="Art you've uploaded!"
+                    imgURL={UnsplashImg}
+                  />
+                  <Container>
+                    <MyArtworksGallery/>
+                  </Container>
+                </Container>
+              </PrivateRoute>
               <Route exact path="/user-uploads-gallery">
                 <Container className={classes.galleryPageWrapper}>
                   <Banner
@@ -283,9 +299,7 @@ export default function Dashboard() {
                     description="Explore artwork from other users!"
                     imgURL={ColorImg}
                   />
-                  <Container>
-                    <Gallery isMuseum={false}/>
-                  </Container>
+                  <UploadsGallery />
                 </Container>
               </Route>
               <PrivateRoute exact path="/my-favorites">

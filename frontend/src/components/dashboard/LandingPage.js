@@ -76,7 +76,7 @@ export default function LandingPage() {
           color="textPrimary"
           gutterBottom
         >
-          Shining a light on a new way to experience art for everyone.
+          Shining a light for all to enjoy art.
         </Typography>
         <br/>
         <ScrollLink

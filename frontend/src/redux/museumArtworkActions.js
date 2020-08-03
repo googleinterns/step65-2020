@@ -1,3 +1,4 @@
+// import store from '../index';
 const getIIIFLevel = (artwork, displayWidth) => {
   return {
     url: 'https://www.artic.edu/iiif/2/' + artwork.image_id + '/full/' + displayWidth + ',/0/default.jpg',
@@ -33,10 +34,16 @@ const sortByQuerySyntax = new Map()
             'order': 'asc',
           },
         })
-    .set('date',
+    .set('date (desc)',
         {
           'date_end': {
             'order': 'desc',
+          },
+        })
+    .set('date (asc)',
+        {
+          'date_end': {
+            'order': 'asc',
           },
         })
     .set('title',
@@ -153,6 +160,7 @@ function getMuseumArtworks(path, params, sortBy, searchField, search) {
     }
   }
   const API = apiUrl.toString();
+
   return fetch(API, {
     method: 'POST',
     headers: {
@@ -170,34 +178,101 @@ function getMuseumArtworks(path, params, sortBy, searchField, search) {
 
 function artworksJsonToMap(artworks) {
   const artworksMap = new Map();
-  for (const artwork of artworks) {
+  const numOfPgs = artworks.pagination.total_pages;
+  const numOfResults = artworks.pagination.total;
+  for (const artwork of artworks.data) {
     artworksMap.set(artwork.id.toString(), convertToArtworkInfo(artwork));
   }
-  return artworksMap;
+  return {artworksMap, numOfPgs, numOfResults};
 }
 
 export function fetchMuseumArtworks(
     page, limit, searchQuery='', sortBy='relevance', searchField='') {
+  /*
+   if user wants to search by all fields, perform a simple query
+   instead of a complex query
+  */
+  let simpleQuery = '';
+  let searchFieldArgument = searchField;
+  if (searchField === 'all-fields') {
+    simpleQuery = searchQuery;
+    searchFieldArgument = '';
+  }
+
   return (dispatch) => {
     dispatch(fetchMuseumArtworksBegin());
     return getMuseumArtworks('artworks/search',
         new Map()
             .set('page', page)
-            .set('limit', limit),
+            .set('limit', limit)
+            .set('q', simpleQuery),
         sortBy,
-        searchField,
+        searchFieldArgument,
         searchQuery,
     )
-        .then((artworks) => artworks.data)
         .then((artworks) => {
           return artworksJsonToMap(artworks);
         })
         .then((artworks) => {
-          dispatch(fetchMuseumArtworksSuccess(artworks));
+          dispatch(fetchMuseumArtworksSuccess(
+              artworks.artworksMap,
+              artworks.numOfPgs,
+              artworks.numOfResults));
           return artworks;
+        })
+        .then(()=>{
+          dispatch(getRandomArtworkId(limit, searchQuery, sortBy, searchField));
         })
         .catch((error) =>
           dispatch(fetchMuseumArtworksFailure(error)),
+        );
+  };
+}
+
+function computeRandomIndex(numOfResults) {
+  const ARTWORKS_PER_GALLERY_PAGE = 9;
+  const ranNum = Math.floor(Math.random() * numOfResults);
+  const pageNum = Math.floor(ranNum/ARTWORKS_PER_GALLERY_PAGE);
+  const index = ranNum % ARTWORKS_PER_GALLERY_PAGE;
+  return {pageNum, index};
+};
+
+function getArtworkAtIndex(artworks, index) {
+  return (artworks.data[index].id);
+}
+
+export function getRandomArtworkId(
+    limit, searchQuery, sortBy, searchField) {
+  let simpleQuery = '';
+  let searchFieldArgument = searchField;
+  if (searchField === 'all-fields') {
+    simpleQuery = searchQuery;
+    searchFieldArgument = '';
+  }
+
+  return (dispatch, getState) => {
+    const state = getState();
+    const numOfResults = state.museumArtworks.numOfResults;
+    const {pageNum, index} = computeRandomIndex(numOfResults);
+    dispatch(fetchRandomArtworkIdBegin());
+    return getMuseumArtworks('artworks/search',
+        new Map()
+            .set('page', pageNum)
+            .set('limit', limit)
+            .set('q', simpleQuery),
+        sortBy,
+        searchFieldArgument,
+        searchQuery,
+    )
+        .then((artworks) => {
+          return getArtworkAtIndex(artworks, index);
+        })
+        .then((id) => {
+          dispatch(fetchRandomArtworkIdSuccess(id));
+          return id;
+        })
+        .catch((error) =>
+          dispatch(fetchRandomArtworkIdFailure(error)),
         );
   };
 }
@@ -236,6 +311,12 @@ export const FETCH_MUSEUM_ARTWORKS_SUCCESS =
   'FETCH_MUSEUM_ARTWORKS_SUCCESS';
 export const FETCH_MUSEUM_ARTWORKS_FAILURE =
   'FETCH_MUSEUM_ARTWORKS_FAILURE';
+export const FETCH_RANDOM_ARTWORK_ID_BEGIN =
+  'FETCH_RANDOM_ARTWORK_ID_BEGIN';
+export const FETCH_RANDOM_ARTWORK_ID_SUCCESS =
+  'FETCH_RANDOM_ARTWORK_ID_SUCCESS';
+export const FETCH_RANDOM_ARTWORK_ID_FAILURE =
+  'FETCH_RANDOM_ARTWORK_ID_FAILURE';
 export const FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN =
   'FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN';
 export const FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS =
@@ -249,13 +330,28 @@ export const fetchMuseumArtworksBegin = () => ({
   type: FETCH_MUSEUM_ARTWORKS_BEGIN,
 });
 
-export const fetchMuseumArtworksSuccess = (artworks) => ({
-  type: FETCH_MUSEUM_ARTWORKS_SUCCESS,
-  payload: {artworks},
-});
+export const fetchMuseumArtworksSuccess =
+  (artworks, numOfPgs, numOfResults) => ({
+    type: FETCH_MUSEUM_ARTWORKS_SUCCESS,
+    payload: {artworks, numOfPgs, numOfResults},
+  });
 
 export const fetchMuseumArtworksFailure = (error) => ({
   type: FETCH_MUSEUM_ARTWORKS_FAILURE,
+  payload: {error},
+});
+
+export const fetchRandomArtworkIdBegin = () => ({
+  type: FETCH_RANDOM_ARTWORK_ID_BEGIN,
+});
+
+export const fetchRandomArtworkIdSuccess = (randomArtworkId) => ({
+  type: FETCH_RANDOM_ARTWORK_ID_SUCCESS,
+  payload: {randomArtworkId},
+});
+
+export const fetchRandomArtworkIdFailure = (error) => ({
+  type: FETCH_RANDOM_ARTWORK_ID_FAILURE,
   payload: {error},
 });
 
@@ -277,3 +373,4 @@ export const setCurrentMuseumArtwork = (id) => ({
   type: SET_CURRENT_MUSEUM_ARTWORK,
   payload: {id},
 });
+

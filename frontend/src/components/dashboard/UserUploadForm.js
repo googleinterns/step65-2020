@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
+import {useSelector} from 'react-redux';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -50,6 +51,8 @@ export default function UserUploadForm(props) {
 
   const classes = useStyles();
 
+  const auth = useSelector((state) => state.firebase.auth);
+
   const redirectUrl = document.location.origin + '/user-uploads-gallery';
 
   const [fileName, setName] = useState('');
@@ -75,6 +78,11 @@ export default function UserUploadForm(props) {
           type="hidden"
           name="redirectUrl"
           value={redirectUrl}
+        />
+        <input
+          type="hidden"
+          name="uniqueUserID"
+          value={auth.uid}
         />
         <Grid
           className={classes.root}

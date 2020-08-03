@@ -65,7 +65,6 @@ export function deleteAndUpdateFavorites(uid, favoriteId) {
   };
 }
 
-
 function getFindFavorite(uid, artworkId, collection) {
   return fetch(`/api/v1/find-favorite?` +
       `uid=${uid}&artwork-id=${artworkId}&collection=${collection}`)
