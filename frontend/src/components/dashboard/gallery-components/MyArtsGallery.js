@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import ImgMediaCard from './ImgMediaCard';
 import {generateTextToSpeech,
@@ -12,6 +12,7 @@ export default function MyArtsGallery() {
   const loading = useSelector((state) =>
     state.myArtworks.loading);
   const artworks = Array.from(artworksMap);
+  const isMyArt = useState(true);
 
   let cards;
   if (!loading && artworks) {
@@ -22,6 +23,8 @@ export default function MyArtsGallery() {
           link={`/gallery/user/${key}`}
           alt={artwork.get('alt')}
           url={artwork.get('url')}
+          id={artwork.get('id')}
+          isMyArt={isMyArt}
         />
       </Grid>
     ));

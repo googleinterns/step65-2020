@@ -33,6 +33,27 @@ export function fetchMyArtworks(uid) {
   };
 }
 
+export function deleteArtwork(id, uid) {
+  return (dispatch) => {
+    const params = new URLSearchParams();
+    params.append('id', id);
+    fetch('/api/v1/delete-artwork', {method: 'POST', body: params})
+        .then(() => dispatch(fetchMyArtworks(uid)));
+  };
+}
+
+export function editInformation(id, uid, selection, newInfo, redirectUrl) {
+  return (dispatch) => {
+    const params = new URLSearchParams();
+    params.append('id', id);
+    params.append('selection', selection);
+    params.append('image-info', newInfo);
+    params.append('redirectUrl', redirectUrl);
+    fetch('/api/v1/edit-info', {method: 'POST', body: params})
+        .then(() => dispatch(fetchMyArtworks(uid)));
+  };
+}
+
 export const FETCH_MY_ARTWORKS_BEGIN = 'FETCH_MY_ARTWORKS_BEGIN';
 export const FETCH_MY_ARTWORKS_SUCCESS =
     'FETCH_MY_ARTWORKS_SUCCESS';

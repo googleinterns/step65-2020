@@ -5,25 +5,35 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import CardMenuBttn from '../CardMenuBttn';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) =>({
   root: {
     maxWidth: 345,
+    textAlign: 'right',
   },
   link: {
-    textDecoration: 'none',
     color: theme.palette.text.primary,
+    textDecoration: 'none',
+  },
+  name: {
+    paddingBottom: 0,
+    textAlign: 'left',
   },
   truncate: {
-    whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  button: {
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
 }));
 
-export default function ImgMediaCard({name, link, alt, url}) {
+export default function ImgMediaCard({name, link, alt, url, id, isMyArt}) {
   const classes = useStyles();
 
   return (
@@ -49,6 +59,12 @@ export default function ImgMediaCard({name, link, alt, url}) {
           </CardContent>
         </CardActionArea>
       </Link>
+      {isMyArt && (
+        <CardMenuBttn
+          className={classes.button}
+          id={id}
+        />
+      )}
     </Card>
   );
 }
@@ -58,4 +74,6 @@ ImgMediaCard.propTypes = {
   link: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  isMyArt: PropTypes.bool,
 };
