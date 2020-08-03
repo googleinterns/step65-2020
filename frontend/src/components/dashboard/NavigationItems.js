@@ -11,7 +11,6 @@ import {
 import HomeIcon from '@material-ui/icons/Home';
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import UserUploadsIcon from '@material-ui/icons/SupervisedUserCircle';
-import UploadPhotoIcon from '@material-ui/icons/AddPhotoAlternate';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NavigationItems() {
+export default function NavigationItems() {
   const classes = useStyles();
   return (
     <List>
@@ -48,17 +47,7 @@ function NavigationItems() {
           <ListItemText primary={'User Uploads Gallery'} />
         </ListItem>
       </Link>
-      <Link to="/upload-artwork" className={classes.link}>
-        <ListItem button>
-          <ListItemIcon>
-            <UploadPhotoIcon />
-          </ListItemIcon>
-          <ListItemText primary={'Upload Artwork'} />
-        </ListItem>
-      </Link>
     </List>
   );
 }
-
-export default NavigationItems;
 

@@ -4,10 +4,11 @@ import ImgMediaCard from './ImgMediaCard';
 import PropTypes from 'prop-types';
 import {generateTextToSpeech, getMuseumAudioTranscript,
   getUserAudioTranscript} from '../textToSpeechHelpers';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchMuseumArtworks} from '../../../redux/museumArtworkActions';
 
 
-export default function Gallery({size, isMuseum}) {
+export default function Gallery({size, isMuseum, isPreview}) {
   const artworksMap = useSelector((state) =>
     (isMuseum ? state.museumArtworks.artworks : state.userArtworks.artworks));
   const loading = useSelector((state) =>
@@ -30,6 +31,16 @@ export default function Gallery({size, isMuseum}) {
       </Grid>
     ));
   }
+
+  const dispatch = useDispatch();
+  const LIMIT = 9;
+  const FIRST_PAGE = 1;
+  const EMPTY_QUERY = '';
+  useEffect(() => {
+    if (isPreview) {
+      dispatch(fetchMuseumArtworks(FIRST_PAGE, LIMIT, EMPTY_QUERY));
+    }
+  }, [dispatch, isPreview]);
 
   // generate audio before users view artwork to reduce audio wait time
   useEffect(() => {
@@ -60,4 +71,5 @@ export default function Gallery({size, isMuseum}) {
 Gallery.propTypes = {
   size: PropTypes.number,
   isMuseum: PropTypes.bool,
+  isPreview: PropTypes.bool,
 };

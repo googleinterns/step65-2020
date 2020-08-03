@@ -2,6 +2,9 @@ import {
   FETCH_MUSEUM_ARTWORKS_BEGIN,
   FETCH_MUSEUM_ARTWORKS_SUCCESS,
   FETCH_MUSEUM_ARTWORKS_FAILURE,
+  FETCH_RANDOM_ARTWORK_ID_BEGIN,
+  FETCH_RANDOM_ARTWORK_ID_SUCCESS,
+  FETCH_RANDOM_ARTWORK_ID_FAILURE,
   FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN,
   FETCH_SINGLE_MUSEUM_ARTWORK_SUCCESS,
   FETCH_SINGLE_MUSEUM_ARTWORK_FAILURE,
@@ -10,8 +13,11 @@ import {
 
 const initialState = {
   artworks: new Map(),
+  numOfResults: 0,
+  numOfPgs: 0,
+  randomArtworkId: null,
   loading: false,
-  error: null,
+  error: false,
   currentArtwork: null,
 };
 
@@ -24,7 +30,7 @@ export default function museumArtworkReducer(
       return {
         ...state,
         loading: true,
-        error: null,
+        error: false,
       };
 
     case FETCH_MUSEUM_ARTWORKS_SUCCESS:
@@ -32,14 +38,18 @@ export default function museumArtworkReducer(
         ...state,
         loading: false,
         artworks: action.payload.artworks,
+        numOfPgs: action.payload.numOfPgs,
+        numOfResults: action.payload.numOfResults,
       };
 
     case FETCH_MUSEUM_ARTWORKS_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload.error,
+        error: true,
         artworks: new Map(),
+        numOfPgs: 0,
+        numOfResults: 0,
       };
     case FETCH_SINGLE_MUSEUM_ARTWORK_BEGIN:
       return {
@@ -67,6 +77,28 @@ export default function museumArtworkReducer(
       return {
         ...state,
         currentArtwork: state.artworks.get(action.payload.id),
+      };
+
+    case FETCH_RANDOM_ARTWORK_ID_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+    case FETCH_RANDOM_ARTWORK_ID_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        randomArtworkId: action.payload.randomArtworkId,
+      };
+
+    case FETCH_RANDOM_ARTWORK_ID_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+        randomArtworkId: null,
       };
 
     default:

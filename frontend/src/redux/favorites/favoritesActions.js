@@ -108,3 +108,4 @@ export const setCurrentFavorite = (currentFavorite) => ({
   type: SET_CURRENT_FAVORITE,
   payload: {currentFavorite},
 });
+

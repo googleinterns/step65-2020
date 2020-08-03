@@ -176,6 +176,7 @@ export default function ArtworkCloseUpCard(props) {
       <Container className={classes.withPadding}>
         <Card className={classes.root}>
           <CardHeader
+            tabIndex={0}
             title={title}
             subheader={artist}
             subheaderTypographyProps={subheaderTypographyProps}
@@ -238,6 +239,7 @@ export default function ArtworkCloseUpCard(props) {
                   </Typography>
                 )}
                 <Typography
+                  tabIndex={0}
                   variant="body2"
                   color="primary"
                   align="center"
@@ -248,7 +250,7 @@ export default function ArtworkCloseUpCard(props) {
               </CardContent>
             </Grid>
             <Grid item xs={12} md={4}>
-              <CardContent className={classes.content}>
+              <CardContent className={classes.content} tabIndex={0}>
                 <Typography
                   variant="h4"
                   color="primary"
