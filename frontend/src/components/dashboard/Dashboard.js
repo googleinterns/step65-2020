@@ -42,7 +42,6 @@ import {isLoaded, isEmpty} from 'react-redux-firebase';
 import SignOutNavigationItem from './account-components/SignOutNavigationItem';
 import SignedInNavItems from './account-components/SignedInNavItems';
 import SignInButton from './account-components/SignInButton';
-import SignedInNavItems from './account-components/SignedInNavItems';
 import SignInNav from './account-components/SignInNav';
 import MyArtworksGallery from './MyArtworksGallery';
 import {fetchFavorites} from '../../redux/favorites/favoritesActions';
