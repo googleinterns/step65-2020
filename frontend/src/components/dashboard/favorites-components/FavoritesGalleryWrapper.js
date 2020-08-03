@@ -65,7 +65,7 @@ export default function FavoritesGalleryWrapper() {
               The images could not be loaded at this time.
         </Alert>
       )}
-      <Container>
+      <Container className={classes.gallery}>
         <FavoritesGallery/>
       </Container>
       {!artworksLoading && !artworksError && (
