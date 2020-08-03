@@ -51,7 +51,7 @@ export function editInformation(id, uid, selection, newInfo, redirectUrl) {
     params.append('redirectUrl', redirectUrl);
     fetch('/api/v1/edit-info', {method: 'POST', body: params})
         .then(() => dispatch(fetchMyArtworks(uid)));
-  }
+  };
 }
 
 export const FETCH_MY_ARTWORKS_BEGIN = 'FETCH_MY_ARTWORKS_BEGIN';
