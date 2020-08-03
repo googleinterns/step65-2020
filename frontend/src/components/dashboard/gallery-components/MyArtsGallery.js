@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
-import MyArtImgMediaCard from './MyArtImgMediaCard';
+import ImgMediaCard from './ImgMediaCard';
 import {generateTextToSpeech,
   getUserAudioTranscript} from '../textToSpeechHelpers';
 import {useSelector} from 'react-redux';
@@ -12,17 +12,19 @@ export default function MyArtsGallery() {
   const loading = useSelector((state) =>
     state.myArtworks.loading);
   const artworks = Array.from(artworksMap);
+  const isMyArt = useState(true);
 
   let cards;
   if (!loading && artworks) {
     cards = artworks.map(([key, artwork]) => (
       <Grid key={key} item>
-        <MyArtImgMediaCard
+        <ImgMediaCard
           name={artwork.get('title')}
           link={`/gallery/user/${key}`}
           alt={artwork.get('alt')}
           url={artwork.get('url')}
           id={artwork.get('id')}
+          isMyArt={isMyArt}
         />
       </Grid>
     ));
