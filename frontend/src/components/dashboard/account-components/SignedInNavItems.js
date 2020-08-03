@@ -8,7 +8,6 @@ import {
   ListItemIcon, ListItemText,
 } from '@material-ui/core';
 
-
 import UploadPhotoIcon from '@material-ui/icons/AddPhotoAlternate';
 import MyArtIcon from '@material-ui/icons/Brush';
 import FavoriteIcon from '@material-ui/icons/Favorite';
