@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 
 import SignInIcon from '@material-ui/icons/AccountCircle';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -20,15 +21,18 @@ const useStyles = makeStyles((theme) => ({
 export default function SignInNav() {
   const classes = useStyles();
   return (
-    <List>
-      <Link to="/sign-in" className={classes.link}>
-        <ListItem button>
-          <ListItemIcon>
-            <SignInIcon />
-          </ListItemIcon>
-          <ListItemText primary={'Sign In'} />
-        </ListItem>
-      </Link>
-    </List>
+    <>
+      <Divider/>
+      <List>
+        <Link to="/sign-in" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <SignInIcon />
+            </ListItemIcon>
+            <ListItemText primary={'Sign In'} />
+          </ListItem>
+        </Link>
+      </List>
+    </>
   );
 }
