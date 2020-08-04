@@ -140,7 +140,9 @@ export default function ArtworkCloseUpCard(props) {
       }
       setCurrentArtworkUpdated(true);
     }
-    if (!loading && currentArtwork && currentArtworkUpdated) {
+
+    const audioElement = document.getElementById('audio');
+    if (!loading && currentArtwork && currentArtworkUpdated && audioElement) {
       const description = currentArtwork.get('description');
       const descriptionElement = document.getElementById('description');
       descriptionElement.innerHTML = description;
@@ -158,12 +160,15 @@ export default function ArtworkCloseUpCard(props) {
           .then(handleErrors)
           .then((response) => response.text())
           .then((blobKey) => {
-            document.getElementById('audio')
+            audioElement
                 .setAttribute('src', `/api/v1/get-blob?blob-key=${blobKey}`);
           })
-          .then(() => setAudioLoading(false))
-          .catch(() => {
-            setError(true);
+          .then(() => {
+            setAudioLoading(false);
+            setError(false);
+          })
+          .catch((error) => {
+            setError(true)
             setAudioLoading(false);
           });
     }
