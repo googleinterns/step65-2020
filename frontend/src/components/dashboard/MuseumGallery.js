@@ -172,61 +172,62 @@ export default function MuseumGallery() {
   }
 
   return (
-    <Container className={classes.root}>
+    <>
       {artworksLoading && (
         <div className={classes.loading}>
           <LinearProgress />
         </div>
       )}
-      <Container id="search-bar" className={classes.searchBar}>
-        <Container className={classes.searchByContainer}>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <Select
-              id="search-field"
-              value={searchField}
-              onChange={handleChangeSearchField}
-            >
-              <MenuItem value="all-fields">Search by: All fields</MenuItem>
-              <MenuItem
-                value="artist_title"
-                aria-label="Search by: Artist"
-              >Artist</MenuItem>
-              <MenuItem
-                value="description"
-                aria-label="Search by: Description"
-              >Description</MenuItem>
-              <MenuItem
-                value="title"
-                aria-label="Search by: Title"
-              >Title</MenuItem>
-            </Select>
-          </FormControl>
+      <Container className={classes.root}>
+        <Container id="search-bar" className={classes.searchBar}>
+          <Container className={classes.searchByContainer}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <Select
+                id="search-field"
+                value={searchField}
+                onChange={handleChangeSearchField}
+              >
+                <MenuItem value="all-fields">Search by: All fields</MenuItem>
+                <MenuItem
+                  value="artist_title"
+                  aria-label="Search by: Artist"
+                >Artist</MenuItem>
+                <MenuItem
+                  value="description"
+                  aria-label="Search by: Description"
+                >Description</MenuItem>
+                <MenuItem
+                  value="title"
+                  aria-label="Search by: Title"
+                >Title</MenuItem>
+              </Select>
+            </FormControl>
+          </Container>
+          <Container className={classes.searchComponents}>
+            <InputBase
+              placeholder="Search…"
+              inputProps={{'aria-label': 'search'}}
+              className={classes.searchTextField}
+              id="search-textfield"
+              onKeyUp = {(event) => {
+                if (event.keyCode === 13) {
+                  handleChangeSearch();
+                }
+              }}
+              autoComplete = "off"
+            />
+            <div className={classes.searchButton}>
+              <IconButton
+                aria-label="search button"
+                onClick={handleChangeSearch}>
+                <SearchIcon fontSize="large" />
+              </IconButton>
+            </div>
+          </Container>
+          <SurpriseMeButton/>
         </Container>
-        <Container className={classes.searchComponents}>
-          <InputBase
-            placeholder="Search…"
-            inputProps={{'aria-label': 'search'}}
-            className={classes.searchTextField}
-            id="search-textfield"
-            onKeyUp = {(event) => {
-              if (event.keyCode === 13) {
-                handleChangeSearch();
-              }
-            }}
-            autoComplete = "off"
-          />
-          <div className={classes.searchButton}>
-            <IconButton
-              aria-label="search button"
-              onClick={handleChangeSearch}>
-              <SearchIcon fontSize="large" />
-            </IconButton>
-          </div>
-        </Container>
-        <SurpriseMeButton/>
-      </Container>
-      <div id="filter-drawer" className={classes.filterDrawer} role="status">
-        {!noResults &&
+        <div id="filter-drawer" className={classes.filterDrawer} role="status">
+          {!noResults &&
           <Button
             aria-controls="sort-by-menu"
             aria-haspopup="true"
@@ -236,47 +237,47 @@ export default function MuseumGallery() {
           >
           Sort By: {sortBy} &#x25BC;
           </Button>}
-        <Menu
-          id="sort-by-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleCloseSortByMenu}
-        >
-          <MenuItem
-            onClick={(event) => handleChangeSortBy(event, 'relevance')}
-            aria-label="Sort by: Relevance"
-          >Relevance</MenuItem>
-          <MenuItem
-            onClick={(event) => handleChangeSortBy(event, 'artist')}
-            aria-label="Sort by: Artist"
-          >Artist</MenuItem>
-          <MenuItem
-            onClick={(event) => handleChangeSortBy(event, 'date (asc)')}
-            aria-label="Sort by: Date (oldest to newest)"
-          >Date (oldest&#8594;newest)</MenuItem>
-          <MenuItem
-            onClick={(event) => handleChangeSortBy(event, 'date (desc)')}
-            aria-label="Sort by: Date (newest to oldest)"
-          >Date (newest&#8594;oldest)</MenuItem>
-          <MenuItem
-            onClick={(event) => handleChangeSortBy(event, 'title')}
-            aria-label="Sort by: Title"
-          >Title</MenuItem>
-        </Menu>
-        <Button
-          id="search-filter"
-          className={classes.filters}
-          onClick={clearSearchQuery}
-          aria-label="clear search query"
-        >
-          <Typography className={classes.hoverLineThrough} variant="button">
+          <Menu
+            id="sort-by-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleCloseSortByMenu}
+          >
+            <MenuItem
+              onClick={(event) => handleChangeSortBy(event, 'relevance')}
+              aria-label="Sort by: Relevance"
+            >Relevance</MenuItem>
+            <MenuItem
+              onClick={(event) => handleChangeSortBy(event, 'artist')}
+              aria-label="Sort by: Artist"
+            >Artist</MenuItem>
+            <MenuItem
+              onClick={(event) => handleChangeSortBy(event, 'date (asc)')}
+              aria-label="Sort by: Date (oldest to newest)"
+            >Date (oldest&#8594;newest)</MenuItem>
+            <MenuItem
+              onClick={(event) => handleChangeSortBy(event, 'date (desc)')}
+              aria-label="Sort by: Date (newest to oldest)"
+            >Date (newest&#8594;oldest)</MenuItem>
+            <MenuItem
+              onClick={(event) => handleChangeSortBy(event, 'title')}
+              aria-label="Sort by: Title"
+            >Title</MenuItem>
+          </Menu>
+          <Button
+            id="search-filter"
+            className={classes.filters}
+            onClick={clearSearchQuery}
+            aria-label="clear search query"
+          >
+            <Typography className={classes.hoverLineThrough} variant="button">
             Search for: {searchQuery} &#10006;
-          </Typography>
-        </Button>
-      </div>
-      {results}
-      {(!noResults && !artworksLoading) &&
+            </Typography>
+          </Button>
+        </div>
+        {results}
+        {(!noResults && !artworksLoading) &&
         <Container className={classes.pagination}>
           <Pagination
             count={numOfPgs}
@@ -285,8 +286,9 @@ export default function MuseumGallery() {
             onChange={handleChangePage}
           />
         </Container>
-      }
-    </Container>
+        }
+      </Container>
+    </>
   );
 }
 
