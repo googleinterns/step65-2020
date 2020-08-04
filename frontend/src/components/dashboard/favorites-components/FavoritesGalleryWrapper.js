@@ -70,12 +70,17 @@ export default function FavoritesGalleryWrapper() {
       </Container>
       {!artworksLoading && !artworksError && (
         <Container className={classes.pagination}>
-          <Pagination
+          {count > 1 ? <Pagination
             count={pageNums}
             size="large"
             page={favoritesPageNum}
             onChange={handleChangePage}
-          />
+          /> :
+              <Alert
+                severity="info"
+              >
+                No favorites found.
+              </Alert>}
         </Container>
       )}
     </>
