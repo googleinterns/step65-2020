@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet used to add a favorited artwork to the user's list of favorites in Datatstore.
+ * Servlet used to add a favorited artwork to the user's list of favorites in Datastore.
  */
 @WebServlet("/api/v1/add-to-favorites")
 public class AddToFavorites extends HttpServlet {
