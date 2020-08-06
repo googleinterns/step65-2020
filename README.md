@@ -76,4 +76,20 @@
 
 ### Upload Artwork
 
+#### General Information
+
+- With a user account, anyone can upload their own artwork!
+- The upload form allows the user to insert their name, title of the art piece, alt text for the image and the detailed image description.
+- On submit, the image is uploaded and the user is redirected to see their newly uploaded piece in the users gallery
+- Helper links to resources on writing alt text and descriptions are provided
+
+#### Technical Information
+
+- Image information stored in Datastore
+- Images are stored in Google Cloud Storage using Blobstore API
+- Images are served from a backend endpoint using the BlobstoreService
+
 ### My Art Gallery
+
+- See artwork you’ve uploaded
+- New button on Media Card allows you to modify or delete image
