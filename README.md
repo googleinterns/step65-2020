@@ -52,7 +52,8 @@ https://igunda-isangimino-nstroupe.uc.r.appspot.com/
 - Users can also choose to sort the artworks by relevance, chronologically, or alphabetically by artist or title 
 - Features made possible by Elasticsearch Query DSL 
 
-![gif of Search and Sort features](/readMeImages/search-sort.gif "Search And Sort")
+![gif of Search feature](/readMeImages/search.gif "Search")
+![gif of Sort feature](/readMeImages/sort.gif "Sort")
 
 #### "Surprise Me" Button in Museum Gallery
 
