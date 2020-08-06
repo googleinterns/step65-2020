@@ -70,7 +70,7 @@ export default function FavoritesGalleryWrapper() {
       </Container>
       {!artworksLoading && !artworksError && (
         <Container className={classes.pagination}>
-          {count > 1 ? <Pagination
+          {count > 0 ? <Pagination
             count={pageNums}
             size="large"
             page={favoritesPageNum}
