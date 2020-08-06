@@ -37,6 +37,8 @@
 
 #### "Surprise Me" Button
 
+![gif of "Surprise Me" Button](/surprise-me.gif "Surprise Me")
+
 ### Close-Up View
 
 ### Favorites Page
