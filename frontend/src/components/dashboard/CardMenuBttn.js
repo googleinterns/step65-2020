@@ -17,7 +17,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
-import {fetchUserArtworks} from '../../redux/userArtworkActions';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -76,7 +75,6 @@ export default function CardMenuBttn({id}) {
       dispatch(editInformation(
           id, auth.uid, selection, newInfo));
       (setEditDone(false));
-      dispatch(fetchUserArtworks());
     }
   }, [dispatch, editDone, id, auth.uid, selection, newInfo]);
 

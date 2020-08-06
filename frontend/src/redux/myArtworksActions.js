@@ -1,3 +1,5 @@
+import {fetchUserArtworks} from '../redux/userArtworkActions';
+
 function convertToArtworkInfo(artwork) {
   const artworkInfo = new Map();
   artworkInfo.set('id', artwork.id);
@@ -50,6 +52,7 @@ export function editInformation(id, uid, selection, newInfo, redirectUrl) {
     params.append('image-info', newInfo);
     params.append('redirectUrl', redirectUrl);
     fetch('/api/v1/edit-info', {method: 'POST', body: params})
+        .then(() => dispatch(fetchUserArtworks()))
         .then(() => dispatch(fetchMyArtworks(uid)));
   };
 }
