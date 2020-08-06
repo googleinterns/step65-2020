@@ -37,7 +37,7 @@
 
 #### "Surprise Me" Button
 
-![gif of "Surprise Me" Button](/surprise-me.gif "Surprise Me")
+![gif of "Surprise Me" Button](/readMeImages/surprise-me.gif "Surprise Me")
 
 ### Close-Up View
 
