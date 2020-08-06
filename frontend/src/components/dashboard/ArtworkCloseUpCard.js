@@ -117,10 +117,10 @@ export default function ArtworkCloseUpCard(props) {
   };
 
   useEffect(() => {
-    if (currentFavoriteUpdated && currentFavorite) {
+    if (currentFavoriteUpdated && currentFavorite &&
+        currentFavorite.artworkId === id) {
       setIsFavorite(true);
-    } else if (!currentFavoriteUpdated) {
-      setIsFavorite(false);
+    } else if (!currentFavoriteUpdated && auth.uid) {
       const favorite = favorites.find((favorite) =>
         favorite.artworkId === id && favorite.collection === collection);
       if (favorite) {
@@ -169,7 +169,7 @@ export default function ArtworkCloseUpCard(props) {
             setError(false);
           })
           .catch((error) => {
-            setError(true)
+            setError(true);
             setAudioLoading(false);
           });
     }
