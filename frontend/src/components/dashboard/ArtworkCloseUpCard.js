@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: '56.25%', // 16:9
     margin: theme.spacing(3),
+    backgroundSize: 'contain',
   },
   audioPlayer: {
     margin: theme.spacing(1),
