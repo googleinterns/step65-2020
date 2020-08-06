@@ -76,6 +76,8 @@
 
 ### Upload Artwork
 
+![gif of Uploading Artworl](/readMeImages/UploadImages.gif "Uploading Images")
+
 #### General Information
 
 - With a user account, anyone can upload their own artwork!
@@ -90,6 +92,8 @@
 - Images are served from a backend endpoint using the BlobstoreService
 
 ### My Art Gallery
+
+![gif of modifying an image upload's title](/readMeImages/ModifyArt.gif "Modifying an image title")
 
 - See artwork you’ve uploaded
 - New button on Media Card allows you to modify or delete image
