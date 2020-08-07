@@ -31,7 +31,7 @@ https://igunda-isangimino-nstroupe.uc.r.appspot.com/
 
 ### Home Page
  
-* home page gif * 
+![gif of homepage](/readMeImages/home-page.gif "Home") 
 
 ### Accounts
 
