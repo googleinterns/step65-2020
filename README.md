@@ -35,6 +35,8 @@ https://igunda-isangimino-nstroupe.uc.r.appspot.com/
 
 ### Accounts
 
+![gif of accounts sign in](/readMeImages/signIn.gif "Sign In")
+
 - This feature was created using FirebaseUI and the react-redux-firebase package
 - Users can sign in with Google, Facebook or email
 - Account specific features include Favorites, Uploading Artwork, and My Art Gallery
