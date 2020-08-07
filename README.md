@@ -63,7 +63,9 @@ https://igunda-isangimino-nstroupe.uc.r.appspot.com/
 
 ![gif of "Surprise Me" Button](/readMeImages/surprise-me.gif "Surprise Me")
 
-### Close-Up View
+### Detailed Artwork Card
+
+![gif of Detailed Artwork Card](/readMeImages/artwork-card.png "Detailed Artwork Card")
 
 - Use the artwork information from either the Art Institute of Chicago’s API or our backend user uploaded artworks endpoints with the Cloud Text-to-Speech API to create an audio tour
 - These synthesized audio files are uploaded to Google Cloud Storage and served from a backend endpoint using the BlobstoreService
